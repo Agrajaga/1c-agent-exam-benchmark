@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "id": "bsl-ls-1.1.0-rc.6",
+  "label": "BSL Language Server 1.1 RC6",
+  "version": "1.1.0-rc.6",
+  "homepage": "https://github.com/1c-syntax/bsl-language-server",
+  "description": "BSL Language Server в режиме MCP: диагностика модулей.",
+  "probe": "bsl-ls",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "ls-win-fresh.zip": {
+          "url": "https://github.com/1c-syntax/bsl-language-server/releases/download/v1.1.0-rc.6/bsl-language-server_win.zip",
+          "sha256": "f682d739e23cdaa03347c1c5f9a4c3beb98f9b2eb83224beedd249b91c23e4eb",
+          "bytes": 169140892
+        }
+      },
+      "install": [
+        {
+          "unzip": "ls-win-fresh.zip",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.1.0-rc.6",
+        "label": "BSL Language Server 1.1 RC6",
+        "server": "bsl-language-server",
+        "command": "{package}/bsl-language-server/bsl-language-server.exe",
+        "args": [
+          "mcp"
+        ],
+        "env": {},
+        "registration": "Official Windows package, including pinned Java runtime; built-in stdio MCP"
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "ls.zip": {
+          "url": "https://github.com/1c-syntax/bsl-language-server/releases/download/v1.1.0-rc.6/bsl-language-server_mac.zip",
+          "sha256": "397e53fc1643e826ece6e721e50dde157c6a8f5370c18c9281351083507a83f3",
+          "bytes": 167840978
+        }
+      },
+      "install": [
+        {
+          "unzip": "ls.zip",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.1.0-rc.6",
+        "label": "BSL Language Server 1.1 RC6",
+        "server": "bsl-language-server",
+        "command": "{package}/bsl-language-server.app/Contents/MacOS/bsl-language-server",
+        "args": [
+          "mcp"
+        ],
+        "env": {},
+        "registration": "Official Windows package, including pinned Java runtime; built-in stdio MCP"
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "ls.zip": {
+          "url": "https://github.com/1c-syntax/bsl-language-server/releases/download/v1.1.0-rc.6/bsl-language-server_nix.zip",
+          "sha256": "ca4a2ba853b0e8bbb6261096e9dbfcc158dc05d6e8738dbeeeaa24d99789c6f6",
+          "bytes": 173310572
+        }
+      },
+      "install": [
+        {
+          "unzip": "ls.zip",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.1.0-rc.6",
+        "label": "BSL Language Server 1.1 RC6",
+        "server": "bsl-language-server",
+        "command": "{package}/bsl-language-server/bin/bsl-language-server",
+        "args": [
+          "mcp"
+        ],
+        "env": {},
+        "registration": "Official Windows package, including pinned Java runtime; built-in stdio MCP"
+      }
+    }
+  }
+}

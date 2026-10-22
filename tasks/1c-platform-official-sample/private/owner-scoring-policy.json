@@ -1,0 +1,245 @@
+{
+ "schema_version": 1,
+ "policy_id": "owner-scoring-policy-v4",
+ "status": "specified_not_integrated",
+ "authority": "benchmark_owner",
+ "decision_date": "2026-10-12",
+ "is_official_1c_policy": false,
+ "historical_results_rewritten": false,
+ "initial_points": "5",
+ "range_selection": "minimum",
+ "overlap": {
+  "different_penalty_ids_for_same_defect": "smallest_applicable",
+  "counting_unit": "defect_id",
+  "repeated_observations_of_same_pair": "one_penalty_instance",
+  "scope": "One defect yields one penalty: the applicable catalogue item with the smallest minimum, charged at its minimum. Test count is evidence, not a multiplier."
+ },
+ "grade_intervals": [
+  {
+   "grade": "unsatisfactory",
+   "lower": null,
+   "lower_inclusive": false,
+   "upper": "2.2",
+   "upper_inclusive": false
+  },
+  {
+   "grade": "satisfactory",
+   "lower": "2.2",
+   "lower_inclusive": true,
+   "upper": "3.5",
+   "upper_inclusive": false
+  },
+  {
+   "grade": "good",
+   "lower": "3.5",
+   "lower_inclusive": true,
+   "upper": "4.5",
+   "upper_inclusive": false
+  },
+  {
+   "grade": "excellent",
+   "lower": "4.5",
+   "lower_inclusive": true,
+   "upper": "5",
+   "upper_inclusive": true
+  }
+ ],
+ "score_outside_intervals": "out_of_policy",
+ "score_clamping": "none",
+ "bonus_policy": "not_awarded",
+ "required_section_acceptance": {
+  "sections": [
+   "OU",
+   "BU",
+   "PR"
+  ],
+  "proven_absent": {
+   "benchmark_attestation": "not_passed",
+   "reason": "required_section_absent",
+   "official_absence_gate_established": true
+  },
+  "unsupported_binding_without_observation_route": {
+   "benchmark_attestation": "not_attested",
+   "reason": "required_section_unverifiable",
+   "official_absence_gate_established": false,
+   "official_numeric_score": null
+  },
+  "alternative_validated_observation_route": "use_route_and_grade_real_observations",
+  "current_partial_grader_coverage": "does_not_retroactively_establish_required_section_absence",
+  "infrastructure_failure": "grader_error_not_candidate_absence"
+ },
+ "shared_invoice_types": {
+  "duplicate_types_between_sections": "forbidden",
+  "same_domain_role_uses_same_metadata_identity": true,
+  "roles": [
+   "receipt",
+   "sale"
+  ],
+  "distinct_document_instances": "allowed",
+  "verification": "Compare declared cross-section semantic roles and actual metadata identity, not name similarity alone."
+ },
+ "additional_document_types": {
+  "allowed": true,
+  "waived_penalty_ids": [],
+  "penalized_by": [
+   "F1C-GEN33"
+  ],
+  "note": "Own document types are allowed technically but penalized by the official GEN33 item."
+ },
+ "recalculation": {
+  "current_task_mode": "prohibited",
+  "current_task_rule_ids": [
+   "PR14"
+  ],
+  "current_task_source_lines": [
+   450,
+   450
+  ],
+  "task_parameter": "recalculation_mode",
+  "modes": {
+   "required": "Verify configured recalculation objects, dimensions/dependencies and actual execution on late changes.",
+   "prohibited": "Verify no use of recalculation mechanism on operative paths; late changes must still produce required results. An unused object alone is not proof of use.",
+   "not_specified": "Resolve applicability for this task before assigning mechanism penalties; do not demand it universally."
+  },
+  "rules_are_dispatched_per_task": true,
+  "late_change_behavior_independent_of_mechanism": true
+ },
+ "decisions": [
+  {
+   "issue_id": "A01",
+   "state": "resolved",
+   "type": "follows_document",
+   "resolution": "Штраф с диапазоном учитывается интервалом: минимум и максимум диапазона. Итоговый балл — интервал «от–до»; несдача доказана, только если весь интервал ниже 2,2.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "Always use upper endpoint of an applicable penalty interval."
+  },
+  {
+   "issue_id": "A02",
+   "state": "resolved",
+   "type": "stand_rule",
+   "resolution": "Один дефект — один штраф: из применимых пунктов перечня берётся наибольший. Документ этот случай не регулирует.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "Apply distinct applicable penalties to the same defect; repeated evidence is not another defect."
+  },
+  {
+   "issue_id": "A03",
+   "state": "resolved",
+   "type": "follows_document",
+   "resolution": "Границы как в документе, полуоткрытые: [2,2; 3,5) — удовлетворительно, [3,5; 4,5) — хорошо, [4,5; 5] — отлично.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "2.2..3.5 inclusive satisfactory; above 3.5 through 4.5 inclusive good; above 4.5 through 5 inclusive excellent."
+  },
+  {
+   "issue_id": "A04",
+   "state": "resolved",
+   "type": "stand_rule",
+   "resolution": "Раздел, который стенд не может наблюдать, — «не аттестовано», а не отсутствие раздела. Доказанное отсутствие — несдача, как в документе.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "An unverifiable required section is not attested by the benchmark. Unsupported binding does not prove the section absent; official absence and compatibility remain separate."
+  },
+  {
+   "issue_id": "A06",
+   "state": "resolved",
+   "type": "follows_document",
+   "resolution": "Отдельного уточнения нет: дублирование накладных между разделами штрафуется пунктом 1С М4.31.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "Do not duplicate common receipt/sale document types between sections."
+  },
+  {
+   "issue_id": "A07",
+   "state": "resolved",
+   "type": "follows_document",
+   "resolution": "Отмена отозвана: собственный вид документа, не описанный в задании, штрафуется пунктом 1С М4.33.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "Additional document types are permitted; waive GEN33 alone, preserve all functional requirements and nonduplication."
+  },
+  {
+   "issue_id": "A08",
+   "state": "resolved",
+   "type": "ticket_parameter",
+   "resolution": "Отдельного уточнения нет: режим перерасчётов задаёт билет (в этом билете — запрещены, Б4, стр. 450).",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "Determine recalculation requirements from each task; this task prohibits the mechanism, other tasks may require it."
+  },
+  {
+   "issue_id": "A09",
+   "state": "resolved",
+   "type": "deviation",
+   "resolution": "Две серии по времени: основная — 5 часов, как у человека; быстрая — 30 минут для дешёвых сравнений. Два режима материалов: закрытая сеть и открытая сеть с журналом. Харнес — часть испытуемого стека. Серии и режимы не смешиваются. Собеседование не воспроизводится: штраф М4.26 на стенде не применяется.",
+   "decided_on": "2026-10-11",
+   "previous_resolution": "AI gets 30 minutes, humans 5 hours. Materials/environment/defense are separate; no new materials policy supplied.",
+   "remaining_aspects": [
+    "closed_network_implementation"
+   ]
+  },
+  {
+   "issue_id": "A05",
+   "state": "resolved",
+   "type": "ticket_parameter",
+   "resolution": "В этом билете задачи по бизнес-процессу нет: штрафы раздела бизнес-процессов (М8.1–М8.9) не применимы; требование к разделам интерфейса (Т1.1) проверяется только для разделов билета.",
+   "decided_on": "2026-10-12",
+   "previous_resolution": null
+  },
+  {
+   "issue_id": "A10",
+   "state": "resolved",
+   "type": "follows_document",
+   "resolution": "Демонстрационные данные обязательны (М4.32). Агент объявляет в binding.json серверную процедуру заполнения; стенд вызывает её в чистой базе. Нет процедуры, ошибка или ни одного проведённого документа — штраф М4.32.",
+   "decided_on": "2026-10-12",
+   "previous_resolution": null
+  },
+  {
+   "issue_id": "A11",
+   "state": "resolved",
+   "type": "follows_document",
+   "resolution": "Сдача, которая не загружается в чистую базу из каркаса, — экзамен не сдан (М1.3: нужен действующий вариант конфигурации). Если не восстанавливается сама база из каркаса — это сбой стенда, прогон не засчитывается.",
+   "decided_on": "2026-10-12",
+   "previous_resolution": null
+  },
+  {
+   "issue_id": "A12",
+   "state": "resolved",
+   "type": "stand_rule",
+   "resolution": "Бонусы за оригинальность и эффективность не начисляются: правила начисления в документе нет. Балл снизу не ограничивается; отрицательный балл — «неудовлетворительно».",
+   "decided_on": "2026-10-12",
+   "previous_resolution": null
+  },
+  {
+   "issue_id": "A13",
+   "state": "resolved",
+   "type": "stand_rule",
+   "resolution": "Неэффективность доказывается только откалиброванными признаками в коде (запрос в цикле, обход виртуальных таблиц и т.п.). Замеры времени не используются; токены и время агента — цена прогона, а не качество решения.",
+   "decided_on": "2026-10-12",
+   "previous_resolution": null
+  }
+ ],
+ "limits": [
+  "Decisions are owner rules for the benchmark, not changes to the original 1C publication.",
+  "Full official penalty detection, coverage and scoring remain unimplemented.",
+  "Do not modify the old task delivery contract or historical verdicts retroactively.",
+  "Semantic defect identification and mechanism predicates still require implementation and calibration."
+ ],
+ "execution_budget": {
+  "policy_path": "profiles/ai-exam-execution-policy.json",
+  "human_exam_seconds": 18000,
+  "series": {
+   "exam": 18000,
+   "fast": 1800
+  },
+  "scope": "Solution only; preparation and grading separate",
+  "materials": {
+   "modes": [
+    "closed_network",
+    "open_network_logged"
+   ],
+   "closed_network_implemented": false
+  },
+  "historical_900_second_runs_preserved": true,
+  "historical_1800_second_runs_preserved": true
+ },
+ "supersedes": "owner-scoring-policy-v2",
+ "starter_origin": {
+  "rule": "GATE-STARTER",
+  "check": "same configuration UUID as the issued starter; removed starter objects are reported, not penalized (М1.5)"
+ }
+}

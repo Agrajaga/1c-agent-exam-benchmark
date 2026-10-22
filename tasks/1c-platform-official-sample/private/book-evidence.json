@@ -1,0 +1,119 @@
+{
+  "source": "user supplied photos of a 1C book",
+  "edition": null,
+  "received_on": "2026-10-09",
+  "pages": [
+    {
+      "printed_page": 171,
+      "attachment_name": "1-Photo-1.jpg",
+      "local_original": ".local/sources/book/page-171.jpg",
+      "sha256": "d82d4304d3f6811e5d2749e0ce43803a092cb2085aac30b0cdbd0d2af35cbe00",
+      "bytes": 168348,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 172,
+      "attachment_name": "2-Photo-2.jpg",
+      "local_original": ".local/sources/book/page-172.jpg",
+      "sha256": "5963a12458e26a43a52f795e734d572c34ca34ad686a6757e4ce39d2c3ce21e9",
+      "bytes": 207274,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 173,
+      "attachment_name": "3-Photo-3.jpg",
+      "local_original": ".local/sources/book/page-173.jpg",
+      "sha256": "f9532316e0fe6bd68f060eb799cb15c6db4b70d57fd2ab3cfb22b445830f63e0",
+      "bytes": 212904,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 174,
+      "attachment_name": "4-Photo-4.jpg",
+      "local_original": ".local/sources/book/page-174.jpg",
+      "sha256": "f6232ad788c898fc68ae052d6eff52cc4181263b041e38d710215f4d15ec665e",
+      "bytes": 175383,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 175,
+      "attachment_name": "5-Photo-5.jpg",
+      "local_original": ".local/sources/book/page-175.jpg",
+      "sha256": "19f0fb77e12e54a7e16b098b6af006d01ac9f4ee28ed0fcf82d50b60808bf543",
+      "bytes": 188939,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 176,
+      "attachment_name": "6-Photo-6.jpg",
+      "local_original": ".local/sources/book/page-176.jpg",
+      "sha256": "f13798de0b8572596f3dbe2737097a3aa2a89ccce63eac40412e2ae7ada1f4d1",
+      "bytes": 202132,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 177,
+      "attachment_name": "7-Photo-7.jpg",
+      "local_original": ".local/sources/book/page-177.jpg",
+      "sha256": "9eb890a2fea60707cd95984707de83754e8e886d6f330a3e717a4d04a42a67c2",
+      "bytes": 179879,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 178,
+      "attachment_name": "8-Photo-8.jpg",
+      "local_original": ".local/sources/book/page-178.jpg",
+      "sha256": "fef1bcac8c3e26a57dc8eba11b8a644e8f7f3b3a36484282a6cd42ae925433dc",
+      "bytes": 187991,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 179,
+      "attachment_name": "9-Photo-9.jpg",
+      "local_original": ".local/sources/book/page-179.jpg",
+      "sha256": "b7249d098d07d685e2c252c70335653adbaa5e5a36ae765d74c16cd955a5a07d",
+      "bytes": 189927,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 180,
+      "attachment_name": "10-Photo-10.jpg",
+      "local_original": ".local/sources/book/page-180.jpg",
+      "sha256": "7be1c429c7da13133233049a2c2e4c5acdf5bf1b59ff0d2c3b59c7adbd52ddd3",
+      "bytes": 190009,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 181,
+      "attachment_name": "1-Photo-4.jpg",
+      "local_original": ".local/sources/book/page-181.jpg",
+      "sha256": "c997d1daa3373c1895b26d34c5139696ae26a1701c344988605bf3c6464e667d",
+      "bytes": 194267,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 182,
+      "attachment_name": "2-Photo-5.jpg",
+      "local_original": ".local/sources/book/page-182.jpg",
+      "sha256": "4e67f183c42af709df93f528e1d0c2648286c7c6e4f6fbbe466c84da6bd1a645",
+      "bytes": 162510,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 183,
+      "attachment_name": "4-Photo-7.jpg",
+      "local_original": ".local/sources/book/page-183.jpg",
+      "sha256": "15b7b2a1b181b313dc13ae269c19fb084e18ca8eeb457075faad191dc8043a8c",
+      "bytes": 183067,
+      "role": "curator_reference_not_agent_input"
+    },
+    {
+      "printed_page": 184,
+      "attachment_name": "3-Photo-6.jpg",
+      "local_original": ".local/sources/book/page-184.jpg",
+      "sha256": "2d618fd8f4cb1e52b6ab7dd9b62d3ab636cca25b921ccb0cbc21d79f6e80b2fc",
+      "bytes": 169898,
+      "role": "curator_reference_not_agent_input"
+    }
+  ]
+}

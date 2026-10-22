@@ -1,0 +1,22 @@
+name: Community submission integrity
+on:
+  pull_request:
+    paths: ['community/results/**', 'tools/community_results.py', 'tests/test_community_results.py']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m tools.community_results validate all
+      - run: python -m tools.validate_community_pr
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - run: python -m unittest discover -s tests -p test_community_results.py

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "input_revision": "open-methodics-v5",
+  "source_url": "https://static.1c.ru/rus/partners/training/files/ATT83PL.rtf?356jhteyner67j340",
+  "source_sha256": "9cfbc21905fd378274f2d8e0f8a428ac0c83733c8f0a48e08d1fc4c7215fcc61",
+  "source_text_sha256": "b9c2d83d4010fbcef45e3e3885584ad8bce1d441b7a9995e9af5bc99d226f216",
+  "source_text_lines": [
+    1,
+    278
+  ],
+  "extraction": "Preface before Примеры заданий: from the Word document; tables drawn with ASCII borders; same words as the official text",
+  "owner_policy_sha256": "d26d534bb838ab1b5facb7bc033ca8ec40912133baadcdbad83b27fc577905f5",
+  "execution_policy_sha256": "fd2cd554bb1eff56e5a09f817ecf5eaa2f4d29851499d98c9a0a1675fd07aa4b",
+  "output_sha256": {
+    "public/methodical-requirements.txt": "02efef3711ee4a8577ee17db97dac80cb7c5ef2508f5476f53cc1b8f0a0fbfdf",
+    "public/assessment-policy.md": "d80a40d91d6db7cc0d5efdbf06a3ba6d470afdb6c47f59e9f168aa4c9494ef82"
+  },
+  "historical_runs_rewritten": false
+}

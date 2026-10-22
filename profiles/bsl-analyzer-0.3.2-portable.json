@@ -1,0 +1,34 @@
+{
+  "source_commit": "bdb221307b73f83f9401558e8013f3a1667969b9",
+  "release": "v0.3.2",
+  "skills": [],
+  "schema_version": 1,
+  "id": "bsl-analyzer-0.3.2-windows-native-v1",
+  "additional_harness": "bsl-analyzer-0.3.2",
+  "target": "windows-x64",
+  "memory": false,
+  "extensions": false,
+  "delegation": "disabled",
+  "package_manifest_sha256": "58f16d953a0ed37152512631df83faf21e6aa53a6defd772b5124df6cede9ee6",
+  "configuration": {
+    "version": "0.3.2",
+    "label": "BSL Analyzer 0.3.2",
+    "server": "bsl-analyzer",
+    "command": "{package}/bsl-analyzer-app-windows-amd64.exe",
+    "args": [
+      "mcp",
+      "serve",
+      "--profile",
+      "workspace",
+      "--mode",
+      "stdio",
+      "-s",
+      "{src}"
+    ],
+    "env": {
+      "BSL_MCP_BROKER": "0",
+      "BSL_CACHE_DIR": "{tmp}/bsl-analyzer-cache"
+    },
+    "registration": "Official native Windows executable; workspace-only offline MCP"
+  }
+}

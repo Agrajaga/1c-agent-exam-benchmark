@@ -1,0 +1,1199 @@
+{
+  "schema_version": 1,
+  "clauses": [
+    {
+      "id": "CL-G01",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            281,
+            281
+          ]
+        ]
+      },
+      "requirement": "Разделы интерфейса соответствуют разделам задания",
+      "rules": [
+        "G01"
+      ]
+    },
+    {
+      "id": "CL-G02",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            281,
+            281
+          ]
+        ]
+      },
+      "requirement": "Доступ ко всем объектам, включая регистры",
+      "rules": [
+        "G02"
+      ]
+    },
+    {
+      "id": "CL-G03",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            281,
+            281
+          ]
+        ]
+      },
+      "requirement": "Группировка объектов по виду",
+      "rules": [
+        "G03"
+      ]
+    },
+    {
+      "id": "CL-OU01",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            288,
+            288
+          ]
+        ]
+      },
+      "requirement": "Закупка, сборка и продажа документами",
+      "rules": [
+        "OU01"
+      ]
+    },
+    {
+      "id": "CL-OU02",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "requirement": "Три политики по подразделениям",
+      "rules": [
+        "OU02"
+      ]
+    },
+    {
+      "id": "CL-OU03",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ]
+        ]
+      },
+      "requirement": "Изменение политики не чаще раза в год",
+      "rules": [
+        "OU03"
+      ]
+    },
+    {
+      "id": "CL-OU04",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            290,
+            290
+          ]
+        ]
+      },
+      "requirement": "Характеристики деталей через ПВХ",
+      "rules": [
+        "OU04"
+      ]
+    },
+    {
+      "id": "CL-OU05",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            290,
+            290
+          ]
+        ]
+      },
+      "requirement": "Несколько наборов характеристик одной детали",
+      "rules": [
+        "OU05"
+      ]
+    },
+    {
+      "id": "CL-OU06",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            290,
+            290
+          ]
+        ]
+      },
+      "requirement": "Сборка не предоставляет разборку",
+      "rules": [
+        "OU06"
+      ]
+    },
+    {
+      "id": "CL-OU07",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            291,
+            291
+          ]
+        ]
+      },
+      "requirement": "Хранение состава блока",
+      "rules": [
+        "OU07"
+      ]
+    },
+    {
+      "id": "CL-OU08",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            291,
+            291
+          ]
+        ]
+      },
+      "requirement": "Изменение состава не чаще раза в неделю",
+      "rules": [
+        "OU08"
+      ]
+    },
+    {
+      "id": "CL-OU09",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            292,
+            292
+          ]
+        ]
+      },
+      "requirement": "Две табличные части сборки",
+      "rules": [
+        "OU09"
+      ]
+    },
+    {
+      "id": "CL-OU10",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            293,
+            293
+          ]
+        ]
+      },
+      "requirement": "Два подразделения в шапке сборки",
+      "rules": [
+        "OU10"
+      ]
+    },
+    {
+      "id": "CL-OU11",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            294,
+            294
+          ]
+        ]
+      },
+      "requirement": "Расход спецификации и дополнительных деталей",
+      "rules": [
+        "OU11"
+      ]
+    },
+    {
+      "id": "CL-OU12",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            294,
+            294
+          ]
+        ]
+      },
+      "requirement": "Актуальная спецификация",
+      "rules": [
+        "OU12"
+      ]
+    },
+    {
+      "id": "CL-OU13",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            294,
+            294
+          ]
+        ]
+      },
+      "requirement": "Себестоимость детали по подразделению и свойству",
+      "rules": [
+        "OU13"
+      ]
+    },
+    {
+      "id": "CL-OU14",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            295,
+            295
+          ]
+        ]
+      },
+      "requirement": "Состав строк расходной накладной",
+      "rules": [
+        "OU14"
+      ]
+    },
+    {
+      "id": "CL-OU15",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "requirement": "FIFO",
+      "rules": [
+        "OU15"
+      ]
+    },
+    {
+      "id": "CL-OU16",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "requirement": "LIFO",
+      "rules": [
+        "OU16"
+      ]
+    },
+    {
+      "id": "CL-OU17",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "requirement": "Средняя",
+      "rules": [
+        "OU17"
+      ]
+    },
+    {
+      "id": "CL-OU18",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "requirement": "Разделение учета по подразделениям",
+      "rules": [
+        "OU18"
+      ]
+    },
+    {
+      "id": "CL-OU19",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            298,
+            345
+          ]
+        ]
+      },
+      "requirement": "Ведомость движения",
+      "rules": [
+        "OU19"
+      ]
+    },
+    {
+      "id": "CL-OU20",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            300,
+            346
+          ]
+        ]
+      },
+      "requirement": "Отчет по характеристикам",
+      "rules": [
+        "OU20"
+      ]
+    },
+    {
+      "id": "CL-OU21",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            348,
+            365
+          ]
+        ]
+      },
+      "requirement": "Отчет продаж и прибыль",
+      "rules": [
+        "OU21"
+      ]
+    },
+    {
+      "id": "CL-BU01",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            368,
+            368
+          ]
+        ]
+      },
+      "requirement": "Произвольная ручная корреспонденция",
+      "rules": [
+        "BU01"
+      ]
+    },
+    {
+      "id": "CL-BU02",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            368,
+            368
+          ]
+        ]
+      },
+      "requirement": "Ручные проводки влияют на расчет",
+      "rules": [
+        "BU02"
+      ]
+    },
+    {
+      "id": "CL-BU03",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            369,
+            369
+          ]
+        ]
+      },
+      "requirement": "Транзитивная взаимозаменяемость",
+      "rules": [
+        "BU03"
+      ]
+    },
+    {
+      "id": "CL-BU04",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            370,
+            370
+          ]
+        ]
+      },
+      "requirement": "Артикул задается вручную",
+      "rules": [
+        "BU04"
+      ]
+    },
+    {
+      "id": "CL-BU05",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            371,
+            372
+          ]
+        ]
+      },
+      "requirement": "Один склад в шапке накладных",
+      "rules": [
+        "BU05"
+      ]
+    },
+    {
+      "id": "CL-BU06",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            372,
+            372
+          ],
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "requirement": "Количественный остаток по складу",
+      "rules": [
+        "BU06"
+      ]
+    },
+    {
+      "id": "CL-BU07",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            373,
+            375
+          ]
+        ]
+      },
+      "requirement": "Проводка поступления",
+      "rules": [
+        "BU07"
+      ]
+    },
+    {
+      "id": "CL-BU08",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "requirement": "Исходный товар расходуется первым",
+      "rules": [
+        "BU08"
+      ]
+    },
+    {
+      "id": "CL-BU09",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "requirement": "Автоматическая замена",
+      "rules": [
+        "BU09"
+      ]
+    },
+    {
+      "id": "CL-BU10",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "requirement": "Отказ при суммарной нехватке",
+      "rules": [
+        "BU10"
+      ]
+    },
+    {
+      "id": "CL-BU11",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "requirement": "Порядок аналогов по артикулу",
+      "rules": [
+        "BU11"
+      ]
+    },
+    {
+      "id": "CL-BU12",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "requirement": "Общий аналог не тратится дважды",
+      "rules": [
+        "BU12"
+      ]
+    },
+    {
+      "id": "CL-BU13",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            380,
+            380
+          ]
+        ]
+      },
+      "requirement": "Средняя по номенклатуре всей компании",
+      "rules": [
+        "BU13"
+      ]
+    },
+    {
+      "id": "CL-BU14",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            380,
+            380
+          ]
+        ]
+      },
+      "requirement": "Проводка себестоимости",
+      "rules": [
+        "BU14"
+      ]
+    },
+    {
+      "id": "CL-BU15",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            382,
+            382
+          ]
+        ]
+      },
+      "requirement": "Проводка выручки",
+      "rules": [
+        "BU15"
+      ]
+    },
+    {
+      "id": "CL-BU16",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            384,
+            430
+          ]
+        ]
+      },
+      "requirement": "Отчет запрошенного товара и аналогов",
+      "rules": [
+        "BU16"
+      ]
+    },
+    {
+      "id": "CL-BU17",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            430,
+            430
+          ]
+        ]
+      },
+      "requirement": "Прибыль бухгалтерского отчета",
+      "rules": [
+        "BU17"
+      ]
+    },
+    {
+      "id": "CL-PR01",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            433,
+            433
+          ]
+        ]
+      },
+      "requirement": "Ежемесячный метод отклонений",
+      "rules": [
+        "PR01"
+      ]
+    },
+    {
+      "id": "CL-PR02",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            433,
+            433
+          ]
+        ]
+      },
+      "requirement": "Совместительство",
+      "rules": [
+        "PR02"
+      ]
+    },
+    {
+      "id": "CL-PR03",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            434,
+            434
+          ]
+        ]
+      },
+      "requirement": "График каждого подразделения",
+      "rules": [
+        "PR03"
+      ]
+    },
+    {
+      "id": "CL-PR04",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            435,
+            435
+          ]
+        ]
+      },
+      "requirement": "Тариф на фактические часы",
+      "rules": [
+        "PR04"
+      ]
+    },
+    {
+      "id": "CL-PR05",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            435,
+            435
+          ]
+        ]
+      },
+      "requirement": "История ставки и частота изменений",
+      "rules": [
+        "PR05"
+      ]
+    },
+    {
+      "id": "CL-PR06",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            435,
+            435
+          ]
+        ]
+      },
+      "requirement": "Ставка на начало периода",
+      "rules": [
+        "PR06"
+      ]
+    },
+    {
+      "id": "CL-PR07",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            436,
+            436
+          ]
+        ]
+      },
+      "requirement": "Премия от прошлого месяца своего отдела без руководителя",
+      "rules": [
+        "PR07"
+      ]
+    },
+    {
+      "id": "CL-PR08",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            437,
+            437
+          ]
+        ]
+      },
+      "requirement": "Редактируемая шкала",
+      "rules": [
+        "PR08"
+      ]
+    },
+    {
+      "id": "CL-PR09",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            437,
+            437
+          ]
+        ]
+      },
+      "requirement": "Ненулевой исходный стаж",
+      "rules": [
+        "PR09"
+      ]
+    },
+    {
+      "id": "CL-PR10",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            448,
+            448
+          ]
+        ]
+      },
+      "requirement": "Во время командировки нет тарифа и премии",
+      "rules": [
+        "PR10"
+      ]
+    },
+    {
+      "id": "CL-PR11",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            448,
+            448
+          ]
+        ]
+      },
+      "requirement": "Дни командировки по графику подразделения",
+      "rules": [
+        "PR11"
+      ]
+    },
+    {
+      "id": "CL-PR12",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            448,
+            448
+          ]
+        ]
+      },
+      "requirement": "Средняя за три предыдущих месяца",
+      "rules": [
+        "PR12"
+      ]
+    },
+    {
+      "id": "CL-PR13",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            449,
+            449
+          ]
+        ]
+      },
+      "requirement": "Командировка задним числом",
+      "rules": [
+        "PR13"
+      ]
+    },
+    {
+      "id": "CL-PR14",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            450,
+            450
+          ]
+        ]
+      },
+      "requirement": "Механизм перерасчетов не используется",
+      "rules": [
+        "PR14"
+      ]
+    },
+    {
+      "id": "CL-PR15",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            451,
+            451
+          ]
+        ]
+      },
+      "requirement": "Ввод начислений документом",
+      "rules": [
+        "PR15"
+      ]
+    },
+    {
+      "id": "CL-PR16",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            451,
+            451
+          ]
+        ]
+      },
+      "requirement": "Тариф и премия ограничены одним месяцем",
+      "rules": [
+        "PR16"
+      ]
+    },
+    {
+      "id": "CL-PR17",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            451,
+            451
+          ]
+        ]
+      },
+      "requirement": "Командировка может пересекать месяцы",
+      "rules": [
+        "PR17"
+      ]
+    },
+    {
+      "id": "CL-PR18",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            452,
+            452
+          ]
+        ]
+      },
+      "requirement": "Один документ с разными периодами",
+      "rules": [
+        "PR18"
+      ]
+    },
+    {
+      "id": "CL-PR19",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            453,
+            468
+          ]
+        ]
+      },
+      "requirement": "Отчет премий за один календарный месяц",
+      "rules": [
+        "PR19"
+      ]
+    },
+    {
+      "id": "CL-F01",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            472,
+            472
+          ]
+        ]
+      },
+      "requirement": "Менеджер в основной форме контрагента",
+      "rules": [
+        "F01"
+      ]
+    },
+    {
+      "id": "CL-F02",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            473,
+            473
+          ]
+        ]
+      },
+      "requirement": "Свой список сведений у каждого сотрудника",
+      "rules": [
+        "F02"
+      ]
+    },
+    {
+      "id": "CL-F03",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            473,
+            473
+          ]
+        ]
+      },
+      "requirement": "Сведения реализованы через ПВХ",
+      "rules": [
+        "F03"
+      ]
+    },
+    {
+      "id": "CL-F04",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            479,
+            479
+          ]
+        ]
+      },
+      "requirement": "Динамические поля по менеджеру",
+      "rules": [
+        "F04"
+      ]
+    },
+    {
+      "id": "CL-F05",
+      "kind": "task_clause",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            472,
+            479
+          ]
+        ]
+      },
+      "requirement": "Ввод и сохранение дополнительных значений",
+      "rules": [
+        "F05"
+      ]
+    }
+  ]
+}

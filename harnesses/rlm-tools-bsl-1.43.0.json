@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "rlm-tools-bsl-1.43.0",
+  "label": "RLM Tools BSL 1.43.0",
+  "version": "1.43.0",
+  "homepage": "https://github.com/Dach-Coin/rlm-tools-bsl",
+  "description": "MCP-инструменты исследования кода BSL; вспомогательная вторая модель отключена.",
+  "probe": "rlm",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "rlm-source.zip": {
+          "url": "https://codeload.github.com/Dach-Coin/rlm-tools-bsl/zip/refs/tags/v1.43.0",
+          "sha256": "5f28b3c8ce7f31e7e840a4ac5a948ccac48485d6f5ac4dc2a86facb4acfe0712",
+          "bytes": 2892868
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "rlm-source.zip"
+        },
+        {
+          "pip": "profiles/rlm-tools-bsl-1.43.0-windows-requirements.txt",
+          "to": "python-site-packages"
+        },
+        {
+          "pip-source": "*",
+          "to": "python-site-packages"
+        }
+      ],
+      "configuration": {
+        "version": "1.43.0",
+        "label": "RLM Tools BSL 1.43.0",
+        "server": "rlm-tools-bsl",
+        "command": "{python}",
+        "args": [
+          "-c",
+          "import site,sys; site.addsitedir(sys.argv[1]); sys.argv=sys.argv[:1]; from rlm_tools_bsl.server import main; main()",
+          "{package}/python-site-packages"
+        ],
+        "env": {
+          "PYTHONPATH": "{package}/python-site-packages",
+          "_RLM_SERVICE_NO_ENV": "1",
+          "ANTHROPIC_API_KEY": "",
+          "OPENAI_API_KEY": "",
+          "RLM_LLM_BASE_URL": "",
+          "RLM_LLM_MODEL": "",
+          "RLM_CONFIG_FILE": "{tmp}/rlm/service.json",
+          "RLM_INDEX_DIR": "{tmp}/rlm/index"
+        },
+        "registration": "Published Python source; pinned installed dependencies; second-model helpers disabled"
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "rlm-source.zip": {
+          "url": "https://codeload.github.com/Dach-Coin/rlm-tools-bsl/zip/refs/tags/v1.43.0",
+          "sha256": "5f28b3c8ce7f31e7e840a4ac5a948ccac48485d6f5ac4dc2a86facb4acfe0712",
+          "bytes": 2892868
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "rlm-source.zip"
+        },
+        {
+          "pip": "profiles/rlm-tools-bsl-1.43.0-posix-requirements.txt",
+          "to": "python-site-packages"
+        },
+        {
+          "pip-source": "*",
+          "to": "python-site-packages"
+        }
+      ],
+      "configuration": {
+        "version": "1.43.0",
+        "label": "RLM Tools BSL 1.43.0",
+        "server": "rlm-tools-bsl",
+        "command": "{python}",
+        "args": [
+          "-c",
+          "import site,sys; site.addsitedir(sys.argv[1]); sys.argv=sys.argv[:1]; from rlm_tools_bsl.server import main; main()",
+          "{package}/python-site-packages"
+        ],
+        "env": {
+          "PYTHONPATH": "{package}/python-site-packages",
+          "_RLM_SERVICE_NO_ENV": "1",
+          "ANTHROPIC_API_KEY": "",
+          "OPENAI_API_KEY": "",
+          "RLM_LLM_BASE_URL": "",
+          "RLM_LLM_MODEL": "",
+          "RLM_CONFIG_FILE": "{tmp}/rlm/service.json",
+          "RLM_INDEX_DIR": "{tmp}/rlm/index"
+        },
+        "registration": "Published Python source; pinned installed dependencies; second-model helpers disabled"
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "rlm-source.zip": {
+          "url": "https://codeload.github.com/Dach-Coin/rlm-tools-bsl/zip/refs/tags/v1.43.0",
+          "sha256": "5f28b3c8ce7f31e7e840a4ac5a948ccac48485d6f5ac4dc2a86facb4acfe0712",
+          "bytes": 2892868
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "rlm-source.zip"
+        },
+        {
+          "pip": "profiles/rlm-tools-bsl-1.43.0-posix-requirements.txt",
+          "to": "python-site-packages"
+        },
+        {
+          "pip-source": "*",
+          "to": "python-site-packages"
+        }
+      ],
+      "configuration": {
+        "version": "1.43.0",
+        "label": "RLM Tools BSL 1.43.0",
+        "server": "rlm-tools-bsl",
+        "command": "{python}",
+        "args": [
+          "-c",
+          "import site,sys; site.addsitedir(sys.argv[1]); sys.argv=sys.argv[:1]; from rlm_tools_bsl.server import main; main()",
+          "{package}/python-site-packages"
+        ],
+        "env": {
+          "PYTHONPATH": "{package}/python-site-packages",
+          "_RLM_SERVICE_NO_ENV": "1",
+          "ANTHROPIC_API_KEY": "",
+          "OPENAI_API_KEY": "",
+          "RLM_LLM_BASE_URL": "",
+          "RLM_LLM_MODEL": "",
+          "RLM_CONFIG_FILE": "{tmp}/rlm/service.json",
+          "RLM_INDEX_DIR": "{tmp}/rlm/index"
+        },
+        "registration": "Published Python source; pinned installed dependencies; second-model helpers disabled"
+      }
+    }
+  }
+}

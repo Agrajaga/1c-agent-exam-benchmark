@@ -1,0 +1,35 @@
+{
+  "source_commit": "d8014bcebe8d661a33246fed72491d2c0d4b55f0",
+  "release": "v1.43.0",
+  "skills": [],
+  "schema_version": 1,
+  "id": "rlm-tools-bsl-1.43.0-windows-native-v1",
+  "additional_harness": "rlm-tools-bsl-1.43.0",
+  "target": "windows-x64",
+  "memory": false,
+  "extensions": false,
+  "delegation": "disabled",
+  "package_manifest_sha256": "268b0ff6d21f5018752bc1dd7afc94188efce7ea95ef1ad435f41cf1acaa33b3",
+  "configuration": {
+    "version": "1.43.0",
+    "label": "RLM Tools BSL 1.43.0",
+    "server": "rlm-tools-bsl",
+    "command": "{python}",
+    "args": [
+      "-c",
+      "import site,sys; site.addsitedir(sys.argv[1]); sys.argv=sys.argv[:1]; from rlm_tools_bsl.server import main; main()",
+      "{package}/python-site-packages"
+    ],
+    "env": {
+      "PYTHONPATH": "{package}/python-site-packages",
+      "_RLM_SERVICE_NO_ENV": "1",
+      "ANTHROPIC_API_KEY": "",
+      "OPENAI_API_KEY": "",
+      "RLM_LLM_BASE_URL": "",
+      "RLM_LLM_MODEL": "",
+      "RLM_CONFIG_FILE": "{tmp}/rlm/service.json",
+      "RLM_INDEX_DIR": "{tmp}/rlm/index"
+    },
+    "registration": "Published Python source; pinned installed dependencies; second-model helpers disabled"
+  }
+}

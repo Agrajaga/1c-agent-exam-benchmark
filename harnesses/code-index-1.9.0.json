@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "id": "code-index-1.9.0",
+  "label": "Code Index 1.9.0",
+  "version": "1.9.0",
+  "homepage": "https://github.com/Regsorm/code-index-mcp",
+  "description": "Индекс исходников конфигурации и MCP-поиск по объектам.",
+  "probe": "code-index",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "index-win.zip": {
+          "url": "https://github.com/Regsorm/code-index-mcp/releases/download/v1.9.0/bsl-indexer-windows-x64.zip",
+          "sha256": "52930346b33401819066781365bf7a53809cbd8ca44d2abafe5e5fed71e92c3c",
+          "bytes": 10262748
+        }
+      },
+      "install": [
+        {
+          "unzip": "index-win.zip",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.9.0",
+        "label": "Code Index 1.9.0",
+        "server": "code-index",
+        "command": "{package}/bsl-indexer.exe",
+        "args": [
+          "serve",
+          "--path",
+          "{src}"
+        ],
+        "env": {
+          "CODE_INDEX_HOME": "{tmp}/code-index-home"
+        },
+        "registration": "Official Windows indexer; per-worker daemon and source index"
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "index.tar.gz": {
+          "url": "https://github.com/Regsorm/code-index-mcp/releases/download/v1.9.0/bsl-indexer-macos-arm64.tar.gz",
+          "sha256": "d5c02efb2cb8e7b5524683e2b809c2c0118069a395e0cfef5a44de697214fb79",
+          "bytes": 9153115
+        }
+      },
+      "install": [
+        {
+          "untar": "index.tar.gz",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.9.0",
+        "label": "Code Index 1.9.0",
+        "server": "code-index",
+        "command": "{package}/bsl-indexer",
+        "args": [
+          "serve",
+          "--path",
+          "{src}"
+        ],
+        "env": {
+          "CODE_INDEX_HOME": "{tmp}/code-index-home"
+        },
+        "registration": "Official Windows indexer; per-worker daemon and source index"
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "index.tar.gz": {
+          "url": "https://github.com/Regsorm/code-index-mcp/releases/download/v1.9.0/bsl-indexer-linux-x64.tar.gz",
+          "sha256": "1871dfdb54fffb5247d94946fa8b092dc51cba6df5c7bc479ee4fc2e8d00b8d4",
+          "bytes": 9768238
+        }
+      },
+      "install": [
+        {
+          "untar": "index.tar.gz",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.9.0",
+        "label": "Code Index 1.9.0",
+        "server": "code-index",
+        "command": "{package}/bsl-indexer",
+        "args": [
+          "serve",
+          "--path",
+          "{src}"
+        ],
+        "env": {
+          "CODE_INDEX_HOME": "{tmp}/code-index-home"
+        },
+        "registration": "Official Windows indexer; per-worker daemon and source index"
+      }
+    }
+  }
+}

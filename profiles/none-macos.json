@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "none-macos-codex-v1",
+  "additional_harness": "none",
+  "client": "codex",
+  "delegation": "disabled",
+  "network": "open-book shell network; native web disabled; native child sandbox disabled because macOS rejects nested sandbox_apply",
+  "outer_filesystem": "workspace/system runtime allowlist; one newly created 1C cache namespace; protected curator files denied; directory ancestors readable by exact name only for O_NOFOLLOW capabilities",
+  "skills": [],
+  "mcp_servers": [],
+  "memory": false,
+  "extensions": false,
+  "native_tools": [
+    "shell",
+    "apply_patch",
+    "read-only system/runtime files"
+  ],
+  "scope": "trusted CLI with untrusted solution; not hardened against arbitrary native process escape",
+  "native_system_skills": [
+    "review-agent",
+    "skill-creator",
+    "plugin-creator",
+    "skill-installer",
+    "openai-docs",
+    "imagegen"
+  ],
+  "skills_note": "Bundled Codex system skills are part of native client; external user skills denied by outer sandbox",
+  "platform_database_policy": "one pre-restored worker infobase, no existing database access",
+  "client_version": "0.162.1",
+  "editable_sources": "identical starter copy preseeded at out/src for both variants"
+}

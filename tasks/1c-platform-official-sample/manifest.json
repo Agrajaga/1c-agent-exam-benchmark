@@ -1,0 +1,65 @@
+{
+  "schema_version": "benchmark.task/v1",
+  "task_id": "1c-platform-official-sample",
+  "task_version": "1-draft",
+  "ready": false,
+  "statement_ready": true,
+  "title": "Официальный опубликованный пример платформенного задания",
+  "source": {
+    "index_url": "https://1c.ru/spec/questions.htm",
+    "artifact_url": "https://static.1c.ru/rus/partners/training/files/ATT83PL.rtf?356jhteyner67j340",
+    "artifact_sha256": "9cfbc21905fd378274f2d8e0f8a428ac0c83733c8f0a48e08d1fc4c7215fcc61",
+    "acquired_date": "2026-10-09"
+  },
+  "public": {
+    "statement_ref": "public/statement.docx",
+    "statement_sha256": "8a6ccb3e673826d1f8220fda53eb310e3ec18c136d87ce8f4cebb2a08614e7e5",
+    "text_ref": "public/statement.txt",
+    "text_sha256": "360e2a3bbf0b1dc789a17e538f7d4142d552414995010fa00e0460ba3ec2c926",
+    "assets_ref": "public/assets",
+    "protocol_ref": "public/protocol.md",
+    "binding_contract_ref": "public/binding-contract.json",
+    "input_revision": "open-methodics-v5",
+    "methodical_requirements_ref": "public/methodical-requirements.txt",
+    "assessment_policy_ref": "public/assessment-policy.md",
+    "guidance_sha256": {
+      "public/methodical-requirements.txt": "02efef3711ee4a8577ee17db97dac80cb7c5ef2508f5476f53cc1b8f0a0fbfdf",
+      "public/assessment-policy.md": "d80a40d91d6db7cc0d5efdbf06a3ba6d470afdb6c47f59e9f168aa4c9494ef82"
+    }
+  },
+  "starter": {
+    "source_url": "https://static.1c.ru/rus/partners/training/files/new_carcass_8_3_25_1445.dt",
+    "sha256": "f40d084818b0d1cfe503fc7653a6a13f1a8e47fcd1688dad6245b12744eb4638",
+    "import_verified": true,
+    "environment_evidence_ref": "../../.local/environment-verified-v1/passport.json"
+  },
+  "evaluation": {
+    "profile_id": "official-sample-v1-draft",
+    "profile_version": "1-draft",
+    "rules_ref": "private/rules.json",
+    "grader_sha256": null,
+    "coverage_verified": false,
+    "runtime_tests_implemented": 0,
+    "runtime_tests_executed": 0,
+    "ai_judge": false
+  },
+  "disclosure": {
+    "publish_source_text": false,
+    "publish_hidden_fixtures": false,
+    "publish_book_photos": false
+  },
+  "blocking_gates": [
+    "Закрыть/ограничить неоднозначные обязательства до кампании",
+    "Реализовать привязки, проверяющий и сценарии в 1С",
+    "Калибровать положительные решения и отрицательные мутации",
+    "Согласовать раскрытие материалов для сайта"
+  ],
+  "technical_pilot": {
+    "ready": true,
+    "profile_id": "bu-technical-v1",
+    "whole_ticket_verdict": false,
+    "coverage": "BU02 posting cost/balance only; BU10/BU12/BU13 selected fixtures",
+    "calibration_ref": "../../.local/calibration/accepted-v2/summary.json",
+    "readonly_calibration_verified": true
+  }
+}

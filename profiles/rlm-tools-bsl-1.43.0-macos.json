@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "rlm-tools-bsl-1.43.0-macos-v1",
+  "additional_harness": "rlm-tools-bsl-1.43.0",
+  "delegation": "disabled",
+  "network": "open-book shell network; native web disabled",
+  "outer_filesystem": "workspace/system runtime allowlist; one newly created 1C cache namespace; protected curator files denied; the MCP server runs under the solver sandbox",
+  "skills": [],
+  "mcp_servers": [
+    "rlm-tools-bsl"
+  ],
+  "memory": false,
+  "extensions": false,
+  "package_manifest_sha256": "54d1e474c57edde5f438375af0b4179c16d6f81f590e084ed66e9c56d96d6318",
+  "source_commit": "d8014bcebe8d661a33246fed72491d2c0d4b55f0",
+  "release": "v1.43.0",
+  "registration": "rlm-tools-bsl 1.43.0 (stdio MCP; llm_query/llm_query_batched disabled: empty keys and no .env loading)",
+  "scope": "trusted CLI with untrusted solution; not hardened against arbitrary native process escape"
+}

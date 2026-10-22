@@ -1,0 +1,3 @@
+# Task manifests and pinned packages hash exact bytes. Never convert LF/CRLF.
+* -text
+* whitespace=cr-at-eol

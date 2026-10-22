@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "scope": "Selected scenarios; never whole-rule or whole-section attestation. No automatic runtime penalties.",
+  "payroll": {
+    "tariff": [
+      {
+        "department": "T_D1",
+        "employee": "T_E",
+        "kind": "Тариф",
+        "month": 1,
+        "amount": 800,
+        "hours": 8,
+        "days": 1
+      },
+      {
+        "department": "T_D2",
+        "employee": "T_E",
+        "kind": "Тариф",
+        "month": 1,
+        "amount": 1600,
+        "hours": 16,
+        "days": 1
+      },
+      {
+        "department": "T_D1",
+        "employee": "T_E",
+        "kind": "Тариф",
+        "month": 2,
+        "amount": 1600,
+        "hours": 8,
+        "days": 1
+      }
+    ],
+    "retro_trip": {
+      "before": [
+        {
+          "kind": "Тариф",
+          "amount": 2400,
+          "hours": 24,
+          "days": 3
+        }
+      ],
+      "after": [
+        {
+          "kind": "Тариф",
+          "amount": 800,
+          "hours": 8,
+          "days": 1
+        }
+      ],
+      "trip": [
+        {
+          "kind": "Командировка",
+          "amount": 600,
+          "hours": 16,
+          "days": 2
+        }
+      ]
+    },
+    "bonus": {
+      "p10": [
+        {
+          "kind": "Премия",
+          "amount": 300
+        }
+      ],
+      "p12": [
+        {
+          "kind": "Премия",
+          "amount": 360
+        }
+      ],
+      "p17": [
+        {
+          "kind": "Премия",
+          "amount": 510
+        }
+      ]
+    },
+    "all_accruals": {
+      "bonus": [
+        {
+          "kind": "Премия",
+          "amount": 100
+        }
+      ],
+      "december": [
+        {
+          "kind": "Тариф",
+          "amount": 0
+        },
+        {
+          "kind": "Командировка",
+          "amount": 133.33
+        }
+      ],
+      "january": [
+        {
+          "kind": "Командировка",
+          "amount": 216.67
+        }
+      ]
+    }
+  },
+  "operational": {
+    "policies": {
+      "before": [
+        {
+          "department": "P_D1",
+          "item": "P_ITEM",
+          "property": "",
+          "quantity": 5,
+          "cost": 80
+        },
+        {
+          "department": "P_D2",
+          "item": "P_ITEM",
+          "property": "",
+          "quantity": 5,
+          "cost": 80
+        },
+        {
+          "department": "P_D3",
+          "item": "P_ITEM",
+          "property": "",
+          "quantity": 5,
+          "cost": 80
+        }
+      ],
+      "movements": [
+        {
+          "department": "P_D1",
+          "item": "P_ITEM",
+          "property": "",
+          "direction": "expense",
+          "quantity": 3,
+          "cost": 40
+        },
+        {
+          "department": "P_D2",
+          "item": "P_ITEM",
+          "property": "",
+          "direction": "expense",
+          "quantity": 3,
+          "cost": 60
+        },
+        {
+          "department": "P_D3",
+          "item": "P_ITEM",
+          "property": "",
+          "direction": "expense",
+          "quantity": 3,
+          "cost": 48
+        }
+      ],
+      "after": [
+        {
+          "department": "P_D1",
+          "item": "P_ITEM",
+          "property": "",
+          "quantity": 2,
+          "cost": 40
+        },
+        {
+          "department": "P_D2",
+          "item": "P_ITEM",
+          "property": "",
+          "quantity": 2,
+          "cost": 20
+        },
+        {
+          "department": "P_D3",
+          "item": "P_ITEM",
+          "property": "",
+          "quantity": 2,
+          "cost": 32
+        }
+      ]
+    },
+    "assembly": {
+      "before": [
+        {
+          "department": "S_SOURCE",
+          "item": "S_A",
+          "property": "P1",
+          "quantity": 10,
+          "cost": 100
+        },
+        {
+          "department": "S_SOURCE",
+          "item": "S_B",
+          "property": "Q1",
+          "quantity": 10,
+          "cost": 300
+        },
+        {
+          "department": "S_SOURCE",
+          "item": "S_A",
+          "property": "P2",
+          "quantity": 9,
+          "cost": 900
+        },
+        {
+          "department": "S_OTHER",
+          "item": "S_A",
+          "property": "P1",
+          "quantity": 4,
+          "cost": 800
+        }
+      ],
+      "movements": [
+        {
+          "department": "S_SOURCE",
+          "item": "S_A",
+          "property": "P1",
+          "direction": "expense",
+          "quantity": 5,
+          "cost": 50
+        },
+        {
+          "department": "S_SOURCE",
+          "item": "S_B",
+          "property": "Q1",
+          "direction": "expense",
+          "quantity": 2,
+          "cost": 60
+        },
+        {
+          "department": "S_DEST",
+          "item": "S_BLOCK",
+          "property": "",
+          "direction": "receipt",
+          "quantity": 2
+        }
+      ],
+      "after": [
+        {
+          "department": "S_SOURCE",
+          "item": "S_A",
+          "property": "P1",
+          "quantity": 5,
+          "cost": 50
+        },
+        {
+          "department": "S_SOURCE",
+          "item": "S_B",
+          "property": "Q1",
+          "quantity": 8,
+          "cost": 240
+        },
+        {
+          "department": "S_SOURCE",
+          "item": "S_A",
+          "property": "P2",
+          "quantity": 9,
+          "cost": 900
+        },
+        {
+          "department": "S_OTHER",
+          "item": "S_A",
+          "property": "P1",
+          "quantity": 4,
+          "cost": 800
+        },
+        {
+          "department": "S_DEST",
+          "item": "S_BLOCK",
+          "property": "",
+          "quantity": 2
+        }
+      ]
+    }
+  },
+  "periods": {
+    "within_month": [
+      {
+        "kind": "Тариф",
+        "amount": 1600,
+        "hours": 16,
+        "days": 2
+      }
+    ],
+    "tariff_rejected": true,
+    "bonus_rejected": true,
+    "trip_segments": [
+      {
+        "month": 1,
+        "start_month": 1,
+        "start_day": 28,
+        "end_month": 1,
+        "end_day": 31
+      },
+      {
+        "month": 2,
+        "start_month": 2,
+        "start_day": 1,
+        "end_month": 2,
+        "end_day": 28
+      },
+      {
+        "month": 3,
+        "start_month": 3,
+        "start_day": 1,
+        "end_month": 3,
+        "end_day": 4
+      }
+    ]
+  }
+}

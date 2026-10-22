@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "objects": {
+    "items": "Catalog.<identifier>",
+    "warehouses": "Catalog.<identifier>",
+    "receipt": "Document.<identifier>",
+    "sale": "Document.<identifier>",
+    "manual": "Document.<identifier>",
+    "ledger": "AccountingRegister.<identifier>",
+    "accounts": "ChartOfAccounts.<identifier>"
+  },
+  "fields": {
+    "items": {
+      "article": "<attribute>"
+    },
+    "receipt": {
+      "warehouse": "<attribute>",
+      "item": "<table>.<attribute>",
+      "quantity": "<table>.<attribute>",
+      "price": "<table>.<attribute>",
+      "amount": "<table>.<attribute>"
+    },
+    "sale": {
+      "warehouse": "<attribute>",
+      "item": "<table>.<attribute>",
+      "quantity": "<table>.<attribute>",
+      "price": "<table>.<attribute>",
+      "amount": "<table>.<attribute>"
+    },
+    "ledger": {
+      "item_debit": "<field or subconto identifier>",
+      "item_credit": "<field or subconto identifier>",
+      "warehouse_debit": "<field or subconto identifier>",
+      "warehouse_credit": "<field or subconto identifier>",
+      "quantity_debit": "<field>",
+      "quantity_credit": "<field>",
+      "amount": "<field>"
+    }
+  },
+  "account_codes": {
+    "goods": "<existing account code>",
+    "suppliers": "<existing account code>",
+    "customers": "<existing account code>",
+    "profit": "<existing account code>"
+  },
+  "analogs": {
+    "mode": "<existing representation chosen by solver>",
+    "object": "<qualified metadata reference>",
+    "left": "<identifier>",
+    "right": "<identifier>"
+  },
+  "constraints": [
+    "Identifiers only; no executable code or paths",
+    "Objects and attributes must exist in exported metadata",
+    "Receipt/sale numeric fields must be in the same tabular section",
+    "Bindings identify existing implementation and do not substitute expected answers",
+    "Describe your existing implementation; no prescribed storage architecture",
+    "demo_data.procedure: server common module procedure that fills demo data and posts documents; called by the stand in a clean infobase"
+  ],
+  "additional_roles": {
+    "<semantic role from any section>": "<qualified metadata reference or declarative field mapping>"
+  },
+  "demo_data": {
+    "procedure": "CommonModule.<module>.<exported procedure without parameters>"
+  },
+  "reports": {
+    "<role>": {
+      "object": "Report.<name>",
+      "kind": "dcs | function",
+      "parameters": {
+        "period_start": "<DCS parameter>",
+        "period_end": "<DCS parameter>",
+        "period": "<DCS standard period parameter, instead of start/end>",
+        "department": "<DCS parameter: department, ou_statement only>"
+      },
+      "module": "object | manager (kind=function)",
+      "function": "<exported function (start, end) returning a value table or tree; ou_statement: (start, end, department)>",
+      "fields": {
+        "<field role>": "<column name in the report result>"
+      }
+    },
+    "roles": {
+      "bu_sales": [
+        "item",
+        "sold",
+        "quantity",
+        "cost",
+        "revenue",
+        "profit"
+      ],
+      "ou_statement": [
+        "item",
+        "characteristic",
+        "opening",
+        "receipt",
+        "expense",
+        "closing",
+        "opening_qty (optional)",
+        "receipt_qty (optional)",
+        "expense_qty (optional)",
+        "closing_qty (optional)"
+      ],
+      "ou_sales": [
+        "item",
+        "quantity",
+        "cost",
+        "revenue",
+        "profit"
+      ],
+      "pr_bonus": [
+        "employee",
+        "seniority",
+        "percent",
+        "amount"
+      ]
+    }
+  },
+  "ou": {
+    "objects": {
+      "departments": "Catalog.<identifier>",
+      "properties": "Catalog.<identifier>",
+      "policies": "InformationRegister.<identifier>",
+      "specification": "InformationRegister.<identifier>",
+      "stock": "AccumulationRegister.<identifier>",
+      "receipt": "Document.<identifier>",
+      "sale": "Document.<identifier>",
+      "assembly": "Document.<identifier>",
+      "characteristics": "ChartOfCharacteristicTypes.<identifier>",
+      "property_values": "InformationRegister.<identifier>"
+    },
+    "fields": {
+      "properties": {
+        "owner": "<attribute: item the property belongs to, optional>"
+      },
+      "policies": {
+        "department": "<dimension>",
+        "method": "<resource>"
+      },
+      "policy_values": {
+        "fifo": "Enum.<name>.<value>",
+        "lifo": "Enum.<name>.<value>",
+        "average": "Enum.<name>.<value>"
+      },
+      "specification": {
+        "block": "<field>",
+        "item": "<field>",
+        "property": "<field>",
+        "quantity": "<field>"
+      },
+      "stock": {
+        "department": "<dimension>",
+        "item": "<dimension>",
+        "property": "<dimension>",
+        "quantity": "<resource>",
+        "cost": "<resource>"
+      },
+      "receipt": {
+        "department": "<attribute or table.attribute>",
+        "item": "<table>.<attribute>",
+        "property": "<table>.<attribute>",
+        "quantity": "<table>.<attribute>",
+        "price": "<table>.<attribute>",
+        "amount": "<table>.<attribute>"
+      },
+      "sale": {
+        "department": "<attribute or table.attribute>",
+        "item": "<table>.<attribute>",
+        "quantity": "<table>.<attribute>",
+        "price": "<table>.<attribute>",
+        "amount": "<table>.<attribute>"
+      },
+      "assembly": {
+        "source": "<attribute>",
+        "target": "<attribute>",
+        "block": "<table>.<attribute>",
+        "block_quantity": "<table>.<attribute>",
+        "extra_item": "<table>.<attribute>",
+        "extra_property": "<table>.<attribute>",
+        "extra_quantity": "<table>.<attribute>"
+      },
+      "property_values": {
+        "property": "<field>",
+        "characteristic": "<field>",
+        "value": "<field>"
+      }
+    },
+    "set": {
+      "<receipt|sale|assembly>": {
+        "<attribute>": "<literal or Enum.<name>.<value> the stand sets on its documents>"
+      }
+    },
+    "notes": [
+      "Stock: the balance register the stand reads, grouped by department, item and property",
+      "Characteristic values: the stand creates a characteristic kind and writes values as elements of its additional-values catalog, or as strings when the chart has none"
+    ]
+  },
+  "pr": {
+    "objects": {
+      "employees": "Catalog.<identifier>",
+      "departments": "Catalog.<identifier>",
+      "schedules": "InformationRegister.<identifier>",
+      "rates": "InformationRegister.<identifier>",
+      "scale": "InformationRegister.<identifier>",
+      "accrual": "Document.<identifier>"
+    },
+    "results": [
+      {
+        "register": "CalculationRegister.<identifier>",
+        "employee": "<dimension>",
+        "department": "<dimension>",
+        "result": "<resource>"
+      }
+    ],
+    "calc_types": {
+      "tariff": "ChartOfCalculationTypes.<chart>.<predefined>",
+      "bonus": "ChartOfCalculationTypes.<chart>.<predefined>",
+      "trip": "ChartOfCalculationTypes.<chart>.<predefined>"
+    },
+    "scale_unit": "years | months",
+    "initial_unit": "years | months | days (only with employees.initial_seniority)",
+    "fields": {
+      "schedules": {
+        "department": "<dimension>",
+        "date": "<dimension>",
+        "hours": "<resource>",
+        "days": "<resource, optional: 1 for a working day>"
+      },
+      "rates": {
+        "employee": "<dimension>",
+        "department": "<dimension, optional>",
+        "rate": "<resource>"
+      },
+      "scale": {
+        "threshold": "<lower bound of the seniority interval>",
+        "percent": "<resource>"
+      },
+      "employees": {
+        "seniority_start": "<date attribute: start of seniority, or hire date with initial_seniority>",
+        "initial_seniority": "<number attribute, optional: seniority at hire>"
+      },
+      "accrual": {
+        "employee": "<table>.<attribute>",
+        "department": "<table>.<attribute>",
+        "calc_type": "<table>.<attribute>",
+        "start": "<table>.<attribute>",
+        "end": "<table>.<attribute>",
+        "registration": "<attribute or table.attribute, optional: registration period set to the month of the row>"
+      }
+    },
+    "set": {
+      "accrual": {
+        "<attribute>": "<literal the stand sets on its documents>"
+      }
+    },
+    "notes": [
+      "Results: every listed calculation register is read by employee, department, calculation type and month of the action period (registration period when the register has no action period)",
+      "Calculation types: predefined items; the stand posts the accrual document and expects results to be calculated on posting",
+      "Schedules: the stand writes hours for every calendar day of each department; non-working days have 0 hours"
+    ]
+  },
+  "forms": {
+    "objects": {
+      "counterparties": "Catalog.<identifier>",
+      "managers": "Catalog.<identifier>",
+      "characteristics": "ChartOfCharacteristicTypes.<identifier>"
+    },
+    "form": "Catalog.<counterparties>.Form.<name> (optional; default: the main object form)",
+    "fields": {
+      "counterparties": {
+        "manager": "<attribute>"
+      },
+      "managers": {
+        "list": "<table>.<attribute>"
+      }
+    },
+    "values": {
+      "kind": "table | register",
+      "characteristic": "<table>.<attribute> | <dimension>",
+      "value": "<table>.<attribute> | <resource>",
+      "register": "InformationRegister.<identifier> (kind=register)",
+      "counterparty": "<dimension> (kind=register)"
+    },
+    "notes": [
+      "The stand gets the main counterparty form on the client, reads visible fields and their titles, types values into the additional fields and writes the form",
+      "Additional fields: the title contains the name of the information kind; the form attribute has the name of the field item"
+    ]
+  },
+  "interface": {
+    "sections": {
+      "ou": "Subsystem.<name>",
+      "bu": "Subsystem.<name>",
+      "pr": "Subsystem.<name>"
+    },
+    "notes": [
+      "Objects of a section are the ones declared in its bindings (ou, accounting, pr, reports); they are checked against the subsystem content and its command interface"
+    ]
+  }
+}

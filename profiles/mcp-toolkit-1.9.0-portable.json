@@ -1,0 +1,22 @@
+{
+  "source_commit": "c36aba2fc744f27c8fc8084b4d231732bad0837c",
+  "skills": [
+    "calling-1c-rest-api-via-curl",
+    "composing-1c-queries"
+  ],
+  "release_asset_sha256": "aae9b09a66410ce1714537d06eb8869d8cf8b7b2b7fb5ac3f7858f0eb4678c20",
+  "schema_version": 1,
+  "id": "mcp-toolkit-1.9.0-windows-native-v1",
+  "additional_harness": "mcp-toolkit-1.9.0",
+  "target": "windows-x64",
+  "memory": false,
+  "extensions": false,
+  "delegation": "disabled",
+  "package_manifest_sha256": "c8b9b30d65d4ca48c8d63818c1bb93db330f4eb3eb0e05ab80255b3d5958aca5",
+  "configuration": {
+    "version": "1.9.0",
+    "label": "1С MCP Toolkit 1.9.0",
+    "command": "{platform}",
+    "registration": "Official Windows EPF; separate 1C client, local HTTP MCP"
+  }
+}

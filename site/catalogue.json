@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {
+      "directory": "tasks/1c-platform-official-sample",
+      "sections": [
+        {
+          "id": "OU",
+          "title": "Оперативный учёт"
+        },
+        {
+          "id": "BU",
+          "title": "Бухгалтерский учёт"
+        },
+        {
+          "id": "PR",
+          "title": "Периодические расчёты"
+        },
+        {
+          "id": "F",
+          "title": "Управляемые формы"
+        }
+      ]
+    }
+  ],
+  "assessments": [],
+  "exclusions": [
+    ".local/exclusions/fast-opus55-none-20261013-001.json"
+  ],
+  "purpose": "full_statement_technical_partial_attempt",
+  "campaign_state_ref": ".local/campaigns/fast-new-harnesses-20261013-001/state.json"
+}

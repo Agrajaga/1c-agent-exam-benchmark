@@ -1,0 +1,1 @@
+{"schema_version":1,"run_id":"codex-integration-005","client_version":"0.150.1","model":"gpt-5.6-sol","billing_channel":"subscription","harness":"none","solve_timeout_seconds":60,"stop_grace_seconds":3,"purpose":"integration_probe_not_exam_attempt","acceptance_profile":"not_applicable_probe"}

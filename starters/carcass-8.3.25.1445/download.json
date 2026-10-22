@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "file": "new_carcass_8_3_25_1445.dt",
+  "source_index_url": "https://1c.ru/spec/questions.htm",
+  "source_url": "https://static.1c.ru/rus/partners/training/files/new_carcass_8_3_25_1445.dt",
+  "downloaded_on": "2026-10-21",
+  "size_bytes": 168697,
+  "sha256": "f40d084818b0d1cfe503fc7653a6a13f1a8e47fcd1688dad6245b12744eb4638",
+  "matches_pinned_starter_manifest": true,
+  "runtime_import_on_this_machine": "not_verified_1c_not_installed"
+}

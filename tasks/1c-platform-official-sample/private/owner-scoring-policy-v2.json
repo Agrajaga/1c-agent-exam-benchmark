@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "policy_id": "owner-scoring-policy-v2",
+  "status": "specified_not_integrated",
+  "authority": "benchmark_owner",
+  "decision_date": "2026-10-10",
+  "is_official_1c_policy": false,
+  "historical_results_rewritten": false,
+  "initial_points": "5",
+  "range_selection": "maximum",
+  "overlap": {
+    "different_penalty_ids_for_same_defect": "sum_all_applicable",
+    "counting_unit": "defect_id_and_penalty_id",
+    "repeated_observations_of_same_pair": "one_penalty_instance",
+    "scope": "Do not waive distinct applicable penalties because they share a root defect. Test count is evidence, not a multiplier."
+  },
+  "grade_intervals": [
+    {
+      "grade": "unsatisfactory",
+      "lower": null,
+      "lower_inclusive": false,
+      "upper": "2.2",
+      "upper_inclusive": false
+    },
+    {
+      "grade": "satisfactory",
+      "lower": "2.2",
+      "lower_inclusive": true,
+      "upper": "3.5",
+      "upper_inclusive": true
+    },
+    {
+      "grade": "good",
+      "lower": "3.5",
+      "lower_inclusive": false,
+      "upper": "4.5",
+      "upper_inclusive": true
+    },
+    {
+      "grade": "excellent",
+      "lower": "4.5",
+      "lower_inclusive": false,
+      "upper": "5",
+      "upper_inclusive": true
+    }
+  ],
+  "score_outside_intervals": "out_of_policy",
+  "score_clamping": "unresolved_do_not_clamp",
+  "bonus_policy": "unresolved_do_not_award",
+  "required_section_acceptance": {
+    "sections": [
+      "OU",
+      "BU",
+      "PR"
+    ],
+    "proven_absent": {
+      "benchmark_attestation": "not_passed",
+      "reason": "required_section_absent",
+      "official_absence_gate_established": true
+    },
+    "unsupported_binding_without_observation_route": {
+      "benchmark_attestation": "not_attested",
+      "reason": "required_section_unverifiable",
+      "official_absence_gate_established": false,
+      "official_numeric_score": null
+    },
+    "alternative_validated_observation_route": "use_route_and_grade_real_observations",
+    "current_partial_grader_coverage": "does_not_retroactively_establish_required_section_absence",
+    "infrastructure_failure": "grader_error_not_candidate_absence"
+  },
+  "shared_invoice_types": {
+    "duplicate_types_between_sections": "forbidden",
+    "same_domain_role_uses_same_metadata_identity": true,
+    "roles": [
+      "receipt",
+      "sale"
+    ],
+    "distinct_document_instances": "allowed",
+    "verification": "Compare declared cross-section semantic roles and actual metadata identity, not name similarity alone."
+  },
+  "additional_document_types": {
+    "allowed": true,
+    "waived_penalty_ids": [
+      "F1C-GEN33"
+    ],
+    "does_not_waive": [
+      "F1C-GEN31",
+      "requirements_of_original_task"
+    ]
+  },
+  "recalculation": {
+    "current_task_mode": "prohibited",
+    "current_task_rule_ids": [
+      "PR14"
+    ],
+    "current_task_source_lines": [
+      450,
+      450
+    ],
+    "task_parameter": "recalculation_mode",
+    "modes": {
+      "required": "Verify configured recalculation objects, dimensions/dependencies and actual execution on late changes.",
+      "prohibited": "Verify no use of recalculation mechanism on operative paths; late changes must still produce required results. An unused object alone is not proof of use.",
+      "not_specified": "Resolve applicability for this task before assigning mechanism penalties; do not demand it universally."
+    },
+    "rules_are_dispatched_per_task": true,
+    "late_change_behavior_independent_of_mechanism": true
+  },
+  "decisions": [
+    {
+      "issue_id": "A01",
+      "state": "resolved",
+      "resolution": "Always use upper endpoint of an applicable penalty interval."
+    },
+    {
+      "issue_id": "A02",
+      "state": "resolved",
+      "resolution": "Apply distinct applicable penalties to the same defect; repeated evidence is not another defect."
+    },
+    {
+      "issue_id": "A03",
+      "state": "resolved",
+      "resolution": "2.2..3.5 inclusive satisfactory; above 3.5 through 4.5 inclusive good; above 4.5 through 5 inclusive excellent.",
+      "boundary_3_5_confirmed_by_owner": true
+    },
+    {
+      "issue_id": "A04",
+      "state": "resolved",
+      "resolution": "An unverifiable required section is not attested by the benchmark. Unsupported binding does not prove the section absent; official absence and compatibility remain separate."
+    },
+    {
+      "issue_id": "A06",
+      "state": "resolved",
+      "resolution": "Do not duplicate common receipt/sale document types between sections."
+    },
+    {
+      "issue_id": "A07",
+      "state": "resolved",
+      "resolution": "Additional document types are permitted; waive GEN33 alone, preserve all functional requirements and nonduplication."
+    },
+    {
+      "issue_id": "A08",
+      "state": "resolved",
+      "resolution": "Determine recalculation requirements from each task; this task prohibits the mechanism, other tasks may require it."
+    },
+    {
+      "issue_id": "A09",
+      "state": "partially_resolved",
+      "resolution": "AI gets 30 minutes, humans 5 hours. Materials/environment/defense are separate; no new materials policy supplied.",
+      "resolved_aspect": "time_limit",
+      "remaining_aspects": [
+        "materials",
+        "environment",
+        "defense"
+      ]
+    }
+  ],
+  "limits": [
+    "Decisions are owner rules for the benchmark, not changes to the original 1C publication.",
+    "Full official penalty detection, coverage and scoring remain unimplemented.",
+    "Do not modify the old task delivery contract or historical verdicts retroactively.",
+    "Semantic defect identification and mechanism predicates still require implementation and calibration."
+  ],
+  "execution_budget": {
+    "policy_path": "profiles/ai-exam-execution-policy.json",
+    "human_exam_seconds": 18000,
+    "ai_solve_timeout_seconds": 1800,
+    "scope": "Solution only; preparation and grading separate",
+    "materials": "separate_unmodified_setting",
+    "historical_900_second_runs_preserved": true
+  }
+}

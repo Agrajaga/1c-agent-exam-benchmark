@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "bsl-ls-1.1.0-rc.6-macos-v1",
+  "additional_harness": "bsl-ls-1.1.0-rc.6",
+  "delegation": "disabled",
+  "network": "open-book shell network; native web disabled",
+  "outer_filesystem": "workspace/system runtime allowlist; one newly created 1C cache namespace; protected curator files denied; the MCP server runs under the solver sandbox",
+  "skills": [],
+  "mcp_servers": [
+    "bsl-language-server"
+  ],
+  "memory": false,
+  "extensions": false,
+  "package_manifest_sha256": "fd456b106f3db06d7d80f15046677eaeddaabf33605b1b2a9ca4898323637e1f",
+  "source_commit": "52a38118b07d6ef2779d46595f349ebf8fd5e8bc",
+  "release": "v1.1.0-rc.6",
+  "registration": "BSL Language Server 1.1.0-rc.6 (built-in MCP mode, stdio; Java 21)",
+  "scope": "trusted CLI with untrusted solution; not hardened against arbitrary native process escape"
+}

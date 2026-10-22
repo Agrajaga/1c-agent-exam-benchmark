@@ -1,0 +1,32 @@
+{
+ "schema_version": 1,
+ "policy_id": "ai-exam-execution-v3",
+ "authority": "benchmark_owner",
+ "human_exam_minutes": 300,
+ "ai_solve_timeout_seconds": 18000,
+ "maximum_ai_solve_timeout_seconds": 18000,
+ "clock_scope": "Solver process execution; preparation and independent grading measured separately",
+ "timeout_action": "Stop solver and freeze available submission; no automatic retry",
+ "materials_policy": "Два режима: closed_network (не реализован) и open_network_logged; серии не смешиваются",
+ "historical_runs": "Recorded 900- and 1800-second runs and results are preserved and not rewritten",
+ "series": {
+  "exam": {
+   "solve_timeout_seconds": 18000,
+   "purpose": "Сравнение с человеком: лимит экзамена 1С"
+  },
+  "fast": {
+   "solve_timeout_seconds": 1800,
+   "purpose": "Быстрые сравнения харнесов; отклонение от лимита экзамена"
+  }
+ },
+ "agent_memory": {
+  "mode": "disabled",
+  "reason": "Каждая попытка — чистый агент: без памяти прошлых сессий, пользовательских инструкций и навыков владельца машины",
+  "enforced_by": [
+   "клиент запускается с отключённой функцией memories (флаг и конфиг)",
+   "пустой домашний каталог клиента CODEX_HOME на каждую попытку, без AGENTS.md и памяти",
+   "пользовательский конфиг игнорируется (--ignore-user-config)",
+   "профиль окружения обязан указывать memory: false"
+  ]
+ }
+}

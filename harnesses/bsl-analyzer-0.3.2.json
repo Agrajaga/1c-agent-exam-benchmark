@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "bsl-analyzer-0.3.2",
+  "label": "BSL Analyzer 0.3.2",
+  "version": "0.3.2",
+  "homepage": "https://github.com/itrous/bsl-analyzer",
+  "description": "Статический анализ BSL и метаданных через MCP, без подключения к 1С.",
+  "probe": "bsl-analyzer",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "analyzer.exe": {
+          "url": "https://github.com/itrous/bsl-analyzer/releases/download/v0.3.2/bsl-analyzer-app-windows-amd64.exe",
+          "sha256": "5bd0814afce24b7cadfaf828b701da2cec7d2945f77f7d076ee2624cbbfc3dd5",
+          "bytes": 75133440
+        },
+        "analyzer-checksums.txt": {
+          "url": "https://github.com/itrous/bsl-analyzer/releases/download/v0.3.2/checksums.txt",
+          "sha256": "2753e79a6b017057f91adc40969ace6c987b7bab71203db4b49ddc0154c46623",
+          "bytes": 572
+        }
+      },
+      "install": [
+        {
+          "copy": "analyzer.exe",
+          "to": "bsl-analyzer-app-windows-amd64.exe"
+        }
+      ],
+      "configuration": {
+        "version": "0.3.2",
+        "label": "BSL Analyzer 0.3.2",
+        "server": "bsl-analyzer",
+        "command": "{package}/bsl-analyzer-app-windows-amd64.exe",
+        "args": [
+          "mcp",
+          "serve",
+          "--profile",
+          "workspace",
+          "--mode",
+          "stdio",
+          "-s",
+          "{src}"
+        ],
+        "env": {
+          "BSL_MCP_BROKER": "0",
+          "BSL_CACHE_DIR": "{tmp}/bsl-analyzer-cache"
+        },
+        "registration": "Official native Windows executable; workspace-only offline MCP"
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "analyzer": {
+          "url": "https://github.com/itrous/bsl-analyzer/releases/download/v0.3.2/bsl-analyzer-app-darwin-arm64",
+          "sha256": "ca096f454fccf84463486d113ae69b72b91598c840ccd86f31d1d69e1f41ce54",
+          "bytes": 62400272
+        }
+      },
+      "install": [
+        {
+          "copy": "analyzer",
+          "to": "bsl-analyzer-app",
+          "executable": true
+        }
+      ],
+      "configuration": {
+        "version": "0.3.2",
+        "label": "BSL Analyzer 0.3.2",
+        "server": "bsl-analyzer",
+        "command": "{package}/bsl-analyzer-app",
+        "args": [
+          "mcp",
+          "serve",
+          "--profile",
+          "workspace",
+          "--mode",
+          "stdio",
+          "-s",
+          "{src}"
+        ],
+        "env": {
+          "BSL_MCP_BROKER": "0",
+          "BSL_CACHE_DIR": "{tmp}/bsl-analyzer-cache"
+        },
+        "registration": "Official native Windows executable; workspace-only offline MCP"
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "analyzer": {
+          "url": "https://github.com/itrous/bsl-analyzer/releases/download/v0.3.2/bsl-analyzer-app-linux-amd64",
+          "sha256": "e5ca2b17270338c797b6d1b6a7ea564e0b9235e8a823d1b99cf1b42a36e2fd0d",
+          "bytes": 75963744
+        }
+      },
+      "install": [
+        {
+          "copy": "analyzer",
+          "to": "bsl-analyzer-app",
+          "executable": true
+        }
+      ],
+      "configuration": {
+        "version": "0.3.2",
+        "label": "BSL Analyzer 0.3.2",
+        "server": "bsl-analyzer",
+        "command": "{package}/bsl-analyzer-app",
+        "args": [
+          "mcp",
+          "serve",
+          "--profile",
+          "workspace",
+          "--mode",
+          "stdio",
+          "-s",
+          "{src}"
+        ],
+        "env": {
+          "BSL_MCP_BROKER": "0",
+          "BSL_CACHE_DIR": "{tmp}/bsl-analyzer-cache"
+        },
+        "registration": "Official native Windows executable; workspace-only offline MCP"
+      }
+    }
+  }
+}

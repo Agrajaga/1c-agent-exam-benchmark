@@ -1,0 +1,18 @@
+{
+  "package": "1c-platform-official-sample",
+  "specification_check": "passed",
+  "rules": 65,
+  "rule_states": {
+    "partial_specification": 13,
+    "specified": 52
+  },
+  "fixtures": 20,
+  "questions_open": 9,
+  "decimal_comparisons": 82,
+  "source_hashes": "verified",
+  "retained_source_xml_elements": "verified",
+  "visual_qa": "recorded 4 pages",
+  "book_pages": 14,
+  "runtime_solution_tests_executed": 0,
+  "ready": false
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Откуда берутся требования стенда: текст документа 1С, выведенные требования и их проверка.">
+<title>Требования · Экзамен 1С</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%23d9622b'/%3E%3Cpath d='M18 34l9 9 19-21' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css"><script type="module" src="nav.js"></script><script type="module" src="checks.js"></script>
+</head>
+<body>
+<main class="page">
+  <nav class="tabs"></nav>
+  <div class="seg subnav" role="navigation" aria-label="Методика"><a class="segl" href="checks.html" aria-current="page">Требования</a><a class="segl" href="inputs.html">Что получает агент</a></div>
+
+  <header class="head">
+    <h1>Откуда берутся требования</h1>
+    <p class="lead">Всё, что проверяет стенд, выведено из официального документа 1С. Каждая карточка — фрагмент документа, под ним — требования, которые стенд из него вывел, и проверяет ли он их.</p>
+    <ol class="chain" aria-label="Цепочка прослеживаемости">
+      <li><b>Документ 1С</b><span id="doc-ref">ATT83PL.rtf</span></li>
+      <li><b>Требование</b><span>что стенд вывел</span></li>
+      <li><b>Проверка</b><span>как стенд это проверяет</span></li>
+      <li><b>Статус</b><span>проверяется или нет</span></li>
+    </ol>
+  </header>
+
+  <div class="seg" role="tablist" aria-label="Что показать">
+    <button role="tab" data-view="document" id="tab-document">Требования</button>
+    <button role="tab" data-view="ticket" id="tab-ticket">Билет</button>
+    <button role="tab" data-view="rules" id="tab-rules">Правила оценивания</button>
+    <button role="tab" data-view="review" id="tab-review">Уточнения</button>
+    <button role="tab" data-view="starter" id="tab-starter">Каркас</button>
+  </div>
+  <p class="view-note" id="view-note"></p>
+
+  <div class="trace" id="view"></div>
+
+  <p class="legend" id="legend"></p>
+
+  <footer class="foot">
+    <span id="source-line"></span>
+    <span><a href="checks.json" download>Данные JSON</a></span>
+  </footer>
+</main>
+</body>
+</html>

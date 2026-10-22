@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "id": "shirokov-skills",
+  "label": "Skills Широкова · Python/Codex",
+  "version": "920ceda28f328cdba5f798942802845908066e1b",
+  "homepage": "https://github.com/Nikolay-Shirokov/cc-1c-skills",
+  "description": "Skills Николая Широкова для Codex (авторский Python-порт).",
+  "probe": "skill-script",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "shirokov-source.zip": {
+          "url": "https://codeload.github.com/Nikolay-Shirokov/cc-1c-skills/zip/920ceda28f328cdba5f798942802845908066e1b",
+          "sha256": "2d426a7e7c0ab52df5ce66c3172a4bcb74ff86779fd0b3836393ce6c8a12baf7",
+          "bytes": 3195303
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "shirokov-source.zip"
+        },
+        {
+          "pip": "profiles/shirokov-skills-windows-requirements.txt",
+          "to": "python-site-packages"
+        },
+        {
+          "copy-tree": "*/.codex",
+          "to": ".codex"
+        },
+        {
+          "node": "node/node.exe"
+        },
+        {
+          "npm-lock": ".codex/skills/web-test/scripts"
+        }
+      ],
+      "configuration": {
+        "version": "920ceda28f328cdba5f798942802845908066e1b",
+        "label": "Skills Широкова · Python/Codex",
+        "skills": ".codex/skills",
+        "command": "{python}",
+        "registration": "Unchanged author Python port for Codex; isolated skill tree and pinned Python dependencies",
+        "worker_env": {
+          "PYTHONPATH": "{package}/python-site-packages",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PATH": "{package}/node;{python_bin}",
+          "PLAYWRIGHT_BROWSERS_PATH": "{tmp}/playwright"
+        }
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "shirokov-source.zip": {
+          "url": "https://codeload.github.com/Nikolay-Shirokov/cc-1c-skills/zip/920ceda28f328cdba5f798942802845908066e1b",
+          "sha256": "2d426a7e7c0ab52df5ce66c3172a4bcb74ff86779fd0b3836393ce6c8a12baf7",
+          "bytes": 3195303
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "shirokov-source.zip"
+        },
+        {
+          "pip": "profiles/shirokov-skills-windows-requirements.txt",
+          "to": "python-site-packages"
+        },
+        {
+          "copy-tree": "*/.codex",
+          "to": ".codex"
+        },
+        {
+          "node": "node/node"
+        },
+        {
+          "npm-lock": ".codex/skills/web-test/scripts"
+        }
+      ],
+      "configuration": {
+        "version": "920ceda28f328cdba5f798942802845908066e1b",
+        "label": "Skills Широкова · Python/Codex",
+        "skills": ".codex/skills",
+        "command": "{python}",
+        "registration": "Unchanged author Python port for Codex; isolated skill tree and pinned Python dependencies",
+        "worker_env": {
+          "PYTHONPATH": "{package}/python-site-packages",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PATH": "{package}/node:{python_bin}",
+          "PLAYWRIGHT_BROWSERS_PATH": "{tmp}/playwright"
+        }
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "shirokov-source.zip": {
+          "url": "https://codeload.github.com/Nikolay-Shirokov/cc-1c-skills/zip/920ceda28f328cdba5f798942802845908066e1b",
+          "sha256": "2d426a7e7c0ab52df5ce66c3172a4bcb74ff86779fd0b3836393ce6c8a12baf7",
+          "bytes": 3195303
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "shirokov-source.zip"
+        },
+        {
+          "pip": "profiles/shirokov-skills-windows-requirements.txt",
+          "to": "python-site-packages"
+        },
+        {
+          "copy-tree": "*/.codex",
+          "to": ".codex"
+        },
+        {
+          "node": "node/node"
+        },
+        {
+          "npm-lock": ".codex/skills/web-test/scripts"
+        }
+      ],
+      "configuration": {
+        "version": "920ceda28f328cdba5f798942802845908066e1b",
+        "label": "Skills Широкова · Python/Codex",
+        "skills": ".codex/skills",
+        "command": "{python}",
+        "registration": "Unchanged author Python port for Codex; isolated skill tree and pinned Python dependencies",
+        "worker_env": {
+          "PYTHONPATH": "{package}/python-site-packages",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PATH": "{package}/node:{python_bin}",
+          "PLAYWRIGHT_BROWSERS_PATH": "{tmp}/playwright"
+        }
+      }
+    }
+  }
+}

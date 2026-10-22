@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Замер агента на экзамене 1С: проверка готовности стенда, запуск агента и оценка решения в настоящей 1С.">
+<title>Замер · Экзамен 1С</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%23d9622b'/%3E%3Cpath d='M18 34l9 9 19-21' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css"><script type="module" src="nav.js"></script><script type="module" src="measure.js"></script>
+</head>
+<body>
+<main class="page">
+  <nav class="tabs"></nav>
+  <header class="head">
+    <h1>Замер</h1>
+    <p class="lead">Стенд сам проверит компьютер, поможет поставить недостающее, даст агенту решить билет и оценит решение в настоящей 1С. Результат можно отправить в общий рейтинг.</p>
+  </header>
+
+  <section class="panel" id="offline" hidden>
+    <h2>Стенд не запущен</h2>
+    <p class="sub">Эта страница работает только из клона репозитория на вашем компьютере.</p>
+    <pre class="review">git clone https://github.com/zeegin/1c-agent-exam-benchmark.git
+cd 1c-agent-exam-benchmark
+python -m venv .venv
+.venv/bin/python -m pip install -e .        # Windows: .venv\Scripts\python
+.venv/bin/python tools/start_demo.py</pre>
+  </section>
+
+  <section class="panel" id="ready-panel">
+    <h2>1. Готовность стенда</h2>
+    <p class="sub" id="ready-summary">Проверяем компьютер…</p>
+    <ol class="steps" id="steps"></ol>
+    <p id="ready-message" class="message error" role="alert" hidden></p>
+  </section>
+
+  <section class="panel" id="launch-panel">
+    <h2>2. Запуск экзамена</h2>
+    <p class="sub" id="launch-sub">Агент получает билет и каркас, решает его в отдельной рабочей папке, затем стенд проверяет сдачу.</p>
+    <div class="launch">
+      <label>Модель<select id="model" class="field"></select></label>
+      <label>Окружение агента<select id="harness" class="field"><option value="none">Без харнеса</option></select></label>
+      <label>Лимит на решение<select id="hours" class="field">
+        <option value="0.5">30 минут</option><option value="1">1 час</option><option value="2">2 часа</option><option value="3">3 часа</option><option value="5">5 часов</option>
+      </select></label>
+      <button id="start" class="btn primary big" disabled>Начать экзамен</button>
+    </div>
+    <p id="regrade-line" class="why" hidden><button id="regrade" class="btn small">Повторить оценку сохранённого решения</button> Проверяет эталонную сдачу стенда заново, без обращения к модели: несколько минут.</p>
+    <p class="why" id="start-why"></p>
+    <p id="start-message" class="message error" role="alert" hidden></p>
+  </section>
+
+  <section class="panel" id="job-panel" hidden>
+    <h2 id="job-title">3. Ход экзамена</h2>
+    <div class="kv" id="job-kv"></div>
+    <ol class="timeline" id="timeline">
+      <li data-phase="preparing">Подготовка</li><li data-phase="solving">Агент решает</li><li data-phase="checking_gates">Загрузка и компиляция</li>
+      <li data-phase="grading">Сценарии в 1С</li><li data-phase="finished">Оценка</li>
+    </ol>
+    <p class="why" id="job-activity" aria-live="polite"></p>
+    <p id="job-error" class="message error" hidden></p>
+    <div id="outcome" hidden>
+      <div class="big-score" id="outcome-score"></div>
+      <div class="kv" id="outcome-kv"></div>
+      <details id="outcome-charges"><summary>Штрафы</summary><ul id="charges"></ul></details>
+      <div class="actions" id="submit"></div>
+      <p class="why">Балл — оценка стенда по заранее заданным правилам, не официальная аттестация 1С. Пока часть пунктов не проверяется, показывается верхняя граница.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

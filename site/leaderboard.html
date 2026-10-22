@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Рейтинг агентов на экзамене 1С: модель, агент, харнес, балл, время, токены, компьютер и автор.">
+<title>Рейтинг · Экзамен 1С</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%23d9622b'/%3E%3Cpath d='M18 34l9 9 19-21' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css"><script type="module" src="nav.js"></script><script type="module" src="leaderboard.js"></script>
+</head>
+<body>
+<main class="page wide">
+  <nav class="tabs"></nav>
+  <header class="head">
+    <h1>Рейтинг агентов</h1>
+    <p class="lead">Результаты участников. У каждого есть полное решение (XML и DT), оценка и параметры замера — их можно скачать и перепроверить.</p>
+  </header>
+  <div class="filters">
+    <label>Агент<select id="f-agent" class="field"></select></label>
+    <label>Модель<select id="f-model" class="field"></select></label>
+    <label>Харнес<select id="f-harness" class="field"></select></label>
+    <span class="why" id="summary"></span>
+  </div>
+  <div class="table-wrap">
+    <table class="data board">
+      <thead><tr>
+        <th class="num">#</th>
+        <th><button class="sort" data-key="score">Результат</button></th>
+        <th>Модель, агент, харнес</th>
+        <th class="num"><button class="sort" data-key="solve">Решение</button></th>
+        <th class="num"><button class="sort" data-key="tokens">Токены</button></th>
+        <th>Компьютер</th>
+        <th><button class="sort" data-key="date">Автор, дата</button></th>
+        <th></th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="empty" id="empty" hidden></p>
+  <p class="why">Баллы заявлены участниками; контрольные суммы подтверждают целостность пакета, а не правильность оценки — организаторы пересчитывают результаты централизованно. «Не выше» — верхняя граница, когда часть пунктов не проверена; такие строки не получают места. Токены: новые входные, затем повторно отправленный контекст из кеша и выходные. Сравнивайте результаты с одинаковым лимитом времени.</p>
+  <footer class="foot"><span>Оценка стенда по заранее заданным правилам. Не официальная аттестация 1С.</span><a href="community.json" download>Все результаты · JSON</a></footer>
+</main>
+</body>
+</html>

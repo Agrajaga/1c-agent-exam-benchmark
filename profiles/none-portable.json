@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "none-portable-codex-v1",
+  "additional_harness": "none",
+  "client": "codex",
+  "delegation": "disabled",
+  "network": "open-book shell network; native web disabled",
+  "outer_filesystem": "backend and machine settings pinned in plan.machine; dedicated-host has no outer isolation",
+  "skills": [],
+  "mcp_servers": [],
+  "memory": false,
+  "extensions": false,
+  "scope": "Codex only; dedicated-host runs never claim verified isolation or comparison eligibility"
+}

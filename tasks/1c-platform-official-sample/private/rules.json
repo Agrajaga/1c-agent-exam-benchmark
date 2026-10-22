@@ -1,0 +1,1863 @@
+{
+  "schema_version": 1,
+  "profile_id": "official-sample-v1-draft",
+  "ai_judge": false,
+  "ready": false,
+  "rules": [
+    {
+      "id": "G01",
+      "clause_id": "CL-G01",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            281,
+            281
+          ]
+        ]
+      },
+      "obligation": "Разделы интерфейса соответствуют разделам задания",
+      "oracle": "Для каждого реализованного раздела учета его объекты достижимы из соответствующего раздела интерфейса. Общие объекты могут входить в несколько разделов.",
+      "fixtures": [
+        "UI"
+      ],
+      "methods": [
+        "metadata",
+        "ui"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q01"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "G02",
+      "clause_id": "CL-G02",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            281,
+            281
+          ]
+        ]
+      },
+      "obligation": "Доступ ко всем объектам, включая регистры",
+      "oracle": "Множество объектов раздела по независимому метаданному инвентарю включено в множество объектов, достижимых навигацией и действиями. Исключения должны быть обоснованы исходным условием.",
+      "fixtures": [
+        "UI"
+      ],
+      "methods": [
+        "metadata",
+        "ui"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "G03",
+      "clause_id": "CL-G03",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            281,
+            281
+          ]
+        ]
+      },
+      "obligation": "Группировка объектов по виду",
+      "oracle": "В каждом разделе каталоги, документы и прочие объекты образуют различимые группы; переход открывает объект соответствующего вида. Рисунок не задает пиксельное совпадение.",
+      "fixtures": [
+        "UI"
+      ],
+      "methods": [
+        "metadata",
+        "ui"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU01",
+      "clause_id": "CL-OU01",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            288,
+            288
+          ]
+        ]
+      },
+      "obligation": "Закупка, сборка и продажа документами",
+      "oracle": "Три семантические операции доступны через документы Приходная накладная, Сборка, Расходная накладная и вызывают соответствующие изменения учета.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU02",
+      "clause_id": "CL-OU02",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "obligation": "Три политики по подразделениям",
+      "oracle": "Одно и то же поступление 2×10+3×20 и продажа 3 дают себестоимость FIFO=40, LIFO=60, средняя=48 в разных подразделениях; изменения одного подразделения не меняют другое.",
+      "fixtures": [
+        "OU-POLICIES"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU03",
+      "clause_id": "CL-OU03",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ]
+        ]
+      },
+      "obligation": "Изменение политики не чаще раза в год",
+      "oracle": "Политика доступна для изменения; по датам из разных бесспорных лет используется соответствующее значение. Проверка запрещенных близких изменений ожидает определения календарного/скользящего года.",
+      "fixtures": [
+        "OU-HISTORY"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q02"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "OU04",
+      "clause_id": "CL-OU04",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            290,
+            290
+          ]
+        ]
+      },
+      "obligation": "Характеристики деталей через ПВХ",
+      "oracle": "Независимый инспектор находит ПВХ и связь с используемыми свойствами деталей; изменение значения характеристики в Предприятии меняет данные, читаемые учетом и отчетом. Одного наличия пустого ПВХ недостаточно.",
+      "fixtures": [
+        "OU-PROPERTIES"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU05",
+      "clause_id": "CL-OU05",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            290,
+            290
+          ]
+        ]
+      },
+      "obligation": "Несколько наборов характеристик одной детали",
+      "oracle": "Два свойства одной детали с различными значениями производителя сохраняются и учитываются раздельно; расход свойства P1 не уменьшает количество P2.",
+      "fixtures": [
+        "OU-PROPERTIES"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU06",
+      "clause_id": "CL-OU06",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            290,
+            290
+          ]
+        ]
+      },
+      "obligation": "Сборка не предоставляет разборку",
+      "oracle": "В доступных прикладных операциях нет разборки, превращающей ранее собранный блок в запас комплектующих. Отмена ошибочного проведения не считается разборкой. Инвентарь команд и трассы покрываются отдельно; универсального доказательства отсутствия произвольного скрытого кода нет.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "metadata",
+        "ast",
+        "ui"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q09"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "OU07",
+      "clause_id": "CL-OU07",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            291,
+            291
+          ]
+        ]
+      },
+      "obligation": "Хранение состава блока",
+      "oracle": "После записи и повторного чтения спецификация содержит заданные детали, их свойства и количества.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU08",
+      "clause_id": "CL-OU08",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            291,
+            291
+          ]
+        ]
+      },
+      "obligation": "Изменение состава не чаще раза в неделю",
+      "oracle": "Версии состава с датами, разнесенными более чем на неделю, доступны. Проверка близких дат блокируется до определения недель и корректировок.",
+      "fixtures": [
+        "OU-HISTORY"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q02"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "OU09",
+      "clause_id": "CL-OU09",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            292,
+            292
+          ]
+        ]
+      },
+      "obligation": "Две табличные части сборки",
+      "oracle": "Метаданные документа имеют две заданные табличные части: блок+количество; дополнительная деталь+свойство+количество. Дополнительные вспомогательные части сами по себе не ошибка.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU10",
+      "clause_id": "CL-OU10",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            293,
+            293
+          ]
+        ]
+      },
+      "obligation": "Два подразделения в шапке сборки",
+      "oracle": "Источник и получатель задаются в шапке; при S≠D все списания относятся к S, собранные блоки поступают в D.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU11",
+      "clause_id": "CL-OU11",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            294,
+            294
+          ]
+        ]
+      },
+      "obligation": "Расход спецификации и дополнительных деталей",
+      "oracle": "Для 2 блоков со спецификацией 2A(P1)+B(Q1), дополнительно A(P1)=1: расход A(P1)=5, B(Q1)=2; выпуск блоков=2. Совпадающие строки допдеталей суммируются; P2 и другое подразделение не расходуются.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU12",
+      "clause_id": "CL-OU12",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            294,
+            294
+          ]
+        ]
+      },
+      "obligation": "Актуальная спецификация",
+      "oracle": "При совпадении даты документа, даты проверки и выбранной актуальной версии расход соответствует последней действующей спецификации. Разные даты требуют решения Q03.",
+      "fixtures": [
+        "OU-HISTORY"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q03"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "OU13",
+      "clause_id": "CL-OU13",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            294,
+            294
+          ]
+        ]
+      },
+      "obligation": "Себестоимость детали по подразделению и свойству",
+      "oracle": "В OU-ASSEMBLY расход A(P1)=50, B(Q1)=60, общий=110 независимо от иных цен A(P2) и A(P1) в другом подразделении. Стоимость полученного выпуска отдельно не фиксируется, поскольку ее формула не дана.",
+      "fixtures": [
+        "OU-ASSEMBLY"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q04"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "OU14",
+      "clause_id": "CL-OU14",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            295,
+            295
+          ]
+        ]
+      },
+      "obligation": "Состав строк расходной накладной",
+      "oracle": "В строках задаются подразделение, блок либо периферийное устройство и количество. В одном документе разрешены строки разных подразделений и обоих видов продукции.",
+      "fixtures": [
+        "OU-POLICIES"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU15",
+      "clause_id": "CL-OU15",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "obligation": "FIFO",
+      "oracle": "В OU-POLICIES расход 3: количество=3, себестоимость=40, остаток количество=2, стоимость=40.",
+      "fixtures": [
+        "OU-POLICIES"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU16",
+      "clause_id": "CL-OU16",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "obligation": "LIFO",
+      "oracle": "В OU-POLICIES расход 3: количество=3, себестоимость=60, остаток количество=2, стоимость=20.",
+      "fixtures": [
+        "OU-POLICIES"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU17",
+      "clause_id": "CL-OU17",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "obligation": "Средняя",
+      "oracle": "В OU-POLICIES расход 3: количество=3, себестоимость=48, остаток количество=2, стоимость=32.",
+      "fixtures": [
+        "OU-POLICIES"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU18",
+      "clause_id": "CL-OU18",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            289,
+            289
+          ],
+          [
+            296,
+            296
+          ]
+        ]
+      },
+      "obligation": "Разделение учета по подразделениям",
+      "oracle": "Проведение и отчет по подразделению D1 не используют остатки/политику D2; документ с тремя строками разных подразделений дает три независимых результата 40/60/48.",
+      "fixtures": [
+        "OU-POLICIES"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU19",
+      "clause_id": "CL-OU19",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            298,
+            345
+          ]
+        ]
+      },
+      "obligation": "Ведомость движения",
+      "oracle": "Семантические колонки начальный остаток, приход, расход, конечный остаток содержат количество и сумму; opening+receipt-expense=closing по каждой группе. Отбор подразделения и периода исключает внепериодные обороты и чужое подразделение.",
+      "fixtures": [
+        "OU-REPORT"
+      ],
+      "methods": [
+        "report",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU20",
+      "clause_id": "CL-OU20",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            300,
+            346
+          ]
+        ]
+      },
+      "obligation": "Отчет по характеристикам",
+      "oracle": "Две группы производителя для одной детали не сливаются; итоги групп равны сумме строк. Показанные в исходнике ASUS/PALIT — пример, а не обязательные справочные значения.",
+      "fixtures": [
+        "OU-PROPERTIES"
+      ],
+      "methods": [
+        "report",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "OU21",
+      "clause_id": "CL-OU21",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            348,
+            365
+          ]
+        ]
+      },
+      "obligation": "Отчет продаж и прибыль",
+      "oracle": "Для продажи 3 по цене 30 при FIFO: количество=3, себестоимость=40, продажа=90, прибыль=50. Выбор периода исключает контрольные продажи до/после периода.",
+      "fixtures": [
+        "OU-REPORT"
+      ],
+      "methods": [
+        "report",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU01",
+      "clause_id": "CL-BU01",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            368,
+            368
+          ]
+        ]
+      },
+      "obligation": "Произвольная ручная корреспонденция",
+      "oracle": "Через Операцию записываются введенные корреспонденции двух разных пар действующих счетов; дебет, кредит, аналитики, количество и сумма прочитанных записей совпадают с вводом. Фиксированные только закупка/продажа не принимаются.",
+      "fixtures": [
+        "BU-MANUAL"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU02",
+      "clause_id": "CL-BU02",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            368,
+            368
+          ]
+        ]
+      },
+      "obligation": "Ручные проводки влияют на расчет",
+      "oracle": "После ручного добавления A=2, сумма=20 к предварительным A=2, сумма=60 себестоимость последующей продажи A=1 равна 20; количественный остаток и отчет учитывают обе записи. Проверить все пути чтения остатков.",
+      "fixtures": [
+        "BU-MANUAL"
+      ],
+      "methods": [
+        "runtime",
+        "report"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU03",
+      "clause_id": "CL-BU03",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            369,
+            369
+          ]
+        ]
+      },
+      "obligation": "Транзитивная взаимозаменяемость",
+      "oracle": "При A~B, B~C и отсутствии A/B наличие C позволяет продажу A; обратный запрос C при наличии A также разрешен. Никакой прямой связи A~C вручную не добавлять.",
+      "fixtures": [
+        "BU-ANALOG"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU04",
+      "clause_id": "CL-BU04",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            370,
+            370
+          ]
+        ]
+      },
+      "obligation": "Артикул задается вручную",
+      "oracle": "Пользователь вводит произвольные уникальные строковые артикулы, после повторного чтения значения сохранены. Автоматическую проверку дублей не требовать и не запрещать: условие передает контроль пользователю.",
+      "fixtures": [
+        "BU-ANALOG"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU05",
+      "clause_id": "CL-BU05",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            371,
+            372
+          ]
+        ]
+      },
+      "obligation": "Один склад в шапке накладных",
+      "oracle": "В поступлении и продаже склад задается реквизитом шапки; все строки документа используют его. Не требовать отдельные одноименные объекты для OU и BU.",
+      "fixtures": [
+        "BU-AVERAGE"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU06",
+      "clause_id": "CL-BU06",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            372,
+            372
+          ],
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "obligation": "Количественный остаток по складу",
+      "oracle": "При наличии A=2 на W1 и A=8 на W2 продажа A=3 с W1 без аналогов не проводится, хотя по компании запаса достаточно; W2 не изменяется.",
+      "fixtures": [
+        "BU-AVERAGE"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU07",
+      "clause_id": "CL-BU07",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            373,
+            375
+          ]
+        ]
+      },
+      "obligation": "Проводка поступления",
+      "oracle": "Поступление A=2, сумма=20 на W1: дебет Товары, кредит Поставщики, количественная аналитика A/W1=2, сумма=20.",
+      "fixtures": [
+        "BU-AVERAGE"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU08",
+      "clause_id": "CL-BU08",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "obligation": "Исходный товар расходуется первым",
+      "oracle": "При A=1, единственный аналог C=5, запрос A=2: расход A=1, C=1. При наличии A=2 аналоги не расходуются.",
+      "fixtures": [
+        "BU-ANALOG"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU09",
+      "clause_id": "CL-BU09",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "obligation": "Автоматическая замена",
+      "oracle": "При отсутствии A и наличии единственного аналога C запрос A=2 проводится с расходом C=2 без ручного изменения исходных строк.",
+      "fixtures": [
+        "BU-ANALOG"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU10",
+      "clause_id": "CL-BU10",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "obligation": "Отказ при суммарной нехватке",
+      "oracle": "Для запроса 3 и совокупного запаса 2 документ остается непроведенным; учетные движения и остатки всех затронутых счетов не изменяются относительно снимка до попытки. Текст ошибки не фиксируется.",
+      "fixtures": [
+        "BU-SHARED"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU11",
+      "clause_id": "CL-BU11",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "obligation": "Порядок аналогов по артикулу",
+      "oracle": "После утверждения направления и способа сравнения ожидается один определенный вектор списания. До Q05 ни возрастающий, ни убывающий вариант не объявляется правильным.",
+      "fixtures": [
+        "BU-ORDER"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q05"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "BU12",
+      "clause_id": "CL-BU12",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            377,
+            377
+          ]
+        ]
+      },
+      "obligation": "Общий аналог не тратится дважды",
+      "oracle": "При запросах A=2, B=1 и общем единственном доступном аналоге C=2 отказ без движений; при C=3 проведение с расходом C=3. Остатки неотрицательны в обоих исходах.",
+      "fixtures": [
+        "BU-SHARED"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU13",
+      "clause_id": "CL-BU13",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            380,
+            380
+          ]
+        ]
+      },
+      "obligation": "Средняя по номенклатуре всей компании",
+      "oracle": "A: W1=2/20, W2=8/240. Продажа A=1 с W1 имеет себестоимость 26; W1 количество=1, W2=8. Сумму стоимостного остатка W1 не фиксировать: условие задает общую среднюю по номенклатуре, а не отдельную формулу суммы остатка склада.",
+      "fixtures": [
+        "BU-AVERAGE"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU14",
+      "clause_id": "CL-BU14",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            380,
+            380
+          ]
+        ]
+      },
+      "obligation": "Проводка себестоимости",
+      "oracle": "Продажа A=1 с W1: дебет Прибыли и убытки, кредит Товары, количество=1, сумма=26; аналитика фактически списанного товара и склада соответствует расходу.",
+      "fixtures": [
+        "BU-AVERAGE"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU15",
+      "clause_id": "CL-BU15",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            382,
+            382
+          ]
+        ]
+      },
+      "obligation": "Проводка выручки",
+      "oracle": "Продажа A=1 по цене 40: дебет Покупатели, кредит Прибыли и убытки, сумма=40.",
+      "fixtures": [
+        "BU-AVERAGE"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU16",
+      "clause_id": "CL-BU16",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            384,
+            430
+          ]
+        ]
+      },
+      "obligation": "Отчет запрошенного товара и аналогов",
+      "oracle": "Отчет хранит различие исходного A и фактически проданного A/C: для A=1,C=1 при цене каждого 40 и себестоимости A=10,C=20 строки имеют 1/10/40/30 и 1/20/40/20, группа A=2/30/80/50. Отбор периода и свертка не смешивают аналоги с запросом.",
+      "fixtures": [
+        "BU-REPORT"
+      ],
+      "methods": [
+        "report",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "BU17",
+      "clause_id": "CL-BU17",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            430,
+            430
+          ]
+        ]
+      },
+      "obligation": "Прибыль бухгалтерского отчета",
+      "oracle": "Каждая строка и итог: прибыль=продажа-себестоимость; итог не удваивается из-за одновременного наличия групповой и детальных строк.",
+      "fixtures": [
+        "BU-REPORT"
+      ],
+      "methods": [
+        "report",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR01",
+      "clause_id": "CL-PR01",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            433,
+            433
+          ]
+        ]
+      },
+      "obligation": "Ежемесячный метод отклонений",
+      "oracle": "График задает рабочее время, отклонение Командировка исключает пересекающееся рабочее время из тарифного начисления; фактические периоды и результаты соответствуют PR-TRIP. Проверка механизма дополняет арифметику.",
+      "fixtures": [
+        "PR-TRIP"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR02",
+      "clause_id": "CL-PR02",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            433,
+            433
+          ]
+        ]
+      },
+      "obligation": "Совместительство",
+      "oracle": "Один сотрудник имеет начисления в D1 и D2 за один месяц; при 8 и 16 часах и ставке 100 результаты 800 и 1600. Записи не перезаписывают друг друга.",
+      "fixtures": [
+        "PR-TARIFF"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR03",
+      "clause_id": "CL-PR03",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            434,
+            434
+          ]
+        ]
+      },
+      "obligation": "График каждого подразделения",
+      "oracle": "Изменение графика D2 меняет часы/дни только D2, даже у общего сотрудника; для командировки применяется график исходного подразделения.",
+      "fixtures": [
+        "PR-TARIFF"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR04",
+      "clause_id": "CL-PR04",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            435,
+            435
+          ]
+        ]
+      },
+      "obligation": "Тариф на фактические часы",
+      "oracle": "После исключения дней отклонения начисление=ставка начала месяца×фактические часы; в PR-TRIP 100×8=800.",
+      "fixtures": [
+        "PR-TRIP"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR05",
+      "clause_id": "CL-PR05",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            435,
+            435
+          ]
+        ]
+      },
+      "obligation": "История ставки и частота изменений",
+      "oracle": "Ставки 100 на 01.01 и 200 на 15.01 сохраняются, обе исторически доступны. Повторное изменение за тот же день требует разграничения исправления/нового значения Q02.",
+      "fixtures": [
+        "PR-TARIFF"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q02"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "PR06",
+      "clause_id": "CL-PR06",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            435,
+            435
+          ]
+        ]
+      },
+      "obligation": "Ставка на начало периода",
+      "oracle": "Январь: ставка 100, несмотря на изменение до 200 15.01; февраль: 200 при отсутствии новых изменений. Даже тариф за 10–31 января использует ставку начала расчетного периода, а не 10 января.",
+      "fixtures": [
+        "PR-TARIFF"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR07",
+      "clause_id": "CL-PR07",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            436,
+            436
+          ]
+        ]
+      },
+      "obligation": "Премия от прошлого месяца своего отдела без руководителя",
+      "oracle": "Тарифы прошлого месяца E1=1000,E2=2000,M=500; иные виды=700 и другой отдел=9000 не входят. При 10% премия M=300. Изменение текущего месяца не меняет эту базу.",
+      "fixtures": [
+        "PR-BONUS"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR08",
+      "clause_id": "CL-PR08",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            437,
+            437
+          ]
+        ]
+      },
+      "obligation": "Редактируемая шкала",
+      "oracle": "В Предприятии заменить процент подходящей ступени с 12 на 17: на одинаковой базе 3000 премия меняется с 360 на 510. Значения 5/10/15 не обязательны.",
+      "fixtures": [
+        "PR-BONUS"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR09",
+      "clause_id": "CL-PR09",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            437,
+            437
+          ]
+        ]
+      },
+      "obligation": "Ненулевой исходный стаж",
+      "oracle": "При начале учета 01.01.2025 и дате начала работы 15.06.2023 в марте 2025 сотрудник относится к ступени 1–3 года, а не к новой записи с нулевым стажем. Точная дата измерения и границы ожидают Q06.",
+      "fixtures": [
+        "PR-BONUS"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q06"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "PR10",
+      "clause_id": "CL-PR10",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            448,
+            448
+          ]
+        ]
+      },
+      "obligation": "Во время командировки нет тарифа и премии",
+      "oracle": "За полный календарный месяц командировки начисления тарифа и премии равны нулю; частичное отсутствие по тарифу проверяется PR-TRIP. Частичное пропорционирование премии ожидает Q07.",
+      "fixtures": [
+        "PR-EXCLUSION"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q07"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "PR11",
+      "clause_id": "CL-PR11",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            448,
+            448
+          ]
+        ]
+      },
+      "obligation": "Дни командировки по графику подразделения",
+      "oracle": "Из трех календарных дней поездки два рабочие по графику исходного отдела: оплачиваются два дня. Выходной не добавляет день. График другого отдела не влияет в случае единственного места работы.",
+      "fixtures": [
+        "PR-TRIP"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR12",
+      "clause_id": "CL-PR12",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            448,
+            448
+          ]
+        ]
+      },
+      "obligation": "Средняя за три предыдущих месяца",
+      "oracle": "Общие начисления 3000+2700+3300, из них часть — премии и прежние командировки; отработано 10+9+11 дней. Дневная ставка=300, командировка 2 дня=600. Контрольные данные четвертого предшествующего и текущего месяца не входят.",
+      "fixtures": [
+        "PR-TRIP"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q08"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "PR13",
+      "clause_id": "CL-PR13",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            449,
+            449
+          ]
+        ]
+      },
+      "obligation": "Командировка задним числом",
+      "oracle": "Сначала тариф за месяц=2400, затем задним числом поездка на 2 из 3 рабочих дней; при штатных операциях решения после завершения обработки тариф=800, командировка=600. Для получения результата не требуется редактировать сумму вручную.",
+      "fixtures": [
+        "PR-BACKDATE"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR14",
+      "clause_id": "CL-PR14",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            450,
+            450
+          ]
+        ]
+      },
+      "obligation": "Механизм перерасчетов не используется",
+      "oracle": "В исполняемых путях расчета и обработки поздней поездки нет обращений к механизму перерасчетов; структурный инспектор проверяет связи, AST и трасса PR-BACKDATE подтверждают используемые операции. Неиспользуемый объект или слово в комментарии сами по себе не провал. Неполный анализ означает inconclusive.",
+      "fixtures": [
+        "PR-BACKDATE"
+      ],
+      "methods": [
+        "metadata",
+        "ast",
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q09"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "PR15",
+      "clause_id": "CL-PR15",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            451,
+            451
+          ]
+        ]
+      },
+      "obligation": "Ввод начислений документом",
+      "oracle": "Через Начисление зарплаты доступны тариф, премия, командировка; один документ со всеми видами и отдельные документы по видам дают одинаковые суммы на независимых чистых базах. Не требуется иной документ с другим именем.",
+      "fixtures": [
+        "PR-PERIODS"
+      ],
+      "methods": [
+        "metadata",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR16",
+      "clause_id": "CL-PR16",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            451,
+            451
+          ]
+        ]
+      },
+      "obligation": "Тариф и премия ограничены одним месяцем",
+      "oracle": "Отдельные записи тарифа/премии за 10–31 января принимаются, за 10 января–3 февраля не записываются как допустимое начисление. Выбор способа сообщения об ошибке свободен.",
+      "fixtures": [
+        "PR-PERIODS"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR17",
+      "clause_id": "CL-PR17",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            451,
+            451
+          ]
+        ]
+      },
+      "obligation": "Командировка может пересекать месяцы",
+      "oracle": "Одна запись поездки 28 января–4 марта принимается и отражает рабочие дни/отклонения каждого затронутого месяца. Числовой оракул распределения базы по частям требует Q08.",
+      "fixtures": [
+        "PR-PERIODS"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true,
+      "resolved_questions": [
+        "Q08"
+      ],
+      "blocked_by": []
+    },
+    {
+      "id": "PR18",
+      "clause_id": "CL-PR18",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            452,
+            452
+          ]
+        ]
+      },
+      "obligation": "Один документ с разными периодами",
+      "oracle": "Один документ с отдельными тарифными строками за январь и февраль принимается; каждая строка внутри своего месяца, результаты 800 и 1600 при 8 часах и ставках 100/200. Запрещать весь документ за несколько месяцев ошибочно.",
+      "fixtures": [
+        "PR-PERIODS"
+      ],
+      "methods": [
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "PR19",
+      "clause_id": "CL-PR19",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            453,
+            468
+          ]
+        ]
+      },
+      "obligation": "Отчет премий за один календарный месяц",
+      "oracle": "Строки содержат сотрудника, стаж, процент, сумму премии; итог равен сумме детальных премий без дублей. Отбор марта исключает февраль/апрель. Поле/параметр периода задает один календарный месяц.",
+      "fixtures": [
+        "PR-REPORT"
+      ],
+      "methods": [
+        "report",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "F01",
+      "clause_id": "CL-F01",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            472,
+            472
+          ]
+        ]
+      },
+      "obligation": "Менеджер в основной форме контрагента",
+      "oracle": "Пользователь выбирает менеджера, записывает контрагента, повторно открывает основную форму; выбранное значение сохранено.",
+      "fixtures": [
+        "FORMS"
+      ],
+      "methods": [
+        "metadata",
+        "ui"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "F02",
+      "clause_id": "CL-F02",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            473,
+            473
+          ]
+        ]
+      },
+      "obligation": "Свой список сведений у каждого сотрудника",
+      "oracle": "В основной форме/доступной операции сотрудника M1 задать поля Валюта и Срок, M2 — Регион; после записи списки раздельны и прочитаны из базы.",
+      "fixtures": [
+        "FORMS"
+      ],
+      "methods": [
+        "metadata",
+        "ui",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "F03",
+      "clause_id": "CL-F03",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            473,
+            473
+          ]
+        ]
+      },
+      "obligation": "Сведения реализованы через ПВХ",
+      "oracle": "Определения полей связаны с ПВХ; добавленный через него реквизит отображается у контрагента выбранного менеджера. Сам по себе декоративный неиспользуемый ПВХ не засчитывается.",
+      "fixtures": [
+        "FORMS"
+      ],
+      "methods": [
+        "metadata",
+        "ui",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "F04",
+      "clause_id": "CL-F04",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            479,
+            479
+          ]
+        ]
+      },
+      "obligation": "Динамические поля по менеджеру",
+      "oracle": "При выборе M1 множество активных дополнительных полей=Валюта,Срок; при M2=Регион. После добавления определения в M2 и повторного открытия множество включает новое поле, без изменения конфигурации.",
+      "fixtures": [
+        "FORMS"
+      ],
+      "methods": [
+        "ui",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    },
+    {
+      "id": "F05",
+      "clause_id": "CL-F05",
+      "source": {
+        "artifact": "ATT83PL.rtf",
+        "text_view": "ATT83PL.txt",
+        "lines": [
+          [
+            472,
+            479
+          ]
+        ]
+      },
+      "obligation": "Ввод и сохранение дополнительных значений",
+      "oracle": "Для фиксированного менеджера M1 ввести USD и 10, записать контрагента и открыть заново: значения сохранены, типы соответствуют определениям ПВХ. Судьба старых значений при смене менеджера не задана и здесь не оценивается.",
+      "fixtures": [
+        "FORMS"
+      ],
+      "methods": [
+        "ui",
+        "runtime"
+      ],
+      "status": "specified",
+      "blocked_by": [],
+      "implementation": "not_implemented",
+      "execution": "not_run",
+      "mandatory": true
+    }
+  ]
+}

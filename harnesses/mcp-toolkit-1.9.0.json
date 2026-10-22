@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "id": "mcp-toolkit-1.9.0",
+  "label": "1С MCP Toolkit 1.9.0",
+  "version": "1.9.0",
+  "homepage": "https://github.com/ROCTUP/1c-mcp-toolkit",
+  "description": "Обработка 1С с MCP-сервером: агент работает с открытым сеансом 1С.",
+  "probe": "toolkit",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "MCP_Toolkit.epf": {
+          "url": "https://github.com/ROCTUP/1c-mcp-toolkit/releases/download/v1.9.0/MCP_Toolkit.epf",
+          "sha256": "aae9b09a66410ce1714537d06eb8869d8cf8b7b2b7fb5ac3f7858f0eb4678c20",
+          "bytes": 1886858
+        }
+      },
+      "install": [
+        {
+          "copy": "MCP_Toolkit.epf",
+          "to": "MCP_Toolkit.epf"
+        },
+        {
+          "github-tree": "ROCTUP/1c-mcp-toolkit",
+          "commit": "c36aba2fc744f27c8fc8084b4d231732bad0837c",
+          "prefix": "skills/",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.9.0",
+        "label": "1С MCP Toolkit 1.9.0",
+        "command": "{platform}",
+        "registration": "Official Windows EPF; separate 1C client, local HTTP MCP"
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "MCP_Toolkit_macos.epf": {
+          "url": "https://github.com/ROCTUP/1c-mcp-toolkit/releases/download/v1.9.0/MCP_Toolkit_macos.epf",
+          "sha256": "9a0b3a1f16c569597f23883b8ab67bd117295f499c2b30b65c03a2b947582c39",
+          "bytes": 2703916
+        }
+      },
+      "install": [
+        {
+          "copy": "MCP_Toolkit_macos.epf",
+          "to": "MCP_Toolkit_macos.epf"
+        },
+        {
+          "github-tree": "ROCTUP/1c-mcp-toolkit",
+          "commit": "c36aba2fc744f27c8fc8084b4d231732bad0837c",
+          "prefix": "skills/",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.9.0",
+        "label": "1С MCP Toolkit 1.9.0",
+        "command": "{platform}",
+        "registration": "Official Windows EPF; separate 1C client, local HTTP MCP"
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "MCP_Toolkit_linux.epf": {
+          "url": "https://github.com/ROCTUP/1c-mcp-toolkit/releases/download/v1.9.0/MCP_Toolkit_linux.epf",
+          "sha256": "f245d0772102d94efeea697db295f368bc3fad561da2acbb6d7a2a05b563889f",
+          "bytes": 1738393
+        }
+      },
+      "install": [
+        {
+          "copy": "MCP_Toolkit_linux.epf",
+          "to": "MCP_Toolkit_linux.epf"
+        },
+        {
+          "github-tree": "ROCTUP/1c-mcp-toolkit",
+          "commit": "c36aba2fc744f27c8fc8084b4d231732bad0837c",
+          "prefix": "skills/",
+          "to": "."
+        }
+      ],
+      "configuration": {
+        "version": "1.9.0",
+        "label": "1С MCP Toolkit 1.9.0",
+        "command": "{platform}",
+        "registration": "Official Windows EPF; separate 1C client, local HTTP MCP"
+      }
+    }
+  }
+}

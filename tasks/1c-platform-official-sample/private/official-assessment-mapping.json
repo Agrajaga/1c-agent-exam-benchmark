@@ -1,0 +1,4581 @@
+{
+ "schema_version": 1,
+ "mapping_id": "official-assessment-crosswalk-v3-draft",
+ "task_id": "1c-platform-official-sample",
+ "ready": false,
+ "ai_judge": false,
+ "scope": "Curator crosswalk, not executable official grading",
+ "source": {
+  "url": "https://static.1c.ru/rus/partners/training/files/ATT83PL.rtf?356jhteyner67j340=",
+  "official_index": "https://1c.ru/spec/questions.htm",
+  "artifact_sha256": "9cfbc21905fd378274f2d8e0f8a428ac0c83733c8f0a48e08d1fc4c7215fcc61",
+  "text_sha256": "b9c2d83d4010fbcef45e3e3885584ad8bce1d441b7a9995e9af5bc99d226f216",
+  "verified_on": "2026-10-10"
+ },
+ "pinned_inputs": {
+  "rules_sha256": "1df289caf29fc12e0fcf31e8eb424d7b7b57d5f281617a7b84b07c029dc48777",
+  "grader_sha256": "25e715aeb2439baf0d111ceb967e226229a5231fd17fcf1ce271bd9b9a7c5980"
+ },
+ "definitions": {
+  "direct": "Requirement has matching subject; full official predicate still may be missing",
+  "related": "Requirement provides related behaviour, not proof of official mechanism/cause",
+  "aggregate": "Whole group scope; does not turn each linked rule failure into this penalty",
+  "context": "Source context only; applicability unresolved",
+  "gap": "No existing task rule explicitly provides the check"
+ },
+ "scoring": {
+  "enabled": false,
+  "initial_points": "5",
+  "deductions_across_sections_are_combined": true,
+  "deduction_policy": "interval",
+  "bonus_policy": "unresolved",
+  "score_limits": "unresolved",
+  "numeric_thresholds": [
+   "2.2",
+   "3.5",
+   "4.5"
+  ],
+  "threshold_boundary_policy": "half_open_as_in_document",
+  "missing_core_section_gate": "required",
+  "historical_results_rewritten": false,
+  "reason": "Owner choices fixed; full detector calibration, coverage and remaining readiness questions unresolved",
+  "overlap_policy": {
+   "different_penalty_ids_for_same_defect": "largest_applicable",
+   "counting_unit": "defect_id",
+   "repeated_observations_of_same_pair": "one_penalty_instance",
+   "scope": "One defect yields one penalty: the applicable catalogue item with the largest maximum. Test count is evidence, not a multiplier."
+  },
+  "grade_intervals": [
+   {
+    "grade": "unsatisfactory",
+    "lower": null,
+    "lower_inclusive": false,
+    "upper": "2.2",
+    "upper_inclusive": false
+   },
+   {
+    "grade": "satisfactory",
+    "lower": "2.2",
+    "lower_inclusive": true,
+    "upper": "3.5",
+    "upper_inclusive": false
+   },
+   {
+    "grade": "good",
+    "lower": "3.5",
+    "lower_inclusive": true,
+    "upper": "4.5",
+    "upper_inclusive": false
+   },
+   {
+    "grade": "excellent",
+    "lower": "4.5",
+    "lower_inclusive": true,
+    "upper": "5",
+    "upper_inclusive": true
+   }
+  ],
+  "required_section_acceptance": {
+   "sections": [
+    "OU",
+    "BU",
+    "PR"
+   ],
+   "proven_absent": {
+    "benchmark_attestation": "not_passed",
+    "reason": "required_section_absent",
+    "official_absence_gate_established": true
+   },
+   "unsupported_binding_without_observation_route": {
+    "benchmark_attestation": "not_attested",
+    "reason": "required_section_unverifiable",
+    "official_absence_gate_established": false,
+    "official_numeric_score": null
+   },
+   "alternative_validated_observation_route": "use_route_and_grade_real_observations",
+   "current_partial_grader_coverage": "does_not_retroactively_establish_required_section_absence",
+   "infrastructure_failure": "grader_error_not_candidate_absence"
+  }
+ },
+ "gates": [
+  {
+   "id": "F1C-GATE-CORE",
+   "source_lines": [
+    23,
+    23
+   ],
+   "check": "Наличие действующего OU/BU/PR",
+   "linked_rule_ids": [
+    "OU01",
+    "OU02",
+    "OU03",
+    "OU04",
+    "OU05",
+    "OU06",
+    "OU07",
+    "OU08",
+    "OU09",
+    "OU10",
+    "OU11",
+    "OU12",
+    "OU13",
+    "OU14",
+    "OU15",
+    "OU16",
+    "OU17",
+    "OU18",
+    "OU19",
+    "OU20",
+    "OU21",
+    "BU01",
+    "BU02",
+    "BU03",
+    "BU04",
+    "BU05",
+    "BU06",
+    "BU07",
+    "BU08",
+    "BU09",
+    "BU10",
+    "BU11",
+    "BU12",
+    "BU13",
+    "BU14",
+    "BU15",
+    "BU16",
+    "BU17",
+    "PR01",
+    "PR02",
+    "PR03",
+    "PR04",
+    "PR05",
+    "PR06",
+    "PR07",
+    "PR08",
+    "PR09",
+    "PR10",
+    "PR11",
+    "PR12",
+    "PR13",
+    "PR14",
+    "PR15",
+    "PR16",
+    "PR17",
+    "PR18",
+    "PR19"
+   ],
+   "consequence": "absence_of_any_core_section_means_exam_failure",
+   "state": "not_implemented",
+   "limits": "Отсутствие доказано — не прошёл; unsupported binding без пути наблюдения — не аттестован, отсутствие не установлено. A04 решён владельцем; реализация впереди.",
+   "owner_unverifiable_section_policy": "not_attested"
+  },
+  {
+   "id": "F1C-GATE-MECHANISMS",
+   "source_lines": [
+    12,
+    12
+   ],
+   "check": "Явно предписанные механизмы",
+   "linked_rule_ids": [
+    "OU04",
+    "F03",
+    "PR14"
+   ],
+   "consequence": "mandatory_mechanism_conformance",
+   "state": "not_implemented",
+   "limits": "Составить полный перечень; остальные проектные решения свободны."
+  },
+  {
+   "id": "F1C-GATE-CLIENTS",
+   "source_lines": [
+    24,
+    24
+   ],
+   "check": "Работа в тонком и веб-клиенте",
+   "linked_rule_ids": [
+    "G01",
+    "G02",
+    "G03",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05"
+   ],
+   "consequence": "official_environment_requirement",
+   "state": "not_implemented",
+   "limits": "Пилот заменяет startup и не проверяет веб-клиент."
+  },
+  {
+   "id": "F1C-GATE-LOCKS",
+   "source_lines": [
+    24,
+    24
+   ],
+   "check": "Управляемый режим транзакционных блокировок",
+   "linked_rule_ids": [],
+   "consequence": "official_environment_requirement",
+   "state": "not_implemented",
+   "limits": "Проверить режим и исполнение; связь с GEN29 не означает двойной штраф."
+  },
+  {
+   "id": "F1C-PROCEDURE-TIME",
+   "source_lines": [
+    7,
+    10
+   ],
+   "check": "Пять часов и действующая конфигурация",
+   "linked_rule_ids": [],
+   "consequence": "exam_procedure_requirement",
+   "state": "owner_time_policy_specified",
+   "limits": "Человек 5 часов; ИИ 30 минут на решение. Старые 900-секундные попытки не переписываются.",
+   "owner_ai_timeout_seconds": 1800
+  },
+  {
+   "id": "F1C-PROCEDURE-MATERIALS",
+   "source_lines": [
+    13,
+    13
+   ],
+   "check": "Разрешённые материалы",
+   "linked_rule_ids": [],
+   "consequence": "unauthorized_materials_mean_exam_failure",
+   "state": "different_pilot_protocol",
+   "limits": "Shell network открыт; нельзя назвать пилот closed-book."
+  },
+  {
+   "id": "F1C-PROCEDURE-DEFENSE",
+   "source_lines": [
+    14,
+    14
+   ],
+   "check": "Защита на данных и собеседование",
+   "linked_rule_ids": [],
+   "consequence": "exam_procedure_requirement",
+   "state": "not_implemented",
+   "limits": "Runtime fixtures частично проверяют поведение, собеседование не воспроизводится."
+  }
+ ],
+ "items": [
+  {
+   "id": "F1C-GEN01",
+   "category": "GEN",
+   "label": "Полнота и обоснованность решения",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     80,
+     82
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "G01",
+    "G02",
+    "G03",
+    "OU01",
+    "OU02",
+    "OU03",
+    "OU04",
+    "OU05",
+    "OU06",
+    "OU07",
+    "OU08",
+    "OU09",
+    "OU10",
+    "OU11",
+    "OU12",
+    "OU13",
+    "OU14",
+    "OU15",
+    "OU16",
+    "OU17",
+    "OU18",
+    "OU19",
+    "OU20",
+    "OU21",
+    "BU01",
+    "BU02",
+    "BU03",
+    "BU04",
+    "BU05",
+    "BU06",
+    "BU07",
+    "BU08",
+    "BU09",
+    "BU10",
+    "BU11",
+    "BU12",
+    "BU13",
+    "BU14",
+    "BU15",
+    "BU16",
+    "BU17",
+    "PR01",
+    "PR02",
+    "PR03",
+    "PR04",
+    "PR05",
+    "PR06",
+    "PR07",
+    "PR08",
+    "PR09",
+    "PR10",
+    "PR11",
+    "PR12",
+    "PR13",
+    "PR14",
+    "PR15",
+    "PR16",
+    "PR17",
+    "PR18",
+    "PR19",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN01",
+    "description": "Проверить каждый обязательный результат; оптимальность оценивать только по утверждённому критерию. Нарушение одного пункта не определяет весь размер штрафа.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN02",
+   "category": "GEN",
+   "label": "Отсутствующий отчёт",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     83,
+     84
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU19",
+    "OU20",
+    "OU21",
+    "BU16",
+    "BU17",
+    "PR19"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN02",
+    "description": "Вызвать каждый обязательный отчёт на контрольных данных; различать отсутствие отчёта, ошибку вызова адаптера и неверные данные.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN03",
+   "category": "GEN",
+   "label": "Несоответствие представления отчёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     85,
+     86
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU19",
+    "OU20",
+    "OU21",
+    "BU16",
+    "BU17",
+    "PR19"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN03",
+    "description": "Сопоставить колонки, группировки, параметры, детализацию и итоги; при установленном нарушении диапазон берётся по максимуму, пиксельное совпадение не требуется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN04",
+   "category": "GEN",
+   "label": "Несоблюдение предписанного механизма",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     87,
+     89
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU04",
+    "F03",
+    "PR14"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN04",
+    "description": "Составить перечень явно предписанных механизмов; подтвердить метаданными, AST и трассой участие в исполняемом пути, не наличие декоративного объекта.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN05",
+   "category": "GEN",
+   "label": "Документы как источник расчётных итогов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     90,
+     92
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU02"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN05",
+    "description": "Добавить ручные движения с неизменными документами и проверить расчёты и отчёты всех разделов; анализировать используемый источник. Один сбой BU02 не доказывает причину.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [
+     "BU02"
+    ],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN06",
+   "category": "GEN",
+   "label": "Невозможность полного обнуления ресурсов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     93,
+     94
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU11",
+    "OU13",
+    "OU15",
+    "OU16",
+    "OU17",
+    "BU07",
+    "BU14"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN06",
+    "description": "Для каждого регистра остатков закрыть весь жизненный цикл до нуля по всем ресурсам и аналитикам; отличать ошибку расчёта от принципиальной ошибки схемы.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN07",
+   "category": "GEN",
+   "label": "Одностороннее накопление остатков",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     95,
+     97
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU11",
+    "OU13",
+    "BU07",
+    "BU14"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN07",
+    "description": "Проверить приход и расход каждого остаточного ресурса там, где задача требует погашения. Для оборотного регистра критерий неприменим.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN08",
+   "category": "GEN",
+   "label": "Несогласованная аналитика прихода и расхода",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     98,
+     99
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU18",
+    "BU06",
+    "BU07",
+    "BU14"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN08",
+    "description": "Закрыть движения на одинаковых ключах и проверить ноль по каждой комбинации измерений, а не только общий итог.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN09",
+   "category": "GEN",
+   "label": "Недостаточный контроль допустимых остатков",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     100,
+     101
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU10",
+    "BU12"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN09",
+    "description": "Проверить нехватку исходного товара, общего аналога, повторы строк и конкурирующие транзакции; контролировать все затронутые ресурсы. При установленном нарушении штраф берётся по максимуму диапазона.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [
+     "BU10",
+     "BU12"
+    ],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN10",
+   "category": "GEN",
+   "label": "Ошибочный расчёт величин ресурсов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     102,
+     103
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU11",
+    "OU13",
+    "OU15",
+    "OU16",
+    "OU17",
+    "BU13",
+    "PR04",
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN10",
+    "description": "Добавить точные числовые оракулы, дробные количества и округление с полным исчерпанием; величина применимого штрафа определяется максимумом диапазона.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [
+     "BU13"
+    ],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN11",
+   "category": "GEN",
+   "label": "Неправильные фактические движения",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     104,
+     105
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU11",
+    "OU13",
+    "BU07",
+    "BU12",
+    "BU14",
+    "BU15",
+    "PR04",
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN11",
+    "description": "Сравнить весь ожидаемый набор движений, включая суммы, количество, счета, аналитику и период; существующие предикаты проверяют только часть этого набора.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [
+     "BU02",
+     "BU12",
+     "BU13"
+    ],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN12",
+   "category": "GEN",
+   "label": "Дефекты исполняемого кода",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     106,
+     107
+    ]
+   },
+   "deduction": {
+    "minimum": "0.25",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "G01",
+    "G02",
+    "G03",
+    "OU01",
+    "OU02",
+    "OU03",
+    "OU04",
+    "OU05",
+    "OU06",
+    "OU07",
+    "OU08",
+    "OU09",
+    "OU10",
+    "OU11",
+    "OU12",
+    "OU13",
+    "OU14",
+    "OU15",
+    "OU16",
+    "OU17",
+    "OU18",
+    "OU19",
+    "OU20",
+    "OU21",
+    "BU01",
+    "BU02",
+    "BU03",
+    "BU04",
+    "BU05",
+    "BU06",
+    "BU07",
+    "BU08",
+    "BU09",
+    "BU10",
+    "BU11",
+    "BU12",
+    "BU13",
+    "BU14",
+    "BU15",
+    "BU16",
+    "BU17",
+    "PR01",
+    "PR02",
+    "PR03",
+    "PR04",
+    "PR05",
+    "PR06",
+    "PR07",
+    "PR08",
+    "PR09",
+    "PR10",
+    "PR11",
+    "PR12",
+    "PR13",
+    "PR14",
+    "PR15",
+    "PR16",
+    "PR17",
+    "PR18",
+    "PR19",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN12",
+    "description": "Отдельно классифицировать дефект сдачи, ошибку загрузки и инфраструктуру; проверять BSL и runtime. Нет правила преобразования конкретного дефекта в тяжесть штрафа.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN13",
+   "category": "GEN",
+   "label": "Подмена остаточного и оборотного результата",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     108,
+     109
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU19",
+    "OU21",
+    "BU16",
+    "BU17",
+    "PR19"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN13",
+    "description": "На данных с одинаковыми оборотами и разными начальными остатками проверить семантику результата; дополнить анализом используемых таблиц.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN14",
+   "category": "GEN",
+   "label": "Необоснованный обход виртуальных таблиц",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     110,
+     111
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU19",
+    "OU21",
+    "BU16",
+    "BU17",
+    "PR19"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN14",
+    "description": "Разобрать запросы и назначение прямого чтения; необходимость не определяется наличием имени основной таблицы. Прямое чтение доверенного наблюдателя не является кодом участника.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN15",
+   "category": "GEN",
+   "label": "Отборы без подходящего индекса",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     112,
+     113
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN15",
+    "description": "Соотнести поля запросов с индексами метаданных и условиями отбора; определить норматив допустимости и исключения. Один факт WHERE не доказывает штраф.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN16",
+   "category": "GEN",
+   "label": "Неверный момент чтения регистров",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     114,
+     115
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU12",
+    "OU15",
+    "OU16",
+    "OU17",
+    "BU13",
+    "PR06",
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN16",
+    "description": "Создать движения до и после момента документа, одинаковое время разных документов и позднее проведение; проверить границу чтения и порядок.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN17",
+   "category": "GEN",
+   "label": "Некорректная отмена документов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     116,
+     117
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN17",
+    "description": "Провести цепочку, отменить её в обратном порядке, сравнить все контролируемые показатели с исходным снимком; отмена Сборки не равна запрещённой производственной разборке.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN18",
+   "category": "GEN",
+   "label": "Ошибочное проведение прошлой датой",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     118,
+     119
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU12",
+    "PR13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN18",
+    "description": "Сравнить позднее введение/перепроведение с хронологическим вводом; добавить версии политики и зависимые расходы. PR13 покрывает только расчётную поездку в спецификации.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN19",
+   "category": "GEN",
+   "label": "Неустойчивость к повторным строкам",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     120,
+     122
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU12",
+    "PR18"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN19",
+    "description": "Раздробить одну строку на дубли при сохранении общей суммы/количества; сравнить движения во всех типах документов. Общий аналог двух товаров не является тестом дублей.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN20",
+   "category": "GEN",
+   "label": "Чтение базы внутри итераций",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     123,
+     124
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN20",
+    "description": "AST и трасса должны различать цикл чтения БД от цикла по уже полученной выборке; включить вызываемые методы и определить исключения.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN21",
+   "category": "GEN",
+   "label": "Неполные параметры виртуальных таблиц",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     125,
+     126
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN21",
+    "description": "Разобрать каждую применимую виртуальную таблицу и передачу её параметров; условия снаружи оценивать по назначению конкретного параметра.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN22",
+   "category": "GEN",
+   "label": "Необработанные неопределённые значения",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     127,
+     128
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN22",
+    "description": "Выделить nullable-выражения и ветви использования, проверить пустые присоединённые данные; комментарий или поиск слова NULL не доказывает защиту.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN23",
+   "category": "GEN",
+   "label": "Ошибки отношений в запросе",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     129,
+     130
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU19",
+    "OU20",
+    "OU21",
+    "BU16",
+    "BU17",
+    "PR07",
+    "PR12",
+    "PR19"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN23",
+    "description": "Тестировать отсутствие совпадений, отношения один-ко-многим, дубли и суммы; сверять назначение ключей соединения.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN24",
+   "category": "GEN",
+   "label": "Соединение вместо параметризации",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     131,
+     132
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN24",
+    "description": "Подтвердить семантическую заменимость параметрами виртуальной таблицы и учесть случаи, где соединение необходимо; для применимого диапазона используется максимум.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN25",
+   "category": "GEN",
+   "label": "Необоснованная промежуточная выгрузка",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     133,
+     134
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN25",
+    "description": "Исследовать дальнейшее использование выгруженной таблицы; копирование данных само по себе не доказывает избыточность.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN26",
+   "category": "GEN",
+   "label": "Результат дополнительного собеседования",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     135,
+     136
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "expert",
+   "planned_check": {
+    "id": "OAC-GEN26",
+    "description": "Собеседование на стенде не воспроизводится (решение A09): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN27",
+   "category": "GEN",
+   "label": "Неработоспособность управляемого приложения",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     137,
+     138
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "G01",
+    "G02",
+    "G03",
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN27",
+    "description": "Запустить оригинальную сдачу без замены стартовых обработчиков; проверить основные маршруты и формы. Наблюдатель текущего grader такого доказательства не даёт.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN28",
+   "category": "GEN",
+   "label": "Неэффективная процедура проведения",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     139,
+     140
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN28",
+    "description": "Только откалиброванные признаки в коде проведения (запросы в цикле, лишние выборки и т.п.); замеры времени не используются (решение A13).",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN29",
+   "category": "GEN",
+   "label": "Ошибочный режим или применение блокировок",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     141,
+     142
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-GEN29",
+    "description": "Проверить режим метаданных, исполняемые пути и конкурирующие проведения; различать сериализацию, гонку остатков и взаимоблокировку. Конкретный критерий корректности надо утвердить.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN30",
+   "category": "GEN",
+   "label": "Разделы в разных конфигурациях",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     143,
+     144
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "G01",
+    "OU01",
+    "BU07",
+    "PR15"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN30",
+    "description": "В одной сдаче и одной рабочей ИБ проверить работоспособность всех разделов. Разные чистые ИБ судьи на разные сценарии не являются нарушением участника.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN31",
+   "category": "GEN",
+   "label": "Повторение общих объектов по разделам",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     145,
+     146
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU01",
+    "BU05",
+    "BU07",
+    "BU14",
+    "PR15"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN31",
+    "description": "Общие приходная и расходная накладные между разделами не дублируются: одинаковой предметной роли соответствует один тип метаданных. Несколько экземпляров и дополнительные документы иного назначения разрешены.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN32",
+   "category": "GEN",
+   "label": "Нет демонстрационных данных участника",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     147,
+     148
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN32",
+    "description": "Агент объявляет процедуру демо-данных (binding.json → demo_data); стенд вызывает её в чистой базе. Нет процедуры, ошибка или нет проведённых документов — штраф (решение A10). Полнота данных по разделам пока не проверяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-GEN33",
+   "category": "GEN",
+   "label": "Дополнительные типы документов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     149,
+     150
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [],
+   "mapping_relation": "gap",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-GEN33",
+    "description": "Сравнить состав документов сдачи с каркасом и билетом; документ, не описанный в задании, штрафуется как в документе 1С (решение A07 отозвано 11.10.2026).",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   },
+   "owner_override": null
+  },
+  {
+   "id": "F1C-OU01",
+   "category": "OU",
+   "label": "Отсутствующая оперативная часть",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     157,
+     158
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU01",
+    "OU02",
+    "OU03",
+    "OU04",
+    "OU05",
+    "OU06",
+    "OU07",
+    "OU08",
+    "OU09",
+    "OU10",
+    "OU11",
+    "OU12",
+    "OU13",
+    "OU14",
+    "OU15",
+    "OU16",
+    "OU17",
+    "OU18",
+    "OU19",
+    "OU20",
+    "OU21"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-OU01",
+    "description": "Различить отсутствие раздела и отдельные ошибки; сначала проверить наличие действующего раздела, затем полноту всех OU-правил. Действует также общий барьер несдачи.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-OU02",
+   "category": "OU",
+   "label": "Неподходящий механизм оперативного учёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     159,
+     160
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU01",
+    "OU11",
+    "OU18",
+    "OU19",
+    "OU21"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-OU02",
+    "description": "Подтвердить, что учёт действительно ведётся в регистрах накопления и читатели используют их, а не декоративные записи. Это дополнительный официальный критерий.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-OU03",
+   "category": "OU",
+   "label": "Неверный вид регистра накопления",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     161,
+     162
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "OU19",
+    "OU21"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-OU03",
+    "description": "Соотнести семантику каждого регистра с необходимостью остатков/оборотов, проверить метаданные и результаты; наличие оборотного отчёта не требует оборотного регистра во всех случаях.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-OU04",
+   "category": "OU",
+   "label": "Итоги из формы используются при проведении",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     163,
+     164
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "OU01",
+    "OU11",
+    "OU15",
+    "OU16",
+    "OU17"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-OU04",
+    "description": "Провести без открытия формы, затем изменить остаток после открытия формы и сравнить результат; AST/трасса выявляют передачу устаревших итогов из формы.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU01",
+   "category": "BU",
+   "label": "Отсутствующая бухгалтерская часть",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     171,
+     172
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU01",
+    "BU02",
+    "BU03",
+    "BU04",
+    "BU05",
+    "BU06",
+    "BU07",
+    "BU08",
+    "BU09",
+    "BU10",
+    "BU11",
+    "BU12",
+    "BU13",
+    "BU14",
+    "BU15",
+    "BU16",
+    "BU17"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-BU01",
+    "description": "Проверить наличие действующей бухгалтерской части и все BU-правила; один расходный сценарий не доказывает полноту. Действует также общий барьер несдачи.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU02",
+   "category": "BU",
+   "label": "Неподходящий механизм бухгалтерского учёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     173,
+     174
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU01",
+    "BU02",
+    "BU07",
+    "BU14",
+    "BU15"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU02",
+    "description": "Подтвердить регистр бухгалтерии и фактические движения/читателей. Текущий binding требует этот тип, но не доказывает корректность всего механизма.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU03",
+   "category": "BU",
+   "label": "Неверная бухгалтерская модель",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     175,
+     176
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU01",
+    "BU02",
+    "BU03",
+    "BU04",
+    "BU05",
+    "BU06",
+    "BU07",
+    "BU08",
+    "BU09",
+    "BU10",
+    "BU11",
+    "BU12",
+    "BU13",
+    "BU14",
+    "BU15",
+    "BU16",
+    "BU17"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-BU03",
+    "description": "Проверить счета, аналитику, количественный и стоимостной учёт, замену и ручные операции. Частные удачные сценарии не доказывают модель целиком.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [
+     "BU10",
+     "BU12",
+     "BU13"
+    ],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU04",
+   "category": "BU",
+   "label": "Ошибочная двойная запись",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     177,
+     179
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU07",
+    "BU14",
+    "BU15"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU04",
+    "description": "Сравнить пары дебет/кредит и суммы всех проводок, включая ручные корреспонденции. Текущий предикат стоимости не проверяет каждую дебетовую сторону.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU05",
+   "category": "BU",
+   "label": "Избыточная бухгалтерская аналитика",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     180,
+     181
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "BU06",
+    "BU13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-BU05",
+    "description": "Соотнести каждую аналитику с независимым показателем задачи и свободой реализации; отсутствие имени в примере не делает аналитику лишней.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU06",
+   "category": "BU",
+   "label": "Ошибочные настройки балансового учёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     182,
+     183
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU06",
+    "BU13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU06",
+    "description": "Проверить свойства измерений, ресурсов и признаков учёта вместе с обнулением по складу и стоимостью компании; суффикс динамического поля не заменяет анализ схемы.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU07",
+   "category": "BU",
+   "label": "Ошибочные признаки учёта субконто",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     184,
+     185
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "BU06",
+    "BU13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU07",
+    "description": "Если используются субконто, проверить признаки и реальное влияние на ресурсы. Для архитектуры без субконто нельзя начислять штраф за отсутствие их настроек.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU08",
+   "category": "BU",
+   "label": "Остаточная аналитика для оборотных данных",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     186,
+     188
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "BU16",
+    "BU17"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-BU08",
+    "description": "Определить, какие аналитики требуют только оборотов; проверить настройки и семантику читателей, а не требовать одинаковую архитектуру у всех.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU09",
+   "category": "BU",
+   "label": "Потеря корреспонденции при чтении итогов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     189,
+     190
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU02",
+    "BU16",
+    "BU17"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU09",
+    "description": "Добавить ручные записи с теми же суммами, но разными корреспондирующими счетами; проверить включение/исключение в каждом требуемом результате.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU10",
+   "category": "BU",
+   "label": "Ошибочная аналитика счетов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     191,
+     192
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU06",
+    "BU13",
+    "BU16"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU10",
+    "description": "Добавить отличающиеся склады и товары с совпадающими суммами; проверить каждый требуемый разрез. Пилот различает два склада в одном случае.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "related_runtime_evidence",
+    "pilot_assertion_rule_ids": [
+     "BU13"
+    ],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BU11",
+   "category": "BU",
+   "label": "Потеря счетов исходного каркаса",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     193,
+     194
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "BU01",
+    "BU07",
+    "BU14",
+    "BU15"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-BU11",
+    "description": "Сравнить инвентарь исходного и сданного плана счетов, идентичность и доступность счетов. Проверка наличия четырёх кодов не доказывает отсутствие удаления остальных.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR01",
+   "category": "PR",
+   "label": "Отсутствующая расчётная часть",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     201,
+     202
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR01",
+    "PR02",
+    "PR03",
+    "PR04",
+    "PR05",
+    "PR06",
+    "PR07",
+    "PR08",
+    "PR09",
+    "PR10",
+    "PR11",
+    "PR12",
+    "PR13",
+    "PR14",
+    "PR15",
+    "PR16",
+    "PR17",
+    "PR18",
+    "PR19"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-PR01",
+    "description": "Проверить действующие начисления и все PR-правила; отличить отсутствие раздела от частичной ошибки. Действует общий барьер несдачи.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR02",
+   "category": "PR",
+   "label": "Неподходящий механизм периодических расчётов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     203,
+     204
+    ]
+   },
+   "deduction": {
+    "minimum": "3.0",
+    "maximum": "3.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR01",
+    "PR04",
+    "PR07",
+    "PR10",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR02",
+    "description": "Подтвердить регистры расчёта, их записи и фактическое участие при начислении. Одних правильных сумм во вспомогательном регистре недостаточно официальному профилю.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR03",
+   "category": "PR",
+   "label": "Ошибочные зависимости начислений",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     205,
+     206
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR07",
+    "PR10",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR03",
+    "description": "Проверить вытеснение тарифных/премиальных периодов и получение базы на различающих данных, затем сверить связи видов расчёта.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR04",
+   "category": "PR",
+   "label": "Лишний период действия у расчёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     207,
+     208
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "PR01",
+    "PR07",
+    "PR10"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-PR04",
+    "description": "Для каждого вида расчёта определить необходимость периода действия и вытеснения; не переносить универсальное правило на премию без анализа этой постановки.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR05",
+   "category": "PR",
+   "label": "Ошибочная привязка графика",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     209,
+     211
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR02",
+    "PR03",
+    "PR04",
+    "PR11"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR05",
+    "description": "Разные графики подразделений и совместительство должны давать правильные часы/дни; проверить связь регистра с графиком и роль соответствующего поля.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR06",
+   "category": "PR",
+   "label": "Чтение графика в обход расчётного механизма",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     212,
+     213
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR03",
+    "PR04",
+    "PR11"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR06",
+    "description": "Статически и трассой подтвердить использование специализированного получения графика; одних сумм не хватает для вывода о способе получения.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR07",
+   "category": "PR",
+   "label": "Ошибочная аналитика расчётной базы",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     214,
+     216
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR02",
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR07",
+    "description": "Добавить сотрудников, подразделения и периоды с контрольными суммами вне базы; исключить начисления руководителя и проверить каждую аналитику.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR08",
+   "category": "PR",
+   "label": "База из основной таблицы расчётов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     217,
+     218
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR08",
+    "description": "Проверить специализированный механизм базы и его исполняемый путь на данных с вытеснением и разными периодами; правильная сумма не доказывает механизм.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR09",
+   "category": "PR",
+   "label": "Неоптимальный отбор расчётной базы",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     219,
+     220
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-PR09",
+    "description": "Сопоставить отборы базы и измерения с индексами и планом запроса на заданном объёме; норматив эффективности требует фиксации.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR10",
+   "category": "PR",
+   "label": "Ошибочные ведущие виды расчёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     221,
+     222
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "PR14"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-PR10",
+    "description": "Оценивать только необходимые для разрешённой логики связи; задача запрещает механизм перерасчётов. Нельзя требовать ведущие виды только потому, что штраф есть в общем каталоге.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   },
+   "task_parameter": "recalculation_mode",
+   "applicability_by_ticket_mode": {
+    "required": "conditional",
+    "prohibited": "conditional",
+    "not_specified": "unresolved"
+   }
+  },
+  {
+   "id": "F1C-PR11",
+   "category": "PR",
+   "label": "Избыточное использование перерасчёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     223,
+     224
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR14"
+   ],
+   "mapping_relation": "direct",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR11",
+    "description": "Подтвердить, что поздняя поездка обрабатывается без механизма перерасчётов; наличие неиспользуемого объекта само по себе не доказывает нарушение.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   },
+   "task_parameter": "recalculation_mode",
+   "applicability_by_ticket_mode": {
+    "required": "conditional",
+    "prohibited": "applicable",
+    "not_specified": "unresolved"
+   }
+  },
+  {
+   "id": "F1C-PR12",
+   "category": "PR",
+   "label": "Ошибочная схема разрешённого перерасчёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     225,
+     226
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "PR14"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR12",
+    "description": "В данном условии механизм перерасчётов не используется; требовать настройку его объектов нельзя. Неправомерное использование относится к PR11 этого каталога.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   },
+   "task_parameter": "recalculation_mode",
+   "applicability_by_ticket_mode": {
+    "required": "applicable",
+    "prohibited": "not_applicable",
+    "not_specified": "unresolved"
+   }
+  },
+  {
+   "id": "F1C-PR13",
+   "category": "PR",
+   "label": "Использование неподготовленной базы",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     227,
+     228
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR07",
+    "PR12",
+    "PR15",
+    "PR18"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR13",
+    "description": "Различать записанные и рассчитанные данные, порядок видов начисления в одном и нескольких документах; база должна отражать завершённые первичные расчёты.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR14",
+   "category": "PR",
+   "label": "Избыточная перезапись фактических периодов",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     229,
+     230
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "PR10",
+    "PR13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-PR14",
+    "description": "Исследовать необходимость режима на путях вытеснения и поздней поездки; флаг без анализа необходимости не является достаточным доказательством.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR15",
+   "category": "PR",
+   "label": "Нет сторнирования при позднем вытеснении",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     231,
+     232
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "PR13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR15",
+    "description": "Ввести командировку за прошлый месяц после начислений; проверить исправленные записи и конечные суммы. PR13 описывает итог, но ещё не проверяет способ сторнирования.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR16",
+   "category": "PR",
+   "label": "Неспециализированный способ сторнирования",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     233,
+     234
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "PR13"
+   ],
+   "mapping_relation": "related",
+   "formalization": "deterministic_candidate",
+   "planned_check": {
+    "id": "OAC-PR16",
+    "description": "Если требуется сторнирование, подтвердить использование предусмотренного платформой механизма; определить допустимый контракт и трассу до запуска.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-PR17",
+   "category": "PR",
+   "label": "Накопление вместо периодического расчёта",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     235,
+     236
+    ]
+   },
+   "deduction": {
+    "minimum": "2.0",
+    "maximum": "2.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "conditional",
+   "linked_rule_ids": [
+    "PR01",
+    "PR04",
+    "PR07",
+    "PR12"
+   ],
+   "mapping_relation": "related",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-PR17",
+    "description": "Отделить начисление по периодам от накопления самостоятельных остатков; анализировать назначение реальных записей, а не имя регистра.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP01",
+   "category": "BP",
+   "label": "Отсутствующая процессная часть",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     243,
+     244
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP01",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP02",
+   "category": "BP",
+   "label": "Нет визуального состояния процесса",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     245,
+     246
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP02",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP03",
+   "category": "BP",
+   "label": "Ошибочный список задач пользователя",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     247,
+     248
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP03",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP04",
+   "category": "BP",
+   "label": "Избыточное персональное назначение",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     249,
+     250
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP04",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP05",
+   "category": "BP",
+   "label": "Избыточное ролевое назначение",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     251,
+     252
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP05",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP06",
+   "category": "BP",
+   "label": "Избыточные параметры адресации",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     253,
+     254
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP06",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP07",
+   "category": "BP",
+   "label": "Неверная связь адресации и регистра",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     255,
+     256
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP07",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP08",
+   "category": "BP",
+   "label": "Ошибочные сведения адресации",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     257,
+     258
+    ]
+   },
+   "deduction": {
+    "minimum": "1.0",
+    "maximum": "1.0",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP08",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-BP09",
+   "category": "BP",
+   "label": "Недоступен полный список задач",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     259,
+     260
+    ]
+   },
+   "deduction": {
+    "minimum": "0.5",
+    "maximum": "0.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "not_applicable",
+   "linked_rule_ids": [
+    "G01"
+   ],
+   "mapping_relation": "context",
+   "formalization": "needs_task_resolution",
+   "planned_check": {
+    "id": "OAC-BP09",
+    "description": "В этом билете задачи по бизнес-процессу нет (решение A05): пункт не применяется.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "out_of_scope",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  },
+  {
+   "id": "F1C-UI01",
+   "category": "UI",
+   "label": "Отсутствующая часть управляемых форм",
+   "source": {
+    "artifact": "ATT83PL.rtf",
+    "text_view": "ATT83PL.txt",
+    "lines": [
+     266,
+     267
+    ]
+   },
+   "deduction": {
+    "minimum": "1.5",
+    "maximum": "1.5",
+    "unit": "points",
+    "automatic_eligible": false,
+    "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
+    "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
+   },
+   "applicability": "applicable",
+   "linked_rule_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05"
+   ],
+   "mapping_relation": "aggregate",
+   "formalization": "mixed",
+   "planned_check": {
+    "id": "OAC-UI01",
+    "description": "Проверить F01–F05 в оригинальном приложении; отсутствие всех форм отделить от отдельного дефекта. Исключение из общего барьера отсутствия раздела не отменяет штраф.",
+    "implementation": "not_implemented",
+    "execution": "not_run"
+   },
+   "current_coverage": {
+    "status": "not_implemented",
+    "pilot_assertion_rule_ids": [],
+    "official_penalty_fully_verified": false
+   }
+  }
+ ],
+ "open_issues": [
+  {
+   "id": "A01",
+   "title": "Диапазоны штрафов",
+   "boundary": "Штраф с диапазоном учитывается интервалом: минимум и максимум диапазона. Итоговый балл — интервал «от–до»; несдача доказана, только если весь интервал ниже 2,2.",
+   "state": "resolved",
+   "original_boundary": "Нужно правило выбора тяжести для всех диапазонов; нельзя молча брать минимум, максимум или середину.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Любой применимый диапазон берём по максимуму.",
+   "type": "follows_document"
+  },
+  {
+   "id": "A02",
+   "title": "Повторный штраф за один дефект",
+   "boundary": "Один дефект — один штраф: из применимых пунктов перечня берётся наибольший. Документ этот случай не регулирует.",
+   "state": "resolved",
+   "original_boundary": "Штрафы по разделам складываются, но гранулярность ошибки и сочетание общего и специального штрафа не определены. Нужны идентификатор дефекта и согласованные правила совместимости.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Разные применимые штрафы за один дефект складываются; повтор наблюдения одной пары defect_id + penalty_id не создаёт новый штраф.",
+   "type": "stand_rule"
+  },
+  {
+   "id": "A03",
+   "title": "Границы оценки",
+   "boundary": "Границы как в документе, полуоткрытые: [2,2; 3,5) — удовлетворительно, [3,5; 4,5) — хорошо, [4,5; 5] — отлично.",
+   "state": "resolved",
+   "original_boundary": "Формулировки интервалов пересекаются на 3,5 и 4,5; от 4,5 отдельно указано отлично. Пограничные правила необходимо зафиксировать, а не приписать собственную трактовку 1С.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "2,2–3,5 включительно — удовлетворительно; больше 3,5 до 4,5 включительно — хорошо; больше 4,5 до 5 включительно — отлично.",
+   "type": "follows_document"
+  },
+  {
+   "id": "A04",
+   "title": "Отсутствие обязательного раздела",
+   "boundary": "Раздел, который стенд не может наблюдать, — «не аттестовано», а не отсутствие раздела. Доказанное отсутствие — несдача, как в документе.",
+   "state": "resolved",
+   "original_boundary": "Отсутствие OU/BU/PR даёт несдачу. Часть ошибок или unsupported binding не доказывают отсутствие раздела; нужны конкретные критерии отсутствия.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Отсутствующий обязательный раздел не проходит; непроверяемый обязательный раздел не аттестован с причиной required_section_unverifiable. Unsupported binding не доказывает отсутствие.",
+   "type": "stand_rule"
+  },
+  {
+   "id": "A05",
+   "title": "Бизнес-процесс",
+   "boundary": "В этом билете задачи по бизнес-процессу нет: штрафы раздела бизнес-процессов (М8.1–М8.9) не применимы; требование к разделам интерфейса (Т1.1) проверяется только для разделов билета.",
+   "state": "resolved",
+   "previous_boundary": "Q01 остаётся открытым. Девять процессных штрафов имеют неопределённую применимость; их нельзя ни начислять, ни выдавать за доказанно отсутствующие.",
+   "type": "ticket_parameter",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3"
+  },
+  {
+   "id": "A06",
+   "title": "Дублирование накладных",
+   "boundary": "Отдельного уточнения нет: дублирование накладных между разделами штрафуется пунктом 1С М4.31.",
+   "state": "resolved",
+   "original_boundary": "Черновик задачи разрешал отдельные объекты для OU и BU; официальный GEN31 требует оценить дублирование. Утвердить общие роли до новой попытки, исторические условия сохранить.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Не дублировать общие типы приходной и расходной накладных между разделами; экземпляры документов могут быть разными.",
+   "type": "follows_document"
+  },
+  {
+   "id": "A07",
+   "title": "Документы сверх постановки",
+   "boundary": "Отмена отозвана: собственный вид документа, не описанный в задании, штрафуется пунктом 1С М4.33.",
+   "state": "resolved",
+   "original_boundary": "Источник допускает изменение каркаса, но содержит штраф за новые типы документов. Нужна граница между необходимым расширением и лишним объектом.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Дополнительные типы документов разрешены; F1C-GEN33 не начисляется. Это не разрешает дублировать общие накладные.",
+   "type": "follows_document"
+  },
+  {
+   "id": "A08",
+   "title": "Отсутствующий механизм перерасчётов",
+   "boundary": "Отдельного уточнения нет: режим перерасчётов задаёт билет (в этом билете — запрещены, Б4, стр. 450).",
+   "state": "resolved",
+   "original_boundary": "Выбранное условие запрещает его использование. Нельзя требовать настройки перерасчётов по общему каталогу; позднее вытеснение и сторнирование проверяются отдельно.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Режим перерасчётов определяется условием каждого билета. Для текущего примера prohibited, для требующего механизма билета required.",
+   "type": "ticket_parameter"
+  },
+  {
+   "id": "A09",
+   "title": "Среда и материалы",
+   "boundary": "Две серии по времени: основная — 5 часов, как у человека; быстрая — 30 минут для дешёвых сравнений. Два режима материалов: закрытая сеть и открытая сеть с журналом. Харнес — часть испытуемого стека. Серии и режимы не смешиваются. Собеседование не воспроизводится: штраф М4.26 на стенде не применяется.",
+   "state": "resolved",
+   "original_boundary": "Официальные пять часов, ограничения материалов и защита отличаются от 900-секундного open-book пилота. Проверка по критериям качества не делает такой пилот воспроизведением процедуры экзамена.",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3",
+   "previous_boundary": "Время определено владельцем: ИИ 30 минут, человек 5 часов. Материалы, среда и собеседование остаются отдельными аспектами; старые 900-секундные результаты сохранены.",
+   "type": "deviation"
+  },
+  {
+   "id": "A10",
+   "title": "Демонстрационные данные",
+   "boundary": "Демонстрационные данные обязательны (М4.32). Агент объявляет в binding.json серверную процедуру заполнения; стенд вызывает её в чистой базе. Нет процедуры, ошибка или ни одного проведённого документа — штраф М4.32.",
+   "state": "resolved",
+   "previous_boundary": "Текущий протокол сдаёт исходники/binding, а судья сам создаёт fixtures. Для GEN32 требуется отдельный формат данных участника; отсутствие в новом формате нельзя штрафовать задним числом.",
+   "type": "follows_document",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3"
+  },
+  {
+   "id": "A11",
+   "title": "Причина отказа загрузки",
+   "boundary": "Сдача, которая не загружается в чистую базу из каркаса, — экзамен не сдан (М1.3: нужен действующий вариант конфигурации). Если не восстанавливается сама база из каркаса — это сбой стенда, прогон не засчитывается.",
+   "state": "resolved",
+   "previous_boundary": "Дублированный GeneratedType подтверждает неработоспособную сдачу, но не определяет конкретный кодовый штраф и его величину. Сначала нужен классификатор причины/владельца ошибки.",
+   "type": "follows_document",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3"
+  },
+  {
+   "id": "A12",
+   "title": "Повышение оценки и пределы",
+   "boundary": "Бонусы за оригинальность и эффективность не начисляются: правила начисления в документе нет. Балл снизу не ограничивается; отрицательный балл — «неудовлетворительно».",
+   "state": "resolved",
+   "previous_boundary": "Упомянуто повышение за оригинальность/эффективность, но нет алгоритма надбавки и полной политики ограничений итогового балла. Не выдумывать cap/floor.",
+   "type": "stand_rule",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3"
+  },
+  {
+   "id": "A13",
+   "title": "Назначение метрик",
+   "boundary": "Неэффективность доказывается только откалиброванными признаками в коде (запрос в цикле, обход виртуальных таблиц и т.п.). Замеры времени не используются; токены и время агента — цена прогона, а не качество решения.",
+   "state": "resolved",
+   "previous_boundary": "Токены и время агента не являются критерием эффективности учётного алгоритма. Нужны независимые runtime-нагрузки.",
+   "type": "stand_rule",
+   "resolution_authority": "benchmark_owner",
+   "policy_id": "owner-scoring-policy-v3"
+  }
+ ],
+ "owner_policy": {
+  "path": "private/owner-scoring-policy.json",
+  "id": "owner-scoring-policy-v4",
+  "sha256": "d26d534bb838ab1b5facb7bc033ca8ec40912133baadcdbad83b27fc577905f5",
+  "authority": "benchmark_owner",
+  "is_official_1c_policy": false,
+  "integrated_into_grader": false
+ },
+ "rule_index": {
+  "G01": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27",
+    "F1C-GEN30"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12"
+   ],
+   "context": [
+    "F1C-BP01",
+    "F1C-BP02",
+    "F1C-BP03",
+    "F1C-BP04",
+    "F1C-BP05",
+    "F1C-BP06",
+    "F1C-BP07",
+    "F1C-BP08",
+    "F1C-BP09"
+   ],
+   "gap": []
+  },
+  "G02": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "G03": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU01": {
+   "direct": [],
+   "related": [
+    "F1C-GEN30",
+    "F1C-GEN31",
+    "F1C-OU02",
+    "F1C-OU04"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU02": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU03": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU04": {
+   "direct": [],
+   "related": [
+    "F1C-GEN04"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU05": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU06": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU07": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU08": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU09": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU10": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU11": {
+   "direct": [],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN07",
+    "F1C-GEN10",
+    "F1C-GEN11",
+    "F1C-OU02",
+    "F1C-OU04"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU12": {
+   "direct": [],
+   "related": [
+    "F1C-GEN16",
+    "F1C-GEN18"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU13": {
+   "direct": [],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN07",
+    "F1C-GEN10",
+    "F1C-GEN11"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU14": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU15": {
+   "direct": [],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN10",
+    "F1C-GEN16",
+    "F1C-OU04"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU16": {
+   "direct": [],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN10",
+    "F1C-GEN16",
+    "F1C-OU04"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU17": {
+   "direct": [],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN10",
+    "F1C-GEN16",
+    "F1C-OU04"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU18": {
+   "direct": [],
+   "related": [
+    "F1C-GEN08",
+    "F1C-OU02"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU19": {
+   "direct": [
+    "F1C-GEN02",
+    "F1C-GEN03"
+   ],
+   "related": [
+    "F1C-GEN13",
+    "F1C-GEN14",
+    "F1C-GEN23",
+    "F1C-OU02",
+    "F1C-OU03"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU20": {
+   "direct": [
+    "F1C-GEN02",
+    "F1C-GEN03"
+   ],
+   "related": [
+    "F1C-GEN23"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "OU21": {
+   "direct": [
+    "F1C-GEN02",
+    "F1C-GEN03"
+   ],
+   "related": [
+    "F1C-GEN13",
+    "F1C-GEN14",
+    "F1C-GEN23",
+    "F1C-OU02",
+    "F1C-OU03"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-OU01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU01": {
+   "direct": [],
+   "related": [
+    "F1C-BU02",
+    "F1C-BU11"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU02": {
+   "direct": [],
+   "related": [
+    "F1C-GEN05",
+    "F1C-BU02",
+    "F1C-BU09"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU03": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU04": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU05": {
+   "direct": [],
+   "related": [
+    "F1C-GEN31"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU06": {
+   "direct": [],
+   "related": [
+    "F1C-GEN08",
+    "F1C-BU05",
+    "F1C-BU06",
+    "F1C-BU07",
+    "F1C-BU10"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU07": {
+   "direct": [
+    "F1C-BU04"
+   ],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN07",
+    "F1C-GEN08",
+    "F1C-GEN11",
+    "F1C-GEN30",
+    "F1C-GEN31",
+    "F1C-BU02",
+    "F1C-BU11"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU08": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU09": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU10": {
+   "direct": [
+    "F1C-GEN09"
+   ],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU11": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU12": {
+   "direct": [
+    "F1C-GEN09"
+   ],
+   "related": [
+    "F1C-GEN11",
+    "F1C-GEN19"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU13": {
+   "direct": [],
+   "related": [
+    "F1C-GEN10",
+    "F1C-GEN16",
+    "F1C-BU05",
+    "F1C-BU06",
+    "F1C-BU07",
+    "F1C-BU10"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU14": {
+   "direct": [
+    "F1C-BU04"
+   ],
+   "related": [
+    "F1C-GEN06",
+    "F1C-GEN07",
+    "F1C-GEN08",
+    "F1C-GEN11",
+    "F1C-GEN31",
+    "F1C-BU02",
+    "F1C-BU11"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU15": {
+   "direct": [
+    "F1C-BU04"
+   ],
+   "related": [
+    "F1C-GEN11",
+    "F1C-BU02",
+    "F1C-BU11"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU16": {
+   "direct": [
+    "F1C-GEN02",
+    "F1C-GEN03"
+   ],
+   "related": [
+    "F1C-GEN13",
+    "F1C-GEN14",
+    "F1C-GEN23",
+    "F1C-BU08",
+    "F1C-BU09",
+    "F1C-BU10"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "BU17": {
+   "direct": [
+    "F1C-GEN02",
+    "F1C-GEN03"
+   ],
+   "related": [
+    "F1C-GEN13",
+    "F1C-GEN14",
+    "F1C-GEN23",
+    "F1C-BU08",
+    "F1C-BU09"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-BU01",
+    "F1C-BU03"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR01": {
+   "direct": [],
+   "related": [
+    "F1C-PR02",
+    "F1C-PR04",
+    "F1C-PR17"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR02": {
+   "direct": [
+    "F1C-PR05",
+    "F1C-PR07"
+   ],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR03": {
+   "direct": [
+    "F1C-PR05"
+   ],
+   "related": [
+    "F1C-PR06"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR04": {
+   "direct": [
+    "F1C-PR05"
+   ],
+   "related": [
+    "F1C-GEN10",
+    "F1C-GEN11",
+    "F1C-PR02",
+    "F1C-PR06",
+    "F1C-PR17"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR05": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR06": {
+   "direct": [],
+   "related": [
+    "F1C-GEN16"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR07": {
+   "direct": [
+    "F1C-PR07"
+   ],
+   "related": [
+    "F1C-GEN10",
+    "F1C-GEN11",
+    "F1C-GEN16",
+    "F1C-GEN23",
+    "F1C-PR02",
+    "F1C-PR03",
+    "F1C-PR04",
+    "F1C-PR08",
+    "F1C-PR09",
+    "F1C-PR13",
+    "F1C-PR17"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR08": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR09": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR10": {
+   "direct": [],
+   "related": [
+    "F1C-PR02",
+    "F1C-PR03",
+    "F1C-PR04",
+    "F1C-PR14"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR11": {
+   "direct": [
+    "F1C-PR05"
+   ],
+   "related": [
+    "F1C-PR06"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR12": {
+   "direct": [
+    "F1C-PR07"
+   ],
+   "related": [
+    "F1C-GEN10",
+    "F1C-GEN11",
+    "F1C-GEN16",
+    "F1C-GEN23",
+    "F1C-PR02",
+    "F1C-PR03",
+    "F1C-PR08",
+    "F1C-PR09",
+    "F1C-PR13",
+    "F1C-PR17"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR13": {
+   "direct": [],
+   "related": [
+    "F1C-GEN18",
+    "F1C-PR14",
+    "F1C-PR15",
+    "F1C-PR16"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR14": {
+   "direct": [
+    "F1C-PR11"
+   ],
+   "related": [
+    "F1C-GEN04",
+    "F1C-PR10",
+    "F1C-PR12"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR15": {
+   "direct": [],
+   "related": [
+    "F1C-GEN30",
+    "F1C-GEN31",
+    "F1C-PR13"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR16": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR17": {
+   "direct": [],
+   "related": [],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR18": {
+   "direct": [],
+   "related": [
+    "F1C-GEN19",
+    "F1C-PR13"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "PR19": {
+   "direct": [
+    "F1C-GEN02",
+    "F1C-GEN03"
+   ],
+   "related": [
+    "F1C-GEN13",
+    "F1C-GEN14",
+    "F1C-GEN23"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-PR01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "F01": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-UI01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "F02": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-UI01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "F03": {
+   "direct": [],
+   "related": [
+    "F1C-GEN04",
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-UI01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "F04": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-UI01"
+   ],
+   "context": [],
+   "gap": []
+  },
+  "F05": {
+   "direct": [],
+   "related": [
+    "F1C-GEN27"
+   ],
+   "aggregate": [
+    "F1C-GEN01",
+    "F1C-GEN12",
+    "F1C-UI01"
+   ],
+   "context": [],
+   "gap": []
+  }
+ }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "id": "mcp-toolkit-1.9.0-macos-v1",
+  "additional_harness": "mcp-toolkit-1.9.0",
+  "delegation": "disabled",
+  "network": "open-book shell network; native web disabled; the MCP server listens on 127.0.0.1 inside the 1C client session",
+  "outer_filesystem": "workspace/system runtime allowlist; one newly created 1C cache namespace; protected curator files denied; the 1C client runs under the same outer sandbox as the solver",
+  "skills": [
+    "calling-1c-rest-api-via-curl",
+    "composing-1c-queries"
+  ],
+  "mcp_servers": [
+    "onec"
+  ],
+  "memory": false,
+  "extensions": false,
+  "platform_database_policy": "one pre-restored worker infobase; the stand opens a 1C:Enterprise client session on it with the published processing before the solve",
+  "package_version": "1.9.0",
+  "package_manifest_sha256": "cafbd384a20d61e1405e8c6f9c0826e2b6e9954ee8d5602fd5f4950a996f20c3",
+  "source_commit": "c36aba2fc744f27c8fc8084b4d231732bad0837c",
+  "release_asset_sha256": "9a0b3a1f16c569597f23883b8ab67bd117295f499c2b30b65c03a2b947582c39",
+  "registration": "published macOS processing (embedded HTTP/MCP server, port 6003) started through its own autostart file; MCP over streamable HTTP; the author's two skills unchanged",
+  "dangerous_operations": "owner decision 2026-10-13, the author's maximum: automatic approval of Записать/Write and УстановитьПривилегированныйРежим/SetPrivilegedMode; every other dangerous keyword is blocked with an error (no confirmation dialog)",
+  "scope": "trusted CLI with untrusted solution; not hardened against arbitrary native process escape"
+}

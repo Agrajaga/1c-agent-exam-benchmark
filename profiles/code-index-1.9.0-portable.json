@@ -1,0 +1,28 @@
+{
+  "source_commit": "635ae34cf2598098166d0d7fcfc244bb89adb1f2",
+  "release": "v1.9.0",
+  "skills": [],
+  "schema_version": 1,
+  "id": "code-index-1.9.0-windows-native-v1",
+  "additional_harness": "code-index-1.9.0",
+  "target": "windows-x64",
+  "memory": false,
+  "extensions": false,
+  "delegation": "disabled",
+  "package_manifest_sha256": "97e349cf3c4b06285edfdfc4578905336e02850b86cdcda6d4c41678fb343866",
+  "configuration": {
+    "version": "1.9.0",
+    "label": "Code Index 1.9.0",
+    "server": "code-index",
+    "command": "{package}/bsl-indexer.exe",
+    "args": [
+      "serve",
+      "--path",
+      "{src}"
+    ],
+    "env": {
+      "CODE_INDEX_HOME": "{tmp}/code-index-home"
+    },
+    "registration": "Official Windows indexer; per-worker daemon and source index"
+  }
+}

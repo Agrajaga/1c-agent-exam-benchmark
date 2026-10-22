@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Замеры, выполненные на этом компьютере: оценки, решения и отправка в рейтинг.">
+<title>Мои результаты · Экзамен 1С</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%23d9622b'/%3E%3Cpath d='M18 34l9 9 19-21' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css"><script type="module" src="nav.js"></script><script type="module" src="results.js"></script>
+</head>
+<body>
+<main class="page">
+  <nav class="tabs"></nav>
+  <header class="head">
+    <h1>Мои результаты</h1>
+    <p class="lead">Замеры, выполненные на этом компьютере. Отправка в рейтинг создаёт PR с решением (XML и DT), оценкой и параметрами среды. Перед отправкой видно, что именно уйдёт.</p>
+  </header>
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th>Дата</th><th>Окружение</th><th>Балл</th><th class="num">Проверки</th><th class="num">Решение</th><th>Рейтинг</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="empty" id="empty" hidden>Замеров пока нет. Начните на странице <a href="index.html">«Замер»</a>.</p>
+  <p class="why">Решения и журналы хранятся локально в <code>.local/</code>. В PR не попадают вход в Codex, лицензия 1С и сырые журналы.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "source_commit": "52a38118b07d6ef2779d46595f349ebf8fd5e8bc",
+  "release": "v1.1.0-rc.6",
+  "skills": [],
+  "schema_version": 1,
+  "id": "bsl-ls-1.1.0-rc.6-windows-native-v1",
+  "additional_harness": "bsl-ls-1.1.0-rc.6",
+  "target": "windows-x64",
+  "memory": false,
+  "extensions": false,
+  "delegation": "disabled",
+  "package_manifest_sha256": "da593f9519daac9008b74ddfa85ac2db978b4b738aa0ebe404c29b6fc8630ffd",
+  "configuration": {
+    "version": "1.1.0-rc.6",
+    "label": "BSL Language Server 1.1 RC6",
+    "server": "bsl-language-server",
+    "command": "{package}/bsl-language-server/bsl-language-server.exe",
+    "args": [
+      "mcp"
+    ],
+    "env": {},
+    "registration": "Official Windows package, including pinned Java runtime; built-in stdio MCP"
+  }
+}
