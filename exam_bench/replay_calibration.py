@@ -73,7 +73,8 @@ def source_commit(summary):
     """The commit whose grading files are exactly those the source calibration recorded."""
     import hashlib
     show = lambda commit, name: subprocess.run(['git', 'show', f'{commit}:exam_bench/{name}'], cwd=ROOT, capture_output=True).stdout
-    log = subprocess.run(['git', 'log', '--format=%H', '--', 'exam_bench'], cwd=ROOT, capture_output=True, text=True, check=True)
+    # All local refs: the source may predate the current history (e.g. kept only under a local tag).
+    log = subprocess.run(['git', 'log', '--all', '--format=%H', '--', 'exam_bench'], cwd=ROOT, capture_output=True, text=True, check=True)
     for commit in log.stdout.split():
         if all(hashlib.sha256(show(commit, name)).hexdigest() == value for name, value in summary['implementation_files'].items()):
             return commit
