@@ -290,8 +290,6 @@ class Controller:
         agent = agent_client(self.root) if mode == 'run' else ('codex', None, None)
         if agent is None:
             raise ValueError('Агент не готов: завершите шаг «Агент» на странице «Замер»')
-        if agent[0] == 'claude' and harness != 'none':
-            raise ValueError('Claude Code пока запускается только без харнеса')
         from tools.readiness import agents, model_allowed
         if mode == 'run':
             model = model or agents()[agent[0]]['default_model']

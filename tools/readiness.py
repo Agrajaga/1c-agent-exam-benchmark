@@ -78,11 +78,6 @@ def agents():
     return json.loads((ROOT / 'profiles/agents.json').read_text(encoding='utf-8'))['agents']
 
 
-def agent_supported(agent):
-    """Claude Code's adapter is macOS-only for now (issue #7); Codex runs on every OS."""
-    return agent != 'claude' or platform.system() == 'Darwin'
-
-
 def model_allowed(agent, model):
     known = agents()
     return agent in known and any(m['id'] == model for m in known[agent]['models'])
@@ -143,7 +138,7 @@ def selection(root=ROOT):
     codex_pick = chosen.get('codex') if chosen.get('codex') in codex else (codex[0] if codex else None)
     from tools.installers import find
     mode, usable = isolation_mode()
-    agent = chosen.get('agent') if chosen.get('agent') in agents() and agent_supported(chosen.get('agent')) else 'codex'
+    agent = chosen.get('agent') if chosen.get('agent') in agents() else 'codex'
     return {'platforms': platforms, 'platform': platform_pick, 'codex_candidates': codex, 'codex': codex_pick,
             'claude': find('claude'), 'agent': agent, 'isolation': mode, 'isolation_usable': usable}
 
@@ -261,8 +256,7 @@ def agent_step(root, pick, running, current):
     from tools.installers import install_command, manual_hint, CLAUDE_INSTALL
     agent = pick['agent']
     known = agents()
-    options = [{'value': k, 'label': v['label'] + ('' if agent_supported(k) else ' — пока только macOS'), 'disabled': not agent_supported(k)}
-               for k, v in known.items()]
+    options = [{'value': k, 'label': v['label']} for k, v in known.items()]
     common = {'options': options, 'selected': agent, 'select_key': 'agent',
               'models': known[agent]['models'], 'default_model': known[agent]['default_model']}
     title = 'Агент'
@@ -293,7 +287,7 @@ def agent_step(root, pick, running, current):
                     'В терминале выполните claude setup-token, войдите в браузере и вставьте выданный токен сюда. '
                     'Нужна подписка Claude. Токен хранится только в .local/ на этом компьютере.',
                     copy='claude setup-token', input={'action': 'claude-token', 'placeholder': 'sk-ant-oat…', 'label': 'Сохранить токен'}, **common)
-    return step('agent', title, 'ok', 'Claude Code найден, токен сохранён. Пока только без харнеса.', pick['claude'],
+    return step('agent', title, 'ok', 'Claude Code найден, токен сохранён.', pick['claude'],
                 [('forget-claude', 'Удалить токен', {})], **common)
 
 
@@ -484,8 +478,6 @@ def act(action, data, root=ROOT):
         if 'agent' in data:
             if data['agent'] not in agents():
                 raise ValueError('Неизвестный агент')
-            if not agent_supported(data['agent']):
-                raise ValueError('Claude Code пока запускается только на macOS')
             current['agent'] = data['agent']
         write(root / '.local/community/settings.json', current)
         return {'saved': True}
