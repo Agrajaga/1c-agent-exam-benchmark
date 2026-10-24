@@ -28,7 +28,8 @@ class Onboarding(unittest.TestCase):
              patch.object(readiness, 'discover_platforms', return_value=platforms), \
              patch.object(readiness, 'discover_codex', return_value=codex), \
              patch.object(readiness, 'codex_logged_in', return_value=logged_in), \
-             patch.object(readiness, 'settings', return_value=settings):
+             patch.object(readiness, 'settings', return_value=settings), \
+             patch.object(readiness, 'agent_supported', return_value=True):  # Claude paths are exercised on every OS
             if author:
                 readiness.write(root / '.local/community/operator.json', author)
             return readiness.snapshot(root)
@@ -92,6 +93,22 @@ class Onboarding(unittest.TestCase):
                 self.assertEqual(readiness.protection_disabled(None), conf)
                 readiness.act('restore-protection', {}, root)
                 self.assertEqual(conf.read_text(), 'SystemLanguage=RU\n')
+
+    def test_claude_code_is_offered_only_on_macos(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            shutil.copytree(ROOT / readiness.STARTER, root / readiness.STARTER)
+            for system, offered in (('Windows', False), ('Linux', False), ('Darwin', True)):
+                with self.subTest(system=system), patch.object(readiness.platform, 'system', return_value=system), \
+                     patch.object(readiness, 'settings', return_value={'agent': 'claude'}):
+                    agent = next(s for s in readiness.snapshot(root)['steps'] if s['id'] == 'agent')
+                    claude = next(o for o in agent['options'] if o['value'] == 'claude')
+                    self.assertEqual(claude['disabled'], not offered)
+                    self.assertEqual(agent['selected'], 'claude' if offered else 'codex')
+                    if not offered:
+                        self.assertIn('macOS', claude['label'])
+                        with self.assertRaisesRegex(ValueError, 'macOS'):
+                            readiness.act('select', {'agent': 'claude'}, root)
 
     def test_device_login_link_and_code_are_read_from_the_helper_log(self):
         with tempfile.TemporaryDirectory() as td:

@@ -108,7 +108,7 @@ function renderSteps(readiness) {
     if (s.options) {
       const select = node('select', null, 'field');
       select.setAttribute('aria-label', s.title);
-      select.append(...s.options.map(o => { const opt = node('option', o.label); opt.value = o.value; return opt; }));
+      select.append(...s.options.map(o => { const opt = node('option', o.label); opt.value = o.value; opt.disabled = !!o.disabled; return opt; }));
       select.value = s.selected;
       select.addEventListener('change', () => perform(() => post('api/readiness/select', {[s.select_key || s.id]: select.value})));
       body.append(select);
