@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PredefinedData xmlns="http://v8.1c.ru/8.3/xcf/predef" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CalculationTypePredefinedItems" version="2.20">
+	<Item id="1d20004f-c1f4-4f2d-84dd-3f6dbe2c2538">
+		<Name>Оклад</Name>
+		<Code>1</Code>
+		<Description>Оклад</Description>
+		<ActionPeriodIsBase>false</ActionPeriodIsBase>
+	</Item>
+
+	<Item id="cca571cb-2c17-48da-8341-bd0f022c813e">
+		<Name>Тариф</Name>
+		<Code>2</Code>
+		<Description>Тариф</Description>
+		<ActionPeriodIsBase>false</ActionPeriodIsBase>
+	</Item>
+	<Item id="9bc9c07c-f184-4629-8e8e-8468d3d299ed">
+		<Name>Премия</Name>
+		<Code>3</Code>
+		<Description>Премия</Description>
+		<ActionPeriodIsBase>false</ActionPeriodIsBase>
+	</Item>
+	<Item id="0a138fab-152c-4bf4-9f04-2cbaae3f1bad">
+		<Name>Командировка</Name>
+		<Code>4</Code>
+		<Description>Командировка</Description>
+		<ActionPeriodIsBase>false</ActionPeriodIsBase>
+	</Item>
+</PredefinedData>
