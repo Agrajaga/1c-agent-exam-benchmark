@@ -162,14 +162,42 @@ def history(root=ROOT):
     return items
 
 
-def no_submission(agent, process, reason=None):
+def client_failure(raw, limit=300):
+    """The client's own words on why it stopped: the error event of its JSON stream, else the last stderr line.
+    Shown only on this machine; anything shaped like a key or token is masked."""
+    import re
+    said = None
+    stdout = raw / 'stdout.jsonl'
+    for line in stdout.read_text(encoding='utf-8', errors='replace').splitlines() if stdout.is_file() else []:
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(event, dict):
+            continue
+        if event.get('type') == 'result' and event.get('is_error'):  # Claude Code
+            said = str(event.get('result') or event.get('subtype') or '')
+        elif event.get('type') == 'error':  # Codex
+            said = str(event.get('message') or '')
+        elif event.get('type') == 'turn.failed':
+            said = str((event.get('error') or {}).get('message') or '')
+    if not said and (raw / 'stderr.log').is_file():
+        lines = [l.strip() for l in (raw / 'stderr.log').read_text(encoding='utf-8', errors='replace').splitlines() if l.strip()]
+        said = lines[-1] if lines else None
+    if not said:
+        return None
+    said = re.sub(r'(sk-[A-Za-z0-9_-]{8,}|eyJ[A-Za-z0-9_.-]{20,}|(?i:bearer)\s+\S+|://[^/\s:@]+:[^@\s]+@)', '…', said)
+    return said if len(said) <= limit else said[:limit] + '…'
+
+
+def no_submission(agent, process, reason=None, said=None):
     """Why an attempt got no grade, named after the agent that made it: a failed client is not a bad solution,
     and a refused submission says what the acceptance check refused."""
     from tools.readiness import agents
     label = agents().get(agent, {}).get('label', agent)
     if process.get('status') == 'client_error':
         return (f'{label} завершился с ошибкой (код {process.get("exit_code")}), решение не сдано. Оценка не выставлена. '
-                f'Проверьте вход в {label} и доступ к сервису.')
+                + (f'Сообщение клиента: {said}' if said else f'Проверьте вход в {label} и доступ к сервису.'))
     if process.get('status') == 'timeout':
         return f'Время вышло, {label} не сдал корректное решение. Оценка не выставлена.'
     return f'{label} завершил попытку без корректной сдачи. Оценка не выставлена.' + (f' Причина: {reason}' if reason else '')
@@ -443,7 +471,7 @@ def work(job_id, root=ROOT):
             if not result['process']['stop_confirmed']:
                 raise RuntimeError('Solver descendants did not stop')
             if not result['submission']['valid']:
-                phase('invalid_submission', error=no_submission(agent, result['process'], result['submission'].get('error')),
+                phase('invalid_submission', error=no_submission(agent, result['process'], result['submission'].get('error'), client_failure(run / 'raw')),
                       process_status=result['process']['status'])
                 return
         art = run / 'artifacts'

@@ -26,6 +26,11 @@ class ClaudePortable(unittest.TestCase):
         self.assertEqual((env['TMP'], env['TEMP'], env['CLAUDE_CODE_TMPDIR']), (str(ws / 'tmp'),) * 3)
         self.assertEqual(env['EXTRA'], '1')
 
+    def test_host_proxy_reaches_the_client(self):
+        with tempfile.TemporaryDirectory() as td, patch.dict(os.environ, {'HTTPS_PROXY': 'http://proxy.local:3128', 'NO_PROXY': 'localhost'}):
+            env = claude.worker_environment(Path(td), Path(td) / 'client-home', {})
+        self.assertEqual((env['HTTPS_PROXY'], env['NO_PROXY']), ('http://proxy.local:3128', 'localhost'))
+
     def test_portable_harness_is_registered_for_claude_code(self):
         with tempfile.TemporaryDirectory() as td:
             ws = Path(td); runtime = ws / 'client-home'; runtime.mkdir()

@@ -171,6 +171,19 @@ class DemoWorker(unittest.TestCase):
         self.assertIn('Codex завершил попытку', no_submission('codex', {'status': 'completed'}))
         self.assertIn('Причина: Ledger subconto', no_submission('codex', {'status': 'completed'}, 'Ledger subconto X'))
 
+    def test_client_failure_quotes_the_client_and_masks_secrets(self):
+        from tools.demo_runner import client_failure, no_submission
+        with tempfile.TemporaryDirectory() as td:
+            raw = Path(td)
+            self.assertIsNone(client_failure(raw))
+            (raw / 'stderr.log').write_text('starting\nfetch failed via http://user:secret@proxy:3128\n')
+            self.assertEqual(client_failure(raw), 'fetch failed via http…proxy:3128')
+            (raw / 'stdout.jsonl').write_text(json.dumps({'type': 'system'}) + '\n' +
+                json.dumps({'type': 'result', 'is_error': True, 'result': 'API Error: Connection error. key sk-ant-oat01-abcdefghijk'}) + '\n')
+            said = client_failure(raw)
+            self.assertEqual(said, 'API Error: Connection error. key …')
+            self.assertIn('Сообщение клиента: API Error', no_submission('claude', {'status': 'client_error', 'exit_code': 1}, None, said))
+
     def test_controller_rejects_second_launch(self):
         with tempfile.TemporaryDirectory() as temporary:
             c = Controller(Path(temporary))

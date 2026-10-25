@@ -129,9 +129,12 @@ def worker_environment(ws, runtime, harness):
     env = child_environment(ws)
     env.update({'CLAUDE_CODE_TMPDIR': str(ws / 'tmp'), 'CLAUDE_CONFIG_DIR': str(runtime), 'DISABLE_AUTOUPDATER': '1',
                 'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC': '1', 'DISABLE_TELEMETRY': '1', 'DISABLE_ERROR_REPORTING': '1'})
-    # A path to extra CA certificates (TLS interception by an antivirus or proxy); not a secret.
-    if os.environ.get('NODE_EXTRA_CA_CERTS'):
-        env['NODE_EXTRA_CA_CERTS'] = os.environ['NODE_EXTRA_CA_CERTS']
+    # Extra CA certificates (TLS interception by an antivirus or proxy) and the host's proxy: without them
+    # a client behind a proxy cannot reach the API. A proxy URL with a password is readable by the solver's
+    # shell, like the token itself (recorded in client-profile.json).
+    for key in ('NODE_EXTRA_CA_CERTS', 'HTTPS_PROXY', 'https_proxy', 'HTTP_PROXY', 'http_proxy', 'NO_PROXY', 'no_proxy'):
+        if os.environ.get(key):
+            env[key] = os.environ[key]
     if os.name == 'nt':
         # Claude Code on Windows runs its shell tool through Git Bash.
         bash = os.environ.get('CLAUDE_CODE_GIT_BASH_PATH') or next(
@@ -238,7 +241,8 @@ def prepare(plan, run, starter, task, client, auth_seed, starter_dt=None):
     write_json(run / 'client-profile.json', {'argv': argv, 'denied_tools': list(DENIED_TOOLS), 'settings': SETTINGS, 'web_search': 'disabled',
                                               'shell_network_access': True, 'external_network_profile': 'open-book', 'code_home': str(runtime),
                                               'native_version': plan['client_version'], 'models_fallback': False,
-                                              'credential_readable_by_solver': True})
+                                              'credential_readable_by_solver': True,
+                                              'host_proxy': any(k.lower().endswith('_proxy') and k.lower() != 'no_proxy' for k in env)})
     # The token is added last and only to the process environment; it never enters an evidence file.
     token = Path(auth_seed).read_text(encoding='utf-8').strip()
     if not token:
