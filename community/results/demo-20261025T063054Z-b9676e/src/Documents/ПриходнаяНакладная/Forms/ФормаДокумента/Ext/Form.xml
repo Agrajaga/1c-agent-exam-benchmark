@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.20">
+	<AutoTime>CurrentOrLast</AutoTime>
+	<UsePostingMode>Auto</UsePostingMode>
+	<RepostOnWrite>true</RepostOnWrite>
+	<AutoCommandBar name="ФормаКоманднаяПанель" id="-1"/>
+	<ChildItems>
+		<UsualGroup name="Реквизиты" id="1">
+			<Group>Horizontal</Group>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="РеквизитыРасширеннаяПодсказка" id="2"/>
+			<ChildItems>
+				<InputField name="Номер" id="25">
+					<DataPath>Объект.Number</DataPath>
+					<ContextMenu name="НомерКонтекстноеМеню" id="26"/>
+					<ExtendedTooltip name="НомерРасширеннаяПодсказка" id="27"/>
+				</InputField>
+				<InputField name="Дата" id="28">
+					<DataPath>Объект.Date</DataPath>
+					<ContextMenu name="ДатаКонтекстноеМеню" id="29"/>
+					<ExtendedTooltip name="ДатаРасширеннаяПодсказка" id="30"/>
+				</InputField>
+			</ChildItems>
+		</UsualGroup>
+		<InputField name="Склад" id="3">
+			<DataPath>Объект.Склад</DataPath>
+			<ContextMenu name="СкладКонтекстноеМеню" id="4"/>
+			<ExtendedTooltip name="СкладРасширеннаяПодсказка" id="5"/>
+		</InputField>
+		<InputField name="Подразделение" id="6">
+			<DataPath>Объект.Подразделение</DataPath>
+			<ContextMenu name="ПодразделениеКонтекстноеМеню" id="7"/>
+			<ExtendedTooltip name="ПодразделениеРасширеннаяПодсказка" id="8"/>
+		</InputField>
+		<Table name="СписокНоменклатуры" id="9">
+			<DataPath>Объект.СписокНоменклатуры</DataPath>
+			<RowFilter xsi:nil="true"/>
+			<ContextMenu name="СписокНоменклатурыКонтекстноеМеню" id="10"/>
+			<AutoCommandBar name="СписокНоменклатурыКоманднаяПанель" id="11">
+				<Autofill>false</Autofill>
+			</AutoCommandBar>
+			<ExtendedTooltip name="СписокНоменклатурыРасширеннаяПодсказка" id="12"/>
+			<SearchStringAddition name="СписокНоменклатурыСтрокаПоиска" id="13">
+				<AdditionSource>
+					<Item>СписокНоменклатуры</Item>
+					<Type>SearchStringRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="СписокНоменклатурыСтрокаПоискаКонтекстноеМеню" id="14"/>
+				<ExtendedTooltip name="СписокНоменклатурыСтрокаПоискаРасширеннаяПодсказка" id="15"/>
+			</SearchStringAddition>
+			<ViewStatusAddition name="СписокНоменклатурыСостояниеПросмотра" id="16">
+				<AdditionSource>
+					<Item>СписокНоменклатуры</Item>
+					<Type>ViewStatusRepresentation</Type>
+				</AdditionSource>
+				<ContextMenu name="СписокНоменклатурыСостояниеПросмотраКонтекстноеМеню" id="17"/>
+				<ExtendedTooltip name="СписокНоменклатурыСостояниеПросмотраРасширеннаяПодсказка" id="18"/>
+			</ViewStatusAddition>
+			<SearchControlAddition name="СписокНоменклатурыУправлениеПоиском" id="19">
+				<AdditionSource>
+					<Item>СписокНоменклатуры</Item>
+					<Type>SearchControl</Type>
+				</AdditionSource>
+				<ContextMenu name="СписокНоменклатурыУправлениеПоискомКонтекстноеМеню" id="20"/>
+				<ExtendedTooltip name="СписокНоменклатурыУправлениеПоискомРасширеннаяПодсказка" id="21"/>
+			</SearchControlAddition>
+			<ChildItems>
+				<InputField name="Номенклатура" id="31">
+					<DataPath>Объект.СписокНоменклатуры.Номенклатура</DataPath>
+					<ContextMenu name="НоменклатураКонтекстноеМеню" id="32"/>
+					<ExtendedTooltip name="НоменклатураРасширеннаяПодсказка" id="33"/>
+				</InputField>
+				<InputField name="Свойство" id="34">
+					<DataPath>Объект.СписокНоменклатуры.Свойство</DataPath>
+					<ContextMenu name="СвойствоКонтекстноеМеню" id="35"/>
+					<ExtendedTooltip name="СвойствоРасширеннаяПодсказка" id="36"/>
+				</InputField>
+				<InputField name="Количество" id="37">
+					<DataPath>Объект.СписокНоменклатуры.Количество</DataPath>
+					<ContextMenu name="КоличествоКонтекстноеМеню" id="38"/>
+					<ExtendedTooltip name="КоличествоРасширеннаяПодсказка" id="39"/>
+					<Events>
+						<Event name="OnChange">КоличествоИлиЦенаПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="Цена" id="40">
+					<DataPath>Объект.СписокНоменклатуры.Цена</DataPath>
+					<ContextMenu name="ЦенаКонтекстноеМеню" id="41"/>
+					<ExtendedTooltip name="ЦенаРасширеннаяПодсказка" id="42"/>
+					<Events>
+						<Event name="OnChange">КоличествоИлиЦенаПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="Сумма" id="43">
+					<DataPath>Объект.СписокНоменклатуры.Сумма</DataPath>
+					<ContextMenu name="СуммаКонтекстноеМеню" id="44"/>
+					<ExtendedTooltip name="СуммаРасширеннаяПодсказка" id="45"/>
+					<Events>
+						<Event name="OnChange">СуммаПриИзменении</Event>
+					</Events>
+				</InputField>
+			</ChildItems>
+		</Table>
+		<InputField name="СуммаПоДокументу" id="22">
+			<DataPath>Объект.СуммаПоДокументу</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<ContextMenu name="СуммаПоДокументуКонтекстноеМеню" id="23"/>
+			<ExtendedTooltip name="СуммаПоДокументуРасширеннаяПодсказка" id="24"/>
+		</InputField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="Объект" id="1">
+			<Type>
+				<v8:Type>cfg:DocumentObject.ПриходнаяНакладная</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+			<SavedData>true</SavedData>
+		</Attribute>
+	</Attributes>
+</Form>
