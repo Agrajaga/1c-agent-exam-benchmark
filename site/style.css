@@ -93,6 +93,7 @@ select.field { appearance: none; -webkit-appearance: none; padding-right: 36px;
 .sort[data-dir="desc"]::after { content: ' ↓'; opacity: 1; }
 .board td { white-space: normal; }
 .board .score-value { font-size: 17px; white-space: nowrap; }
+.board td .badge { display: table; margin-top: 4px; cursor: help; }
 .board .place { font-weight: 700; }
 .board tr.mine td { background: color-mix(in srgb, var(--accent) 9%, transparent); }
 .board tr.row-main.mine td:first-child { box-shadow: inset 3px 0 0 var(--accent); color: var(--accent); }

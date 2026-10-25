@@ -18,7 +18,7 @@ function fromCommunity(r) {
   return {id: r.id, local: false, model: v.model, agent: c.client || (String(v.model).startsWith('claude') ? 'claude' : 'codex'),
     agentVersion: c.client_version, effort: c.reasoning_effort, harness: v.harness, e: v, limit: c.solve_timeout_seconds,
     tokens: c.tokens || {}, tools: c.tools || {}, env: m.environment || {}, author: m.operator || {}, date: v.created_at,
-    download: r.download, sha: r.archive_sha256, verification: r.verification};
+    download: r.download, sha: r.archive_sha256, verification: r.verification, regrade: r.regrade_required || []};
 }
 
 function fromLocal(item) {
@@ -28,7 +28,12 @@ function fromLocal(item) {
     tools: run.tools || {}, env: m.environment || {}, author: m.operator || {}, date: e.created_at};
 }
 
-const exact = r => r.e.score != null && !r.e.infrastructure_errors;
+// A score from an earlier grader, or one the current code cannot reproduce, stays visible but is not ranked.
+const REGRADE = {grader_changed: r => 'Оценено прежней версией грейдера; изменились: ' + r.files.join(', ') + '.',
+  adapter_not_in_repository: () => 'Привязки адаптированы кодом, которого нет в репозитории.',
+  original_submission_refused: () => 'Исходная сдача агента не прошла приёмку; оценены привязки без доказательства адаптера.'};
+const stale = r => (r.regrade || []).length > 0;
+const exact = r => r.e.score != null && !r.e.infrastructure_errors && !stale(r);
 const value = r => Number(exact(r) ? r.e.score : Math.max(0, r.e.score_upper_bound ?? 0));
 const keys = {score: r => value(r) + (exact(r) ? 0.001 : 0), solve: r => r.e.solve_seconds, tokens: r => r.tokens.fresh_input ?? -1,
   date: r => Date.parse(r.date) || 0};
@@ -64,6 +69,7 @@ function violations(r) {
   const notes = node('div'); notes.append(node('h4', 'Покрытие'));
   notes.append(node('p', `Проверок пройдено: ${r.e.counts?.pass || 0}, не пройдено: ${r.e.counts?.fail || 0}, `
     + `не определено: ${r.e.counts?.inconclusive || 0}. Пунктов каталога без оценки: ${r.e.not_assessed ?? '—'}.`, 'why'));
+  if (stale(r)) notes.append(node('p', 'Требуется пересчёт, место не присваивается. ' + r.regrade.map(x => REGRADE[x.id]?.(x) || x.id).join(' '), 'why'));
   if (r.e.binding_compatibility) notes.append(node('p', 'Оценено с адаптацией привязок: исходная сдача не загрузилась без неё.', 'why'));
   if (r.tools?.mcp_calls != null) notes.append(node('p', `Вызовов MCP-инструментов: ${r.tools.mcp_calls}, с ошибкой: ${r.tools.failed_calls || 0}.`, 'why'));
   box.append(charges, failed, notes);
@@ -110,6 +116,7 @@ function render() {
     const score = node('td');
     score.append(node('b', exact(r) ? `${number(r.e.score)} из 5` : `не выше ${number(Math.max(0, r.e.score_upper_bound))} из 5`, 'score-value'));
     sub(score, grades[r.e.grade]);
+    if (stale(r)) { const b = node('span', 'требуется пересчёт', 'badge warn'); b.title = r.regrade.map(x => REGRADE[x.id]?.(x) || x.id).join(' '); score.append(b); }
     const total = Object.values(r.e.counts || {}).reduce((a, b) => a + b, 0);
     sub(score, `проверок ${r.e.counts?.pass || 0} из ${total}`);
     const who = node('td'); who.append(node('b', r.model));

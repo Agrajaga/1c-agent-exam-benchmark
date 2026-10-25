@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from exam_bench.common import digest, tree_manifest, utc
+from exam_bench.common import digest, grading_fingerprint, tree_manifest, utc
 
 UPSTREAM = 'zeegin/1c-agent-exam-benchmark'
 ID = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9_-]{0,95}$')
@@ -374,8 +374,26 @@ def make_pr(job_id, root=ROOT):
     return url
 
 
+ADAPTERS = ('supplemental_indexed_subconto_adapter', 'supplemental_named_subconto_adapter')
+
+
+def regrade_reasons(folder, current=None):
+    """Why a merged result needs grading again by the current grader; empty when its score is current.
+    Such results are published with their score marked, not refused."""
+    current = current or grading_fingerprint()
+    graded = read(folder / 'grading-implementation.json')
+    changed = sorted(name for name in set(graded) | set(current) if graded.get(name) != current.get(name))
+    reasons = [{'id': 'grader_changed', 'files': changed}] if changed else []
+    if (folder / 'binding-adapter-proof.json').is_file() and read(folder / 'binding-adapter-proof.json').get('scope') not in ADAPTERS:
+        reasons.append({'id': 'adapter_not_in_repository'})
+    if read(folder / 'run.json').get('original_submission_valid') is False and not (folder / 'binding-adapter-proof.json').is_file():
+        reasons.append({'id': 'original_submission_refused'})
+    return reasons
+
+
 def export_public(root, stage):
     records = []
+    current = grading_fingerprint()
     for folder in sorted((root / 'community/results').glob('*')):
         if not folder.is_dir():
             continue
@@ -390,6 +408,7 @@ def export_public(root, stage):
                 if p.is_file(): z.write(p, p.relative_to(folder).as_posix())
         records.append({'id': folder.name, 'result': result, 'measurement': measurement, 'conditions': plan,
                         'verification': manifest['verification'], 'download': f'community-downloads/{folder.name}/solution.zip',
+                        'regrade_required': regrade_reasons(folder, current),
                         'grader_revision_sha256': hashlib.sha256(json.dumps(read(folder / 'grading-implementation.json'), sort_keys=True).encode()).hexdigest(),
                         'archive_sha256': digest(dest / 'solution.zip')})
     write(stage / 'community.json', {'schema_version': 1, 'results': records, 'repository': 'https://github.com/' + UPSTREAM})

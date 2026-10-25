@@ -72,6 +72,25 @@ class CommunityBundle(unittest.TestCase):
             self.assertEqual(d['measurement']['operator']['github'], 'tester')
             self.assertTrue((root / 'dist' / d['download']).is_file())
 
+    def test_result_of_an_earlier_grader_is_published_marked_for_regrade(self):
+        from exam_bench.common import grading_fingerprint
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); f = fixture(root)
+            old = dict(grading_fingerprint(), **{'grader.py': '0' * 64})
+            write(f / 'grading-implementation.json', old); write(f / 'run.json', {'model': 'gpt-test', 'original_submission_valid': False})
+            m = json.loads((f / 'manifest.json').read_text()); m['files'] = tree_manifest(f); m['files'].pop('manifest.json')
+            write(f / 'manifest.json', m)
+            export_public(root, root / 'dist')
+            reasons = json.loads((root / 'dist/community.json').read_text())['results'][0]['regrade_required']
+            self.assertEqual(reasons, [{'id': 'grader_changed', 'files': ['grader.py']}, {'id': 'original_submission_refused'}])
+
+    def test_result_of_the_current_grader_needs_no_regrade(self):
+        from exam_bench.common import grading_fingerprint
+        from tools.community_results import regrade_reasons
+        with tempfile.TemporaryDirectory() as td:
+            f = fixture(Path(td)); write(f / 'grading-implementation.json', grading_fingerprint())
+            self.assertEqual(regrade_reasons(f), [])
+
     def test_unclamped_negative_bound_is_not_rewritten(self):
         with tempfile.TemporaryDirectory() as td:
             f = fixture(Path(td))
