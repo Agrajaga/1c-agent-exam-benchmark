@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "id": "unica-0.13.0",
+  "label": "Unica 0.13",
+  "version": "0.13.0",
+  "homepage": "https://github.com/IngvarConsulting/unica",
+  "description": "MCP-сервер и skills для работы с конфигурацией 1С: навигация по метаданным, правка XML и BSL, проверки.",
+  "probe": "unica",
+  "targets": {
+    "windows-x64": {
+      "downloads": {
+        "unica-package.zip": {
+          "url": "https://codeload.github.com/IngvarConsulting/unica-marketplace/zip/refs/tags/v0.13.0",
+          "sha256": "755bd7d4bba4d9846434fd85ea8464804dc0181c66a3f5e77e700bb050e3ad56",
+          "bytes": 5657172
+        },
+        "unica-runtime.tar.gz": {
+          "url": "https://github.com/IngvarConsulting/unica/releases/download/v0.13.0/unica-runtime-win-x64.tar.gz",
+          "sha256": "e2150fc41aea1d16fbfff5bce1d99ad2909dd2350a35e0ccc804ae41b2380d03",
+          "bytes": 11151539
+        },
+        "unica-runtime.json": {
+          "url": "https://github.com/IngvarConsulting/unica/releases/download/v0.13.0/unica-runtime-win-x64.json",
+          "sha256": "b7fd682fa378b88478f5542293b66e037d07ac3e4c93ed12dc9551b48f259464",
+          "bytes": 777
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "unica-package.zip"
+        },
+        {
+          "copy-tree": "*/plugins/unica",
+          "to": "plugin"
+        },
+        {
+          "verified-entrypoint": "unica-runtime.tar.gz",
+          "manifest": "unica-runtime.json",
+          "to": "unica.exe"
+        }
+      ],
+      "configuration": {
+        "version": "0.13.0",
+        "label": "Unica 0.13",
+        "server": "unica",
+        "command": "{package}/unica.exe",
+        "args": [],
+        "env": {
+          "CLAUDE_PLUGIN_ROOT": "{package}/plugin",
+          "CLAUDE_PROJECT_DIR": "{workspace}",
+          "UNICA_HOST_CONTEXT_REQUIRED": "1",
+          "UNICA_PROVIDER_STATE_DIR": "{tmp}/unica-state",
+          "UNICA_RUNTIME_CACHE_DIR": "{tmp}/unica-runtimes",
+          "UNICA_DAEMON_IDLE_GRACE_MS": "1000"
+        },
+        "skills": "plugin/skills",
+        "skill_siblings": [
+          "references",
+          "third-party"
+        ],
+        "registration": "Verified official Windows runtime and unchanged marketplace skills; isolated state; no native plugin hooks"
+      }
+    },
+    "macos-arm64": {
+      "downloads": {
+        "unica-package.zip": {
+          "url": "https://codeload.github.com/IngvarConsulting/unica-marketplace/zip/refs/tags/v0.13.0",
+          "sha256": "755bd7d4bba4d9846434fd85ea8464804dc0181c66a3f5e77e700bb050e3ad56",
+          "bytes": 5657172
+        },
+        "unica-runtime.tar.gz": {
+          "url": "https://github.com/IngvarConsulting/unica/releases/download/v0.13.0/unica-runtime-darwin-arm64.tar.gz",
+          "sha256": "61d8d5ee615539497c83d7aa32afdf20bcdb8499ea1ad2877d91a0a1a3f57130",
+          "bytes": 10928757
+        },
+        "unica-runtime.json": {
+          "url": "https://github.com/IngvarConsulting/unica/releases/download/v0.13.0/unica-runtime-darwin-arm64.json",
+          "sha256": "dcc17243227dbb96087c4e1b796121da88a4cc5fd07722e4792f6d6183715702",
+          "bytes": 760
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "unica-package.zip"
+        },
+        {
+          "copy-tree": "*/plugins/unica",
+          "to": "plugin"
+        },
+        {
+          "verified-entrypoint": "unica-runtime.tar.gz",
+          "manifest": "unica-runtime.json",
+          "to": "unica"
+        }
+      ],
+      "configuration": {
+        "version": "0.13.0",
+        "label": "Unica 0.13",
+        "server": "unica",
+        "command": "{package}/unica",
+        "args": [],
+        "env": {
+          "CLAUDE_PLUGIN_ROOT": "{package}/plugin",
+          "CLAUDE_PROJECT_DIR": "{workspace}",
+          "UNICA_HOST_CONTEXT_REQUIRED": "1",
+          "UNICA_PROVIDER_STATE_DIR": "{tmp}/unica-state",
+          "UNICA_RUNTIME_CACHE_DIR": "{tmp}/unica-runtimes",
+          "UNICA_DAEMON_IDLE_GRACE_MS": "1000"
+        },
+        "skills": "plugin/skills",
+        "skill_siblings": [
+          "references",
+          "third-party"
+        ],
+        "registration": "Verified official runtime and unchanged marketplace skills; isolated state; no native plugin hooks"
+      }
+    },
+    "linux-x64": {
+      "downloads": {
+        "unica-package.zip": {
+          "url": "https://codeload.github.com/IngvarConsulting/unica-marketplace/zip/refs/tags/v0.13.0",
+          "sha256": "755bd7d4bba4d9846434fd85ea8464804dc0181c66a3f5e77e700bb050e3ad56",
+          "bytes": 5657172
+        },
+        "unica-runtime.tar.gz": {
+          "url": "https://github.com/IngvarConsulting/unica/releases/download/v0.13.0/unica-runtime-linux-x64.tar.gz",
+          "sha256": "1afb5c5abf5f43e890b16f0c411abd3c0244eb3361ad79978c8306efe623ef5d",
+          "bytes": 12121428
+        },
+        "unica-runtime.json": {
+          "url": "https://github.com/IngvarConsulting/unica/releases/download/v0.13.0/unica-runtime-linux-x64.json",
+          "sha256": "e4f7f9d3df120e5f0d01ae0a2d011c8df8c7c46f4400a46bfb2232bad80f3ab2",
+          "bytes": 752
+        }
+      },
+      "install": [
+        {
+          "unzip-source": "unica-package.zip"
+        },
+        {
+          "copy-tree": "*/plugins/unica",
+          "to": "plugin"
+        },
+        {
+          "verified-entrypoint": "unica-runtime.tar.gz",
+          "manifest": "unica-runtime.json",
+          "to": "unica"
+        }
+      ],
+      "configuration": {
+        "version": "0.13.0",
+        "label": "Unica 0.13",
+        "server": "unica",
+        "command": "{package}/unica",
+        "args": [],
+        "env": {
+          "CLAUDE_PLUGIN_ROOT": "{package}/plugin",
+          "CLAUDE_PROJECT_DIR": "{workspace}",
+          "UNICA_HOST_CONTEXT_REQUIRED": "1",
+          "UNICA_PROVIDER_STATE_DIR": "{tmp}/unica-state",
+          "UNICA_RUNTIME_CACHE_DIR": "{tmp}/unica-runtimes",
+          "UNICA_DAEMON_IDLE_GRACE_MS": "1000"
+        },
+        "skills": "plugin/skills",
+        "skill_siblings": [
+          "references",
+          "third-party"
+        ],
+        "registration": "Verified official runtime and unchanged marketplace skills; isolated state; no native plugin hooks"
+      }
+    }
+  }
+}
