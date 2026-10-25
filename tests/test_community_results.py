@@ -116,8 +116,11 @@ class CommunityBundle(unittest.TestCase):
     def test_pr_copies_long_read_only_sources_and_replaces_an_earlier_copy(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td); f = fixture(root)
-            # Valid in the prepared bundle, beyond the usual Win32 limit once nested in the checkout
-            deep = f / 'src' / '/'.join(['ОбщиеФормы_Длинное_Имя_Каталога'] * 4) / 'Ext/Form.bin'
+            # About 250 characters in the prepared bundle, beyond the usual Win32 limit once nested in the checkout
+            room, names = 250 - len(str(root / '.local/community/prepared/demo-test/src/Ext/Form.bin')), []
+            while room > 1:
+                names.append('Ф' * min(40, room - 1)); room -= len(names[-1]) + 1
+            deep = f.joinpath('src', *names, 'Ext/Form.bin')
             deep.parent.mkdir(parents=True); deep.write_bytes(b'form')
             m = json.loads((f / 'manifest.json').read_text()); m['files'] = tree_manifest(f); m['files'].pop('manifest.json')
             write(f / 'manifest.json', m)
