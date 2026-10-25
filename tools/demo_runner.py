@@ -162,8 +162,9 @@ def history(root=ROOT):
     return items
 
 
-def no_submission(agent, process):
-    """Why an attempt got no grade, named after the agent that made it: a failed client is not a bad solution."""
+def no_submission(agent, process, reason=None):
+    """Why an attempt got no grade, named after the agent that made it: a failed client is not a bad solution,
+    and a refused submission says what the acceptance check refused."""
     from tools.readiness import agents
     label = agents().get(agent, {}).get('label', agent)
     if process.get('status') == 'client_error':
@@ -171,7 +172,7 @@ def no_submission(agent, process):
                 f'Проверьте вход в {label} и доступ к сервису.')
     if process.get('status') == 'timeout':
         return f'Время вышло, {label} не сдал корректное решение. Оценка не выставлена.'
-    return f'{label} завершил попытку без корректной сдачи. Оценка не выставлена.'
+    return f'{label} завершил попытку без корректной сдачи. Оценка не выставлена.' + (f' Причина: {reason}' if reason else '')
 
 
 def agent_log(root, job_id, limit=3000):
@@ -442,7 +443,7 @@ def work(job_id, root=ROOT):
             if not result['process']['stop_confirmed']:
                 raise RuntimeError('Solver descendants did not stop')
             if not result['submission']['valid']:
-                phase('invalid_submission', error=no_submission(agent, result['process']),
+                phase('invalid_submission', error=no_submission(agent, result['process'], result['submission'].get('error')),
                       process_status=result['process']['status'])
                 return
         art = run / 'artifacts'

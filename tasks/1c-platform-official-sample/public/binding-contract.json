@@ -28,10 +28,10 @@
       "amount": "<table>.<attribute>"
     },
     "ledger": {
-      "item_debit": "<field or subconto identifier>",
-      "item_credit": "<field or subconto identifier>",
-      "warehouse_debit": "<field or subconto identifier>",
-      "warehouse_credit": "<field or subconto identifier>",
+      "item_debit": "<field> | <subconto kind> | СубконтоДт.<subconto kind> | <chart of characteristic types>.<subconto kind>",
+      "item_credit": "<field> | <subconto kind> | СубконтоКт.<subconto kind> | <chart of characteristic types>.<subconto kind>",
+      "warehouse_debit": "<field> | <subconto kind> | СубконтоДт.<subconto kind> | <chart of characteristic types>.<subconto kind>",
+      "warehouse_credit": "<field> | <subconto kind> | СубконтоКт.<subconto kind> | <chart of characteristic types>.<subconto kind>",
       "quantity_debit": "<field>",
       "quantity_credit": "<field>",
       "amount": "<field>"

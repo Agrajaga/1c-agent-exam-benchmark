@@ -169,6 +169,7 @@ class DemoWorker(unittest.TestCase):
         self.assertNotIn('Codex', failed)
         self.assertIn('Время вышло, Codex', no_submission('codex', {'status': 'timeout'}))
         self.assertIn('Codex завершил попытку', no_submission('codex', {'status': 'completed'}))
+        self.assertIn('Причина: Ledger subconto', no_submission('codex', {'status': 'completed'}, 'Ledger subconto X'))
 
     def test_controller_rejects_second_launch(self):
         with tempfile.TemporaryDirectory() as temporary:

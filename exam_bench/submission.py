@@ -117,9 +117,14 @@ def extra_sections(bindings):
     return strip_extras(bindings)[1]
 
 
+SIDE_SUBCONTO=re.compile(r'Субконто(Дт|Кт)\.(.+)')
+
+
 def canonical_ledger(src, bindings):
-    """Ledger roles named by a bare subconto kind ('Номенклатура') become '<chart of characteristic types>.<kind>'
-    when the register has no physical field of that name and exactly one predefined kind of the account chart matches."""
+    """Ledger roles named by a bare subconto kind ('Номенклатура') or by the side-qualified form
+    ('СубконтоДт.Номенклатура' for a debit role, 'СубконтоКт.Номенклатура' for a credit one) become
+    '<chart of characteristic types>.<kind>' when the register has no physical field of that name and exactly one
+    predefined kind of the account chart matches. A wrong side stays as written and is refused by check_bindings."""
     import copy
     ledger=((bindings.get('fields') or {}).get('ledger') or {})
     objects=bindings.get('objects') or {}
@@ -133,8 +138,11 @@ def canonical_ledger(src, bindings):
             name=n.findtext(MD+'Properties/'+MD+'Name');physical|={name,name+'Дт',name+'Кт'}
     result=copy.deepcopy(bindings);expanded=[]
     for role,path in ledger.items():
-        if not role.startswith(('item_','warehouse_')) or not isinstance(path,str) or '.' in path or path in physical:continue
-        matches=[k for k in kinds if k.split('.',1)[1]==path]
+        if not role.startswith(('item_','warehouse_')) or not isinstance(path,str) or path in physical or path in kinds:continue
+        side=SIDE_SUBCONTO.fullmatch(path)
+        if side and side[1]!=('Дт' if role.endswith('_debit') else 'Кт') or not side and '.' in path:continue
+        name=side[2] if side else path
+        matches=[k for k in kinds if k.split('.',1)[1]==name]
         if len(matches)==1:
             result['fields']['ledger'][role]=matches[0];expanded.append('fields.ledger.%s: %s -> %s'%(role,path,matches[0]))
     return result,expanded
@@ -181,6 +189,8 @@ def check_bindings(src, bindings):
         expected='xs:decimal' if role in ('quantity_debit','quantity_credit','amount') else 'cfg:'+bindings['objects']['items'].replace('Catalog.','CatalogRef.') if role.startswith('item_') else 'cfg:'+bindings['objects']['warehouses'].replace('Catalog.','CatalogRef.')
         if '.' in path and not role.startswith(('quantity_','amount')):
             # <chart of characteristic types>.<predefined kind>: the value of that subconto kind on the role's side.
+            if SIDE_SUBCONTO.fullmatch(path):raise UnsupportedBindings('Ledger subconto %s for %s: the side must match the role '
+                '(СубконтоДт for debit, СубконтоКт for credit) and the name must be exactly one predefined kind of the account chart'%(path,role))
             if path not in subconto:raise UnsupportedBindings('Ledger subconto is not a predefined kind of the account chart: '+path)
             if subconto[path]!={expected}:raise ValueError('Ledger subconto type mismatch: '+role)
             continue

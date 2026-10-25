@@ -1,6 +1,8 @@
-"""Separate acceptance for indexed subconto bindings, proved from the goods account metadata.
+"""Separate acceptance for subconto bindings the submission check refused when the attempt was made.
 
-The original invalid submission and every source byte remain unchanged. No grader change.
+Indexed names (СубконтоДт1) are proved from the goods account metadata; kind names (Номенклатура,
+СубконтоДт.Номенклатура) are expanded by the current canonical_ledger. The original invalid submission,
+its status and every source byte remain unchanged; the grade is a separate one.
 """
 import argparse
 import copy
@@ -36,11 +38,16 @@ def normalize(src, original):
         if index >= len(ordered) or ordered[index] not in kinds:
             raise ValueError('No predefined kind at this goods-account position')
         replacement = ordered[index]
-        changes.append({'field': 'fields.ledger.' + role, 'before': value, 'after': replacement})
+        changes.append({'field': 'fields.ledger.' + role, 'before': value, 'after': replacement, 'kind': 'indexed'})
         clean['fields']['ledger'][role] = replacement
+    named, _ = canonical_ledger(src, clean)
+    for role in ('item_debit', 'item_credit', 'warehouse_debit', 'warehouse_credit'):
+        before, after = clean['fields']['ledger'][role], named['fields']['ledger'][role]
+        if before != after:
+            changes.append({'field': 'fields.ledger.' + role, 'before': before, 'after': after, 'kind': 'named'})
     if not changes:
-        raise ValueError('No indexed subconto bindings to normalize')
-    clean, _ = canonical_ledger(src, clean)
+        raise ValueError('No subconto bindings to normalize')
+    clean = named
     # Trusted metadata type checking must accept every projected role.
     check_bindings(src, clean)
     return clean, changes
@@ -56,10 +63,13 @@ def prepare(run_id, root=ROOT):
     job = root / '.local/demo/jobs' / job_id
     job.mkdir(parents=True)
     write(job / 'binding-adapter.json', normalized)
-    write(job / 'binding-adapter-proof.json', {'scope': 'supplemental_indexed_subconto_adapter',
+    indexed = any(c['kind'] == 'indexed' for c in changes)
+    write(job / 'binding-adapter-proof.json', {
+        'scope': 'supplemental_indexed_subconto_adapter' if indexed else 'supplemental_named_subconto_adapter',
         'original_binding_sha256': digest(run / 'artifacts/binding.json'), 'normalized_binding_sha256': digest(job / 'binding-adapter.json'),
-        'normalizer_sha256': digest(__file__), 'changes': changes,
-        'basis': 'Ordered predefined subconto kinds of the declared goods account; all role types checked by the unchanged adapter.'})
+        'normalizer_sha256': digest(__file__), 'canonical_ledger_sha256': digest(ROOT / 'exam_bench/submission.py'), 'changes': changes,
+        'basis': ('Ordered predefined subconto kinds of the declared goods account; ' if indexed else '') +
+                 'kind names expanded only to exactly one predefined kind of the account chart on the role side; all role types checked.'})
     write(job / 'status.json', {'job_id': job_id, 'run_id': run_id, 'mode': 'regrade', 'harness': read(run / 'plan.json')['harness'],
         'binding_adapter': True, 'phase': 'queued', 'started_unix': __import__('time').time(), 'pid': None})
     write(root / '.local/demo/current.json', {'job_id': job_id})

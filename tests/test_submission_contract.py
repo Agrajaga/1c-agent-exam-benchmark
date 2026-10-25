@@ -111,6 +111,49 @@ class ContractTest(unittest.TestCase):
         (self.p/'out'/'binding.json').write_text(json.dumps(self.b))
         with self.assertRaises(UnsupportedBindings):
             validate(self.p,self.manifest)
+    def test_side_qualified_subconto_name_is_expanded_on_its_side(self):
+        from exam_bench.submission import canonical_ledger
+        self.subconto_chart()
+        self.b['fields']['ledger'].update(item_debit='СубконтоДт.Item',item_credit='СубконтоКт.Item',
+                                          warehouse_debit='СубконтоДт.Store',warehouse_credit='СубконтоКт.Store')
+        clean,expanded=canonical_ledger(self.p/'out'/'src',self.b)
+        self.assertEqual([clean['fields']['ledger'][r] for r in ('item_debit','item_credit','warehouse_debit','warehouse_credit')],
+                         ['Kinds.Item','Kinds.Item','Kinds.Store','Kinds.Store'])
+        self.assertEqual(len(expanded),4)
+        self.assertTrue(check_bindings(self.p/'out'/'src',clean))
+    def refused(self,ledger,error,warehouse_type='cfg:CatalogRef.Warehouses'):
+        self.subconto_chart(warehouse_type);self.b['fields']['ledger'].update(ledger)
+        (self.p/'out'/'binding.json').write_text(json.dumps(self.b))
+        with self.assertRaisesRegex(ValueError,error):validate(self.p,self.manifest)
+    def test_side_qualified_subconto_on_the_wrong_side_is_refused_with_the_reason(self):
+        self.refused({'item_debit':'СубконтоКт.Item'},'side must match')
+    def test_side_qualified_unknown_subconto_is_refused(self):
+        self.refused({'warehouse_credit':'СубконтоКт.Absent'},'exactly one predefined kind')
+    def test_side_qualified_subconto_type_is_checked(self):
+        self.refused({'warehouse_debit':'СубконтоДт.Store'},'subconto type mismatch','cfg:CatalogRef.Items')
+    def goods_account(self):
+        predef='http://v8.1c.ru/8.3/xcf/predef'
+        (self.p/'out'/'src'/'ChartsOfAccounts'/'Accounts'/'Ext').mkdir(parents=True)
+        (self.p/'out'/'src'/'ChartsOfAccounts'/'Accounts'/'Ext'/'Predefined.xml').write_text(
+            f'<PredefinedData xmlns="{predef}"><Item name="Goods"><Code>41</Code><ExtDimensionTypes>'
+            '<ExtDimensionType name="ChartOfCharacteristicTypes.Kinds.Item"/><ExtDimensionType name="ChartOfCharacteristicTypes.Kinds.Store"/>'
+            '</ExtDimensionTypes></Item></PredefinedData>')
+    def test_supplemental_acceptance_normalizes_kind_names_refused_before(self):
+        from tools.supplemental_acceptance import normalize
+        self.subconto_chart();self.goods_account()
+        original=copy.deepcopy(self.b);original['fields']['ledger'].update(warehouse_debit='Store',warehouse_credit='СубконтоКт.Store')
+        clean,changes=normalize(self.p/'out'/'src',original)
+        self.assertEqual([(c['field'],c['after'],c['kind']) for c in changes],
+                         [('fields.ledger.warehouse_debit','Kinds.Store','named'),('fields.ledger.warehouse_credit','Kinds.Store','named')])
+        self.assertEqual(original['fields']['ledger']['warehouse_debit'],'Store')  # the submission itself is not rewritten
+        self.assertTrue(check_bindings(self.p/'out'/'src',clean))
+    def test_supplemental_acceptance_keeps_indexed_names_and_needs_something_to_normalize(self):
+        from tools.supplemental_acceptance import normalize
+        self.subconto_chart();self.goods_account()
+        indexed=copy.deepcopy(self.b);indexed['fields']['ledger'].update(item_debit='СубконтоДт1',warehouse_credit='СубконтоКт2')
+        _,changes=normalize(self.p/'out'/'src',indexed)
+        self.assertEqual([(c['before'],c['after'],c['kind']) for c in changes],[('СубконтоДт1','Kinds.Item','indexed'),('СубконтоКт2','Kinds.Store','indexed')])
+        with self.assertRaisesRegex(ValueError,'No subconto bindings'):normalize(self.p/'out'/'src',self.b)
     def test_analogs_in_a_tabular_section_of_the_items_catalog(self):
         src=self.p/'out'/'src';md='xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:v8="http://v8.1c.ru/8.1/data/core"'
         (src/'Catalogs'/'Items.xml').write_text(f'<MetaDataObject {md}><Catalog><Properties><Name>Items</Name></Properties><ChildObjects>'
