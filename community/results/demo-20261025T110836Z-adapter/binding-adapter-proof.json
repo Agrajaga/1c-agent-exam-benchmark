@@ -1,0 +1,34 @@
+{
+  "scope": "supplemental_named_subconto_adapter",
+  "original_binding_sha256": "7dd185357a65fd5945433b73122669e0bc5b3ac46a451afc7a72002616268448",
+  "normalized_binding_sha256": "69f3a6b98c1f598333e61ee4b543e66304e709c4de135e0aa265bf76fd8f47b8",
+  "normalizer_sha256": "7327277143d80a531e4c254ac74a9fc0e0d5c76572d53b8469e0a580eda17d65",
+  "canonical_ledger_sha256": "caffc29276c5d562e33ddb73f7d3575b6bf8605e699fe198617dc75fcb8253a1",
+  "changes": [
+    {
+      "field": "fields.ledger.item_debit",
+      "before": "СубконтоДт.Номенклатура",
+      "after": "ВидыСубконто.Номенклатура",
+      "kind": "named"
+    },
+    {
+      "field": "fields.ledger.item_credit",
+      "before": "СубконтоКт.Номенклатура",
+      "after": "ВидыСубконто.Номенклатура",
+      "kind": "named"
+    },
+    {
+      "field": "fields.ledger.warehouse_debit",
+      "before": "СубконтоДт.Склад",
+      "after": "ВидыСубконто.Склад",
+      "kind": "named"
+    },
+    {
+      "field": "fields.ledger.warehouse_credit",
+      "before": "СубконтоКт.Склад",
+      "after": "ВидыСубконто.Склад",
+      "kind": "named"
+    }
+  ],
+  "basis": "kind names expanded only to exactly one predefined kind of the account chart on the role side; all role types checked."
+}
