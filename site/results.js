@@ -1,7 +1,7 @@
 import {$, node, get, duration, scoreText, gradeText, checksText, harnessLabel, date} from './local.js';
 import {renderSubmit} from './submit.js';
 
-const STATES = {queued: 'В очереди', preparing: 'Подготовка', solving: 'Codex решает', checking_gates: 'Загрузка в 1С',
+const STATES = {queued: 'В очереди', preparing: 'Подготовка', solving: 'Агент решает', checking_gates: 'Загрузка в 1С',
   grading: 'Проверка в 1С', publishing: 'Оценка', failed: 'Остановлен', invalid_submission: 'Нет корректной сдачи',
   rejected: 'Не прошла условия', finished: 'Завершён'};
 let signature = '';
@@ -24,7 +24,7 @@ async function refresh() {
     const e = item.evaluation, tr = node('tr');
     const when = node('td', date(item.started_unix));
     const env = node('td', harnessLabel(item.harness));
-    if (e) env.append(node('small', e.model));
+    env.append(node('small', [item.agent === 'claude' ? 'Claude Code' : 'Codex', e?.model || item.model].filter(Boolean).join(' · ')));
     if (item.mode === 'regrade') env.append(node('small', e?.binding_compatibility
       ? 'Дополнительная оценка с адаптацией привязок' : 'Повторная оценка сохранённой сдачи'));
     const score = node('td');

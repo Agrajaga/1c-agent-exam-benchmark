@@ -144,6 +144,7 @@ def history(root=ROOT):
         if mode != 'run' and not (mode == 'regrade' and (job / 'evaluation.json').is_file()):
             continue
         item = {'job_id': job.name, 'mode': mode, 'phase': status['phase'], 'harness': status.get('harness', 'none'),
+                'agent': status.get('agent', 'codex'), 'model': status.get('model'),
                 'started_unix': status['started_unix'], 'error': status.get('error'), 'evaluation': None,
                 'prepared': (root / '.local/community/prepared' / job.name / 'manifest.json').is_file(), 'pr_url': None}
         pr = root / '.local/community/pr' / (job.name + '.json')
@@ -155,8 +156,22 @@ def history(root=ROOT):
             except (OSError, KeyError, ValueError):
                 item['error'] = 'Оценка не прошла проверку целостности.'
         item.update(run_summary(root, job, status))
+        # A regrade's own state names no agent; the original attempt's plan does.
+        item['agent'], item['model'] = item['run']['client'] or item['agent'], item['run']['model'] or item['model']
         items.append(item)
     return items
+
+
+def no_submission(agent, process):
+    """Why an attempt got no grade, named after the agent that made it: a failed client is not a bad solution."""
+    from tools.readiness import agents
+    label = agents().get(agent, {}).get('label', agent)
+    if process.get('status') == 'client_error':
+        return (f'{label} завершился с ошибкой (код {process.get("exit_code")}), решение не сдано. Оценка не выставлена. '
+                f'Проверьте вход в {label} и доступ к сервису.')
+    if process.get('status') == 'timeout':
+        return f'Время вышло, {label} не сдал корректное решение. Оценка не выставлена.'
+    return f'{label} завершил попытку без корректной сдачи. Оценка не выставлена.'
 
 
 def agent_log(root, job_id, limit=3000):
@@ -427,7 +442,7 @@ def work(job_id, root=ROOT):
             if not result['process']['stop_confirmed']:
                 raise RuntimeError('Solver descendants did not stop')
             if not result['submission']['valid']:
-                phase('invalid_submission', error='Codex завершил попытку без корректной сдачи. Оценка не выставлена.',
+                phase('invalid_submission', error=no_submission(agent, result['process']),
                       process_status=result['process']['status'])
                 return
         art = run / 'artifacts'

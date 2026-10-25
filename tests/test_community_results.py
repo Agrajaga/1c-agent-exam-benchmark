@@ -1,4 +1,7 @@
 import json
+import os
+import stat
+import subprocess
 import tempfile
 import unittest
 import threading
@@ -9,7 +12,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from exam_bench.common import tree_manifest
-from tools.community_results import operator, validate_bundle, export_public, make_pr, write
+from tools.community_results import operator, validate_bundle, export_public, make_pr, write, command
 from tools.serve_result_site import StaticHandler
 
 
@@ -109,6 +112,54 @@ class CommunityBundle(unittest.TestCase):
                 self.assertEqual(add[0][-4:], ['add', '-f', '--', 'community/results/demo-test'])
                 self.assertEqual(add[1], root / '.local/community/checkouts/demo-test')
                 self.assertTrue((add[1] / 'community/results/demo-test/solution.dt').is_file())
+
+    def test_pr_copies_long_read_only_sources_and_replaces_an_earlier_copy(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); f = fixture(root)
+            # Valid in the prepared bundle, beyond the usual Win32 limit once nested in the checkout
+            deep = f / 'src' / '/'.join(['ОбщиеФормы_Длинное_Имя_Каталога'] * 4) / 'Ext/Form.bin'
+            deep.parent.mkdir(parents=True); deep.write_bytes(b'form')
+            m = json.loads((f / 'manifest.json').read_text()); m['files'] = tree_manifest(f); m['files'].pop('manifest.json')
+            write(f / 'manifest.json', m)
+            dest = root / '.local/community/prepared/demo-test'; dest.parent.mkdir(parents=True)
+            f.rename(dest)
+            sources = [p for p in dest.rglob('*') if p.is_file() and 'src' in p.parts]
+            for p in sources:
+                p.chmod(0o444)
+            checkout = root / '.local/community/checkouts/demo-test'
+            copied = checkout / 'community/results/demo-test'
+            self.assertGreater(len(str(copied / deep.relative_to(f))), 260)
+            url = 'https://github.com/zeegin/1c-agent-exam-benchmark/pull/123'
+            def run(args, cwd=root):
+                return {('api', 'user'): 'tester', ('repo', 'view'): 'main', ('pr', 'create'): url}.get(tuple(args[1:3]), '')
+            with patch('tools.community_results.executable', side_effect=lambda x: x), \
+                 patch('tools.community_results.command', side_effect=run):
+                for attempt in range(2):  # the second one finds the first copy, read-only files included
+                    if attempt:
+                        (copied / 'src/Configuration.xml').chmod(0o444)
+                    self.assertEqual(make_pr('demo-test', root), url)
+                    self.assertEqual((copied / deep.relative_to(f)).read_bytes(), b'form')
+            validate_bundle(dest)  # the prepared bundle is unchanged, and still read-only
+            self.assertTrue(all(not p.stat().st_mode & stat.S_IWUSR for p in sources))
+            for p in sources:
+                p.chmod(0o644)
+
+    def test_a_copy_outside_the_checkout_is_never_removed(self):
+        from tools.community_results import remove_copy
+        with tempfile.TemporaryDirectory() as td:
+            outside = Path(td) / 'outside'; outside.mkdir(); (outside / 'keep.txt').write_text('x')
+            with self.assertRaises(ValueError):
+                remove_copy(outside, Path(td) / 'checkout')
+            self.assertTrue((outside / 'keep.txt').is_file())
+
+    def test_command_failure_names_stage_and_cause_without_stderr(self):
+        failed = subprocess.CompletedProcess([], 128, '', 'fatal: unable to access: Could not resolve host; token=secret')
+        with patch('tools.community_results.subprocess.run', return_value=failed):
+            with self.assertRaises(ValueError) as error:
+                command(['/usr/bin/git', '-c', 'core.longpaths=true', 'fetch', 'origin', 'result/x'])
+        self.assertIn('git fetch origin', str(error.exception))
+        self.assertIn('нет доступа к сети', str(error.exception))
+        self.assertNotIn('secret', str(error.exception))
 
     def test_pr_clone_preserves_github_cli_transport(self):
         for protocol, expected in (('ssh', 'git@github.com:tester/1c-agent-exam-benchmark.git'),

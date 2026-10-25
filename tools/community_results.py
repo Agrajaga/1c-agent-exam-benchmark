@@ -6,6 +6,7 @@ import os
 import platform
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -39,12 +40,59 @@ def executable(name):
     return found
 
 
+CAUSES = (('длинный путь', ('filename too long', 'path too long', 'name too long')),
+          ('нет доступа к сети', ('could not resolve', 'timed out', 'connection', 'unable to access', 'ssl', 'network')),
+          ('нет входа или прав в GitHub', ('auth', 'permission denied', 'http 401', 'http 403', 'not logged', 'credential')))
+
+
 def command(args, cwd=ROOT):
-    p = subprocess.run(list(map(str, args)), cwd=cwd, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=180)
+    args = list(map(str, args))
+    try:
+        p = subprocess.run(args, cwd=cwd, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=180)
+    except subprocess.TimeoutExpired:
+        p = subprocess.CompletedProcess(args, 'timeout', '', 'timed out')
     if p.returncode:
-        # Never echo command stderr: authentication helpers may include account data.
-        raise ValueError(f'{Path(str(args[0])).name}: command failed ({p.returncode}); check login and repository access')
+        # Never echo command stderr: authentication helpers may include account data. Only the stage and a category.
+        words = [a for a in args[1:] if not a.startswith('-') and '=' not in a]
+        stage = ' '.join([Path(args[0]).stem, *[w for w in words[:2] if re.fullmatch(r'[a-z-]+', w)]])
+        stderr = p.stderr.lower()
+        cause = next((name for name, marks in CAUSES if any(m in stderr for m in marks)), 'проверьте вход в GitHub и доступ к репозиторию')
+        raise ValueError(f'{stage}: команда завершилась с ошибкой ({p.returncode}): {cause}')
     return p.stdout.strip()
+
+
+def long_path(path):
+    """On Windows the \\?\\ prefix lifts the 260-character limit for one file operation; elsewhere nothing changes."""
+    path = os.path.abspath(path)
+    return '\\\\?\\' + path if os.name == 'nt' and not path.startswith('\\\\?\\') else path
+
+
+def copy_bundle(folder, target):
+    """Copies the checked bundle file by file: long paths work and the read-only flag of frozen sources is not
+    carried over, so the copy can be replaced later. The prepared bundle itself is only read."""
+    for rel in [*read(folder / 'manifest.json')['files'], 'manifest.json']:
+        source, dest = folder / rel, target / rel
+        os.makedirs(long_path(dest.parent), exist_ok=True)
+        shutil.copyfile(long_path(source), long_path(dest))
+
+
+def remove_copy(target, checkout):
+    """Removes an earlier copy in the service checkout, read-only files included. Links are removed, never
+    followed, and nothing outside the checkout is touched."""
+    checkout = Path(os.path.abspath(checkout))
+    if checkout not in Path(os.path.abspath(target)).parents or os.path.islink(long_path(target)):
+        raise ValueError('Служебная копия пакета находится вне проверенной папки checkout')
+
+    def writable(function, path, *_):
+        inside = Path(os.path.abspath(str(path).removeprefix('\\\\?\\')))
+        if checkout not in inside.parents:
+            raise ValueError('Служебная копия пакета ссылается за пределы checkout')
+        os.chmod(path, stat.S_IWRITE)
+        function(path)
+    if sys.version_info >= (3, 12):
+        shutil.rmtree(long_path(target), onexc=writable)
+    else:
+        shutil.rmtree(long_path(target), onerror=writable)
 
 
 def operator(data):
@@ -288,7 +336,8 @@ def make_pr(job_id, root=ROOT):
     repo_dir.parent.mkdir(parents=True, exist_ok=True)
     hooks = root / '.local/community/disabled-hooks'
     hooks.mkdir(exist_ok=True)
-    safe_git = [git, '-c', 'core.hooksPath=' + str(hooks), '-c', 'commit.gpgsign=false']
+    # Settings for these commands only: no hooks, no signing, Windows long paths; global Git config is left alone.
+    safe_git = [git, '-c', 'core.hooksPath=' + str(hooks), '-c', 'commit.gpgsign=false', '-c', 'core.longpaths=true']
     if not repo_dir.exists():
         protocol = command([gh, 'config', 'get', 'git_protocol', '--host', 'github.com'])
         clone_url = 'git@github.com:' + fork + '.git' if protocol == 'ssh' else 'https://github.com/' + fork + '.git'
@@ -306,9 +355,9 @@ def make_pr(job_id, root=ROOT):
         command([*safe_git, 'fetch', 'https://github.com/' + UPSTREAM + '.git', default], repo_dir)
         command([*safe_git, 'checkout', '-B', branch, 'FETCH_HEAD'], repo_dir)
         target = repo_dir / 'community/results' / job_id
-        if target.exists():
-            shutil.rmtree(target)
-        shutil.copytree(folder, target)
+        if os.path.lexists(long_path(target)):
+            remove_copy(target, repo_dir)
+        copy_bundle(folder, target)
         command([*safe_git, 'add', '-f', '--', 'community/results/' + job_id], repo_dir)
         command([*safe_git, '-c', 'user.name=' + login, '-c', 'user.email=' + login + '@users.noreply.github.com',
                  'commit', '-m', 'Add community measurement ' + job_id], repo_dir)

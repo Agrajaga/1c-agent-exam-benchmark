@@ -162,6 +162,14 @@ class DemoWorker(unittest.TestCase):
     def test_invalid_submission_never_gets_a_grade(self):
         self.exercise(valid=False)
 
+    def test_no_submission_names_the_agent_and_a_failed_client(self):
+        from tools.demo_runner import no_submission
+        failed = no_submission('claude', {'status': 'client_error', 'exit_code': 1})
+        self.assertIn('Claude Code завершился с ошибкой (код 1)', failed)
+        self.assertNotIn('Codex', failed)
+        self.assertIn('Время вышло, Codex', no_submission('codex', {'status': 'timeout'}))
+        self.assertIn('Codex завершил попытку', no_submission('codex', {'status': 'completed'}))
+
     def test_controller_rejects_second_launch(self):
         with tempfile.TemporaryDirectory() as temporary:
             c = Controller(Path(temporary))
