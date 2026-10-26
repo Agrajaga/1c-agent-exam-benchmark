@@ -71,7 +71,7 @@ def main():
     execution_path=ROOT/'profiles/ai-exam-execution-policy.json'
     check(methods_source['execution_policy_sha256']==sha(execution_path.read_bytes()),'execution policy changed since disclosure')
     check((TASK/POLICY_REF).read_text()==render_policy(read('private/owner-scoring-policy.json'),json.loads(execution_path.read_text())),'public policy differs from owner decisions')
-    official_text=ROOT/'.local/sources/ATT83PL.txt'
+    official_text=ROOT/'sources/1c/ATT83PL.txt'
     if official_text.exists():
         check((TASK/METHODS_REF).read_text()==extract_methods(official_text.read_text()),'methodical preface rewritten or includes example')
     for key,allowed in [('protocol_ref','public/protocol.md'),('binding_contract_ref','public/binding-contract.json')]:
@@ -91,10 +91,10 @@ def main():
         check(len([n for n in z.namelist() if n.startswith('word/media/')])==3,'missing figure')
         for element,record in zip(body,source['retained_body_elements']):
             check(sha(ET.tostring(element))==record['xml_sha256'],'retained source element rewritten')
-    # If acquisition files remain, verify their identity too.
+    # Official acquisition files are versioned; always verify their identity.
     for name,key in [('ATT83PL.rtf','source_sha256'),('ATT83PL.txt','source_text_sha256')]:
-        p=ROOT/'.local/sources'/name
-        if p.exists(): check(sha(p.read_bytes())==source[key],'source hash differs')
+        p=ROOT/'sources/1c'/name
+        check(sha(p.read_bytes())==source[key],'source hash differs')
     converted=ROOT/'.local/documents/ATT83PL.docx'
     if converted.exists():
         check(sha(converted.read_bytes())==source['converted_source_sha256'],'converted source changed')

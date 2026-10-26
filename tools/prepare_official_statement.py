@@ -65,8 +65,8 @@ def main():
     source_map={
         'source_url':'https://static.1c.ru/rus/partners/training/files/ATT83PL.rtf?356jhteyner67j340',
         'retrieved_on':'2026-10-09',
-        'source_sha256':sha((ROOT/'.local/sources/ATT83PL.rtf').read_bytes()),
-        'source_text_sha256':sha((ROOT/'.local/sources/ATT83PL.txt').read_bytes()),
+        'source_sha256':sha((ROOT/'sources/1c/ATT83PL.rtf').read_bytes()),
+        'source_text_sha256':sha((ROOT/'sources/1c/ATT83PL.txt').read_bytes()),
         'source_text_lines':[279,486],
         'conversion':'bundled LibreOffice; original tables and drawings retained',
         'converted_source_sha256':sha(original.read_bytes()),

@@ -1,0 +1,20 @@
+{
+  "source_url": "https://static.1c.ru/rus/partners/training/files/ATT83PL.rtf?356jhteyner67j340",
+  "official_index": "https://1c.ru/spec/questions.htm",
+  "files": {
+    "ATT83PL.rtf": "9cfbc21905fd378274f2d8e0f8a428ac0c83733c8f0a48e08d1fc4c7215fcc61",
+    "ATT83PL.txt": "b9c2d83d4010fbcef45e3e3885584ad8bce1d441b7a9995e9af5bc99d226f216"
+  },
+  "text_encoding": "UTF-8, LF, including original trailing blank lines",
+  "text_reproduction": {
+    "parser": "striprtf==0.0.29",
+    "input_encoding": "cp1251",
+    "specialchars": {
+      "cell": "\n",
+      "nestcell": "\n",
+      "row": "",
+      "nestrow": ""
+    },
+    "postprocessing": "None. Encode rtf_to_text output as UTF-8 without newline or whitespace normalization."
+  }
+}

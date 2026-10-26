@@ -13,6 +13,8 @@
   "verified_on": "2026-10-10"
  },
  "pinned_inputs": {
+  "grader_path": "private/snapshots/pilot-grader.py.txt",
+  "grader_revision": "d30b6b6f0bb99f86bd2c5e9001668f51f165f08d",
   "rules_sha256": "1df289caf29fc12e0fcf31e8eb424d7b7b57d5f281617a7b84b07c029dc48777",
   "grader_sha256": "25e715aeb2439baf0d111ceb967e226229a5231fd17fcf1ce271bd9b9a7c5980"
  },

@@ -13,8 +13,8 @@ from exam_bench.materials import (INPUT_REVISION, METHODS_REF, POLICY_REF,
 
 def main():
     task = ROOT / 'tasks/1c-platform-official-sample'
-    source = ROOT / '.local/sources/ATT83PL.txt'
-    artifact = ROOT / '.local/sources/ATT83PL.rtf'
+    source = ROOT / 'sources/1c/ATT83PL.txt'
+    artifact = ROOT / 'sources/1c/ATT83PL.rtf'
     if digest(artifact) != SOURCE_SHA256 or digest(source) != SOURCE_TEXT_SHA256:
         raise ValueError('Official acquisition differs from the verified source')
     policy_path = task / 'private/owner-scoring-policy.json'

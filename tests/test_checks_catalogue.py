@@ -38,16 +38,15 @@ class ChecksCatalogueTest(unittest.TestCase):
     def test_document_ledgers_are_complete_and_drive_every_source(self):
         """Every sentence of the source document is classified once; sources are derived from it, not typed."""
         from exam_bench.ledger import check, sources_by_ref
-        text = ROOT / '.local/sources/ATT83PL.txt'
-        lines = text.read_text().split('\n') if text.is_file() else None
+        text = ROOT / 'sources/1c/ATT83PL.txt'
+        lines = text.read_text(encoding='utf-8').split('\n')
         for t in self.tickets:
             book = read(f"rules/{t['rulebook']}/rules.json")
             for items, ledger_path in ((book['rules'], f"rules/{t['rulebook']}/ledger.json"),
                                        (t['requirements'], f"tasks/{t['ticket_id']}/ledger.json")):
                 ledger = read(ledger_path)
                 ids = {i['id'] for i in items}
-                if lines is not None:
-                    self.assertEqual(check(ledger, lines, ids), [], ledger_path)
+                self.assertEqual(check(ledger, lines, ids), [], ledger_path)
                 derived = sources_by_ref(ledger)
                 self.assertEqual(set(derived), ids, f'{ledger_path}: every item needs at least one sentence')
                 for item in items:

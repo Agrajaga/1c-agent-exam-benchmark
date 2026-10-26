@@ -22,10 +22,10 @@ class OpenExamMaterialsTest(unittest.TestCase):
         return {**json.loads((ROOT/'profiles/codex-probe-plan.json').read_text()),
                 **delivery_metadata(TASK), 'public_inputs': tree_manifest(TASK/'public')}
 
-    @unittest.skipUnless((ROOT/'.local/sources/ATT83PL.txt').is_file() and (ROOT/'.local/documents/ATT83PL.docx').is_file(), 'Original official sources are in the transfer archive, outside Git')
+    @unittest.skipUnless((ROOT/'sources/1c/ATT83PL.txt').is_file() and (ROOT/'.local/documents/ATT83PL.docx').is_file(), 'Optional LibreOffice-converted DOCX is not available locally')
     def test_preface_is_exact_and_has_all_published_penalties_without_sample(self):
         text = (TASK/METHODS_REF).read_text()
-        source = (ROOT/'.local/sources/ATT83PL.txt').read_text()
+        source = (ROOT/'sources/1c/ATT83PL.txt').read_text()
         # Same official words; only the layout differs (tables drawn with ASCII borders from the Word document).
         self.assertEqual(text, render_methods(ROOT/'.local/documents/ATT83PL.docx', source))
         self.assertEqual(Counter(words(text)), Counter(words(extract_methods(source))))

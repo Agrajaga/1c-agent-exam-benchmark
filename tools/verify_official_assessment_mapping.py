@@ -64,15 +64,16 @@ def main():
     check(policy['execution_budget']['series'] == {k: v['solve_timeout_seconds'] for k, v in execution_policy['series'].items()} == {'exam': 18000, 'fast': 1800}, 'Wrong AI time series (A09, v3)')
     check(execution_policy['maximum_ai_solve_timeout_seconds'] == 18000, 'Wrong upper time limit')
     check(execution_policy['human_exam_minutes'] == 300, 'Human exam limit changed')
-    source = ROOT / '.local/sources/ATT83PL.txt'
+    source = ROOT / 'sources/1c/ATT83PL.txt'
     lines = source.read_text().splitlines()
     check(sha(source) == m['source']['text_sha256'], 'Source text changed')
-    check(sha(ROOT / '.local/sources/ATT83PL.rtf') == m['source']['artifact_sha256'], 'RTF changed')
+    check(sha(ROOT / 'sources/1c/ATT83PL.rtf') == m['source']['artifact_sha256'], 'RTF changed')
     provenance = json.loads((TASK / 'private/source-map.json').read_text())
     check(m['source']['artifact_sha256'] == provenance['source_sha256'], 'Wrong official artifact')
     check(m['source']['text_sha256'] == provenance['source_text_sha256'], 'Wrong source locator')
     check(sha(TASK / 'private/rules.json') == m['pinned_inputs']['rules_sha256'], 'Rule specification drift')
-    check(sha(ROOT / 'exam_bench/grader.py') == m['pinned_inputs']['grader_sha256'], 'Pilot grader drift')
+    # The pin belongs to the historical pilot, not today's executable grader.
+    check(sha(TASK / m['pinned_inputs']['grader_path']) == m['pinned_inputs']['grader_sha256'], 'Historical pilot grader drift')
     groups = {'GEN': 'любой учетной', 'OU': 'оперативному', 'BU': 'бухгалтерскому',
               'PR': 'периодическим', 'BP': 'бизнес-процессам', 'UI': 'управляемым'}
     counts = Counter()

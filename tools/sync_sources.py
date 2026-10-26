@@ -15,7 +15,7 @@ from exam_bench.ledger import check, sources_by_ref, number
 
 SECTION_NUMBER = {'G': 1, 'OU': 2, 'BU': 3, 'PR': 4, 'F': 5}
 
-DOCUMENT = ROOT / '.local/sources/ATT83PL.txt'
+DOCUMENT = ROOT / 'sources/1c/ATT83PL.txt'
 TICKET_HEADS = ('Общие требования', 'Оперативный учет', 'Бухгалтерский учет', 'Сложные периодические расчеты', 'Управляемые формы')
 RULE_HEADS = ('Список наиболее часто встречающихся ошибок', 'Оценка результата выполнения задания', 'Форма проведения экзамена')
 
