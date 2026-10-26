@@ -436,6 +436,8 @@ def export_public(root, stage):
                         'regrade_required': regrade_reasons(folder, current),
                         'grader_revision_sha256': hashlib.sha256(json.dumps(read(folder / 'grading-implementation.json'), sort_keys=True).encode()).hexdigest(),
                         'archive_sha256': digest(dest / 'solution.zip')})
+    from tools.owner_verification import export_receipts
+    export_receipts(root, stage, records, current)
     # A regrade is a revision of an existing attempt, not another solver run.
     # Keep every immutable package downloadable, with earlier evaluations nested under the latest.
     grouped = {}

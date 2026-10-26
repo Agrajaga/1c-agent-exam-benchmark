@@ -21,7 +21,7 @@ function fromCommunity(r) {
   return {id: r.id, local: false, model: v.model, agent: c.client || (String(v.model).startsWith('claude') ? 'claude' : 'codex'),
     agentVersion: c.client_version, effort: c.reasoning_effort, harness: v.harness, e: v, limit: c.solve_timeout_seconds,
     tokens: c.tokens || {}, tools: c.tools || {}, env: m.environment || {}, author: m.operator || {}, date: v.created_at,
-    download: r.download, sha: r.archive_sha256, verification: r.verification, regrade: r.regrade_required || [],
+    download: r.download, sha: r.archive_sha256, verification: r.verification, ownerVerification: r.owner_verification, regrade: r.regrade_required || [],
     runId: r.run_id || v.run_id || r.id, history: (r.previous_evaluations || []).map(fromCommunity)};
 }
 
@@ -94,6 +94,19 @@ function violations(r) {
   if (stale(r)) notes.append(node('p', 'Требуется пересчёт, место не присваивается. ' + r.regrade.map(x => REGRADE[x.id]?.(x) || x.id).join(' '), 'why'));
   if (r.e.binding_compatibility) notes.append(node('p', 'Оценено с адаптацией привязок: исходная сдача не загрузилась без неё.', 'why'));
   if (r.tools?.mcp_calls != null) notes.append(node('p', `Вызовов MCP-инструментов: ${r.tools.mcp_calls}, с ошибкой: ${r.tools.failed_calls || 0}.`, 'why'));
+  const verification = r.ownerVerification;
+  if (verification) {
+    const grader = verification.grader, server = verification.server, hw = server.hardware || {};
+    const review = node('div'); review.append(node('h4', 'Проверено владельцем репозитория'));
+    review.append(node('p', `@${verification.operator.github} · ${new Date(verification.completed_at).toLocaleString('ru-RU')}`));
+    review.append(node('p', `Грейдер: ${grader.profile} · коммит ${grader.commit || 'не указан'}${grader.working_tree_dirty ? ' (с локальными изменениями)' : ''}`));
+    review.append(node('p', 'SHA-256 грейдера: ' + grader.sha256, 'why'));
+    review.append(node('p', `Сервер: ${server.name} · ${server.os.system} ${server.os.release || ''} · ${server.os.architecture || ''}`));
+    review.append(node('p', [hw.cpu, hw.logical_cpus && hw.logical_cpus + ' потоков', hw.ram_bytes && Math.round(hw.ram_bytes / 1073741824) + ' ГБ RAM'].filter(Boolean).join(' · ')));
+    review.append(node('p', `Платформа перепроверки: 1С ${verification.platform_version} · ${isolation[server.isolation] || server.isolation || ''}`));
+    review.append(node('p', 'Условия исходного запуска агента сохранены в основной строке. Отметка подтверждает перепроверку, а не успешное решение всех требований.', 'why'));
+    box.append(review);
+  }
   box.append(charges, failed, notes);
   if (r.local) {
     const log = node('button', 'Открыть лог агента', 'btn small');
@@ -155,7 +168,7 @@ function render() {
     if (r.author?.github) { const a = node('a', r.author.name || r.author.github); a.href = 'https://github.com/' + r.author.github; author.append(a); sub(author, '@' + r.author.github); }
     else author.append(node('span', r.author?.name || '—'));
     sub(author, r.date ? new Date(r.date).toLocaleDateString('ru-RU') : '');
-    sub(author, r.local ? 'не отправлен' : r.verification === 'contributor_reported' ? 'заявлено участником' : r.verification);
+    sub(author, r.local ? 'не отправлен' : r.verification === 'repository_owner' ? 'проверено владельцем репозитория' : r.verification === 'contributor_reported' ? 'заявлено участником' : r.verification);
     const cellActions = node('td'), act = node('div', null, 'row-actions');
     cellActions.append(act);
     if (r.local && submit) { const box = node('div', null, 'actions'); submit(box, r.item, local.community, local.githubReady, load); act.append(box); }

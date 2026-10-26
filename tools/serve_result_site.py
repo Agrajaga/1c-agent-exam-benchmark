@@ -21,6 +21,7 @@ def watch_signature(root, catalogue_only=False):
     refs = ['site/catalogue.json', '.local/demo/config.json'] + ['site/' + name for name in SITE_FILES]
     refs = [r for r in refs if (root / r).is_file()]
     refs += [str(p.relative_to(root)) for p in (root / 'community/results').rglob('*') if p.is_file()]
+    refs += [str(p.relative_to(root)) for p in (root / 'community/rechecks').rglob('*.json') if p.is_file()]
     refs += [str(p.relative_to(root)) for p in (root / 'docs').glob('*RUN.md')]
     if (root / 'docs/COMMUNITY.md').is_file(): refs.append('docs/COMMUNITY.md')
     refs += [str(p.relative_to(root)) for p in sorted((root / 'rules').glob('*/rules.json'))]
