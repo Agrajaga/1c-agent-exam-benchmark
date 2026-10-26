@@ -12,7 +12,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from exam_bench.common import tree_manifest
-from tools.community_results import operator, validate_bundle, export_public, make_pr, write, command
+from tools.community_results import operator, validate_bundle, export_public, make_pr, write, command, long_path, remove_copy
 from tools.serve_result_site import StaticHandler
 
 
@@ -154,17 +154,23 @@ class CommunityBundle(unittest.TestCase):
             url = 'https://github.com/zeegin/1c-agent-exam-benchmark/pull/123'
             def run(args, cwd=root):
                 return {('api', 'user'): 'tester', ('repo', 'view'): 'main', ('pr', 'create'): url}.get(tuple(args[1:3]), '')
-            with patch('tools.community_results.executable', side_effect=lambda x: x), \
-                 patch('tools.community_results.command', side_effect=run):
-                for attempt in range(2):  # the second one finds the first copy, read-only files included
-                    if attempt:
-                        (copied / 'src/Configuration.xml').chmod(0o444)
-                    self.assertEqual(make_pr('demo-test', root), url)
-                    self.assertEqual((copied / deep.relative_to(f)).read_bytes(), b'form')
-            validate_bundle(dest)  # the prepared bundle is unchanged, and still read-only
-            self.assertTrue(all(not p.stat().st_mode & stat.S_IWUSR for p in sources))
-            for p in sources:
-                p.chmod(0o644)
+            try:
+                with patch('tools.community_results.executable', side_effect=lambda x: x), \
+                     patch('tools.community_results.command', side_effect=run):
+                    for attempt in range(2):  # the second one finds the first copy, read-only files included
+                        if attempt:
+                            (copied / 'src/Configuration.xml').chmod(0o444)
+                        self.assertEqual(make_pr('demo-test', root), url)
+                        with open(long_path(copied / deep.relative_to(f)), 'rb') as actual:
+                            self.assertEqual(actual.read(), b'form')
+                validate_bundle(dest)  # the prepared bundle is unchanged, and still read-only
+                self.assertTrue(all(not p.stat().st_mode & stat.S_IWUSR for p in sources))
+            finally:
+                # TemporaryDirectory uses ordinary Win32 paths and cannot remove this deliberately long tree.
+                if checkout.exists():
+                    remove_copy(checkout, root / '.local/community')
+                for p in sources:
+                    p.chmod(0o644)
 
     def test_a_copy_outside_the_checkout_is_never_removed(self):
         from tools.community_results import remove_copy
