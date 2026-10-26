@@ -1,5 +1,7 @@
 import json
 import unittest
+import tempfile
+from pathlib import Path
 
 from exam_bench.claude import normalize, SETTINGS, DENIED_TOOLS
 from exam_bench.preflight import claude_mcp_call_succeeded, validate_plan
@@ -24,6 +26,7 @@ class ClaudeTelemetry(unittest.TestCase):
         self.assertEqual(parsed['tokens']['input'], 1050)
         self.assertEqual(parsed['tokens']['cached_input'], 900)
         self.assertEqual(parsed['tokens']['fresh_input'], 150)
+        self.assertEqual(parsed['tokens']['cache_creation_input'], 50)
         self.assertEqual(parsed['tokens']['total'], 1090)
         self.assertEqual(parsed['native_cost_usd'], 1.25)
         self.assertEqual(parsed['models_observed'], ['claude-opus-5-5'])
@@ -34,6 +37,24 @@ class ClaudeTelemetry(unittest.TestCase):
         parsed = normalize([json.dumps(STREAM[0])])
         self.assertIsNone(parsed['tokens']['total'])
         self.assertTrue(parsed['limitations'])
+
+    def test_missing_cache_write_is_not_assumed_zero(self):
+        final = {'type': 'result', 'modelUsage': {'claude-opus-5-5': {
+            'inputTokens': 100, 'cacheReadInputTokens': 900, 'outputTokens': 40}}}
+        parsed = normalize([json.dumps(final)])
+        self.assertIsNone(parsed['tokens']['cache_creation_input'])
+        self.assertIsNone(parsed['tokens']['input'])
+        self.assertTrue(parsed['limitations'])
+
+    def test_local_summary_exposes_cache_writes(self):
+        from tools.demo_runner import run_summary
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            run = root / '.local/runs/run1'
+            run.mkdir(parents=True)
+            (run / 'result.json').write_text(json.dumps({'metrics': {'tokens': {'cache_creation_input': 50}}}))
+            job = root / 'job1'
+            self.assertEqual(run_summary(root, job, {'run_id': 'run1'})['run']['tokens']['cache_creation_input'], 50)
 
     def test_unica_probe_reads_the_tool_result(self):
         self.assertTrue(claude_mcp_call_succeeded(STREAM, 'unica.view'))

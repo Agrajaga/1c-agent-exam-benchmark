@@ -473,7 +473,7 @@ def build(root=ROOT, output=None, catalogue_only=False):
             'one_penalty_per_defect': True, 'clamp_negative': False, 'is_official_1c_attestation': False}}
     write_json(stage / 'data.json', data)
     # Explicit public metrics only; no native transcripts or account counters.
-    token_fields = ('total', 'input', 'output', 'cached_input', 'fresh_input', 'reasoning_output', 'coverage')
+    token_fields = ('total', 'input', 'output', 'cached_input', 'cache_creation_input', 'fresh_input', 'reasoning_output', 'coverage')
     with (stage / 'tokens.csv').open('w', encoding='utf-8-sig', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=('run_id', 'model', 'harness', *token_fields))
         writer.writeheader()

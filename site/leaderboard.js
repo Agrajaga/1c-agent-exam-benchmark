@@ -197,14 +197,20 @@ function openRun(r) {
     ['Платформа исходного замера', env.platform_version && '1С ' + env.platform_version],
     ['Компьютер', [systems[env.os?.system] || env.os?.system, hw.cpu, hw.ram_bytes && Math.round(hw.ram_bytes / 1073741824) + ' ГБ RAM'].filter(Boolean).join(' · ')],
     ['Токены', `новый вход ${tokens(r.tokens.fresh_input)}, кешированный вход ${tokens(r.tokens.cached_input)}, выход ${tokens(r.tokens.output)}`],
+    ...(API_PRICES[r.model]?.cacheWrite ? [['Запись кеша', tokens(r.tokens.cache_creation_input)]] : []),
     ['Оценка API', estimateApiCost(r.model, r.tokens) == null ? 'Нет данных для расчёта' : `≈ $${number(estimateApiCost(r.model, r.tokens).toFixed(2))} · условный расчёт`]]) {
     list.append(node('dt', label), node('dd', value || '—'));
   }
   conditions.append(list);
   const rate = API_PRICES[r.model];
-  const pricing = node('p', 'Оценка по стандартным тарифам API на 27.10.2026: новый и кешированный вход, выход. Это не счёт за подписку; длинный контекст, запись кеша, режим обработки и дополнительные услуги не учтены. Для Claude новый вход включает запись кеша, которая тарифицируется отдельно. Для Grok High использован обычный тариф Grok 4.7, не Fast. ', 'why');
+  let explanation = 'Оценка по стандартным тарифам API на 27.10.2026. Это не счёт за подписку; длинный контекст, режим обработки и дополнительные услуги не учтены. ';
+  if (rate?.cacheWrite) explanation += r.tokens.cache_creation_input == null
+    ? 'Количество записанных в кеш токенов не сохранено: оценка не учитывает доплату за запись и может быть занижена. '
+    : 'Запись кеша включена в новый вход и рассчитывается отдельно по тарифу на 5 минут; фактический срок хранения не подтверждён и может быть иным. ';
+  if (r.model === 'grok-4.7-high') explanation += 'Для Grok High использован обычный тариф Grok 4.7, не Fast. ';
+  const pricing = node('p', explanation, 'why');
   if (rate) {
-    pricing.append(document.createTextNode(`Тариф за миллион токенов: вход $${rate.input}, кеш $${rate.cached}, выход $${rate.output}. `));
+    pricing.append(document.createTextNode(`Тариф за миллион токенов: вход $${rate.input}, чтение кеша $${rate.cached}, ${rate.cacheWrite ? `запись кеша (5 мин) $${rate.cacheWrite}, ` : ''}выход $${rate.output}. `));
     const pricingLink = node('a', `Тарифы ${rate.provider}`); pricingLink.href = rate.source; pricingLink.target = '_blank'; pricingLink.rel = 'noopener noreferrer'; pricing.append(pricingLink);
   }
   conditions.append(pricing);
@@ -268,7 +274,8 @@ function render() {
     const tok = node('td', null, 'num cost-cell');
     tok.append(node('b', estimate == null ? 'Нет расчёта' : `≈ $${number(estimate.toFixed(2))}`, 'cost-value'));
     sub(tok, `вход ${tokens(r.tokens.fresh_input)}`); sub(tok, `кеш ${tokens(r.tokens.cached_input)}`); sub(tok, `выход ${tokens(r.tokens.output)}`);
-    tok.title = 'Вход — новые токены (для Claude включая запись кеша); кеш — повторный вход. Стоимость приблизительная: стандартный тариф API на 27.10.2026, не счёт за подписку. Подробности в условиях замера.';
+    if (API_PRICES[r.model]?.cacheWrite) sub(tok, r.tokens.cache_creation_input == null ? 'запись кеша неизвестна' : `запись ${tokens(r.tokens.cache_creation_input)}`);
+    tok.title = 'Вход — новые токены (включая запись кеша); кеш — повторный вход. Расчёт записи Claude предполагает кеш на 5 минут. Стоимость приблизительная, не счёт за подписку. Подробности в условиях замера.';
     const env = r.env, hw = env.hardware || {};
     const pc = node('td', [systems[env.os?.system] || env.os?.system, env.os?.architecture && arch(env.os.architecture)].filter(Boolean).join(' ') || '—', 'pc');
     sub(pc, [hw.cpu, hw.logical_cpus && hw.logical_cpus + ' потоков', hw.ram_bytes && Math.round(hw.ram_bytes / 1073741824) + ' ГБ'].filter(Boolean).join(' · '));

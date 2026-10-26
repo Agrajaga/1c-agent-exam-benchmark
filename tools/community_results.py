@@ -257,7 +257,7 @@ def _prepare_bundle(job_id, root=ROOT):
                           original_submission_valid=execution.get('submission', {}).get('valid'),
                           model_provenance=execution.get('model', {}).get('provenance'),
                           tokens={k: metrics.get('tokens', {}).get(k) for k in
-                                  ('input', 'cached_input', 'fresh_input', 'output', 'reasoning_output', 'total', 'coverage')},
+                                  ('input', 'cached_input', 'cache_creation_input', 'fresh_input', 'output', 'reasoning_output', 'total', 'coverage')},
                           tools={k: metrics.get('tools', {}).get(k) for k in ('mcp_calls', 'unica_calls', 'failed_calls')},
                           process={k: execution.get('process', {}).get(k) for k in ('status', 'exit_code', 'stop_confirmed')})
         write(stage / 'run.json', run_record)

@@ -280,7 +280,7 @@ def run_summary(root, job, status):
     environment = measurement.get('environment', {})
     return {'run': {'client': plan.get('client'), 'client_version': plan.get('client_version'), 'model': plan.get('model'),
                     'reasoning_effort': plan.get('reasoning_effort'), 'solve_timeout_seconds': plan.get('solve_timeout_seconds'),
-                    'tokens': {k: tokens.get(k) for k in ('input', 'cached_input', 'fresh_input', 'output')},
+                    'tokens': {k: tokens.get(k) for k in ('input', 'cached_input', 'cache_creation_input', 'fresh_input', 'output')},
                     'tools': {k: result.get('metrics', {}).get('tools', {}).get(k) for k in ('mcp_calls', 'failed_calls')}},
             'measurement': {'operator': measurement.get('operator'),
                             'environment': {k: environment.get(k) for k in ('os', 'hardware', 'platform_version', 'isolation')}}}

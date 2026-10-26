@@ -288,10 +288,13 @@ def normalize(lines):
         usage = list(final['modelUsage'].values())
         fresh = sum(int(u.get('inputTokens') or 0) for u in usage)
         read = sum(int(u.get('cacheReadInputTokens') or 0) for u in usage)
-        created = sum(int(u.get('cacheCreationInputTokens') or 0) for u in usage)
-        tokens.update(input=fresh + read + created, cached_input=read, output=sum(int(u.get('outputTokens') or 0) for u in usage))
-        tokens['total'] = tokens['input'] + tokens['output']
+        writes = [u.get('cacheCreationInputTokens') for u in usage]
+        created = sum(writes) if all(isinstance(v, int) and not isinstance(v, bool) and v >= 0 for v in writes) else None
+        tokens.update(input=fresh + read + created if created is not None else None, cached_input=read, output=sum(int(u.get('outputTokens') or 0) for u in usage))
+        tokens['total'] = tokens['input'] + tokens['output'] if tokens['input'] is not None else None
         tokens['cache_creation_input'] = created
+        if created is None:
+            limitations.append('Cache creation token count is missing or invalid')
         models |= set(final['modelUsage'])
         cost = final.get('total_cost_usd')
     else:
