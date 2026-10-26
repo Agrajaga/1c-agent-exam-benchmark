@@ -1,0 +1,153 @@
+{
+  "description": "Recorded entry-service fixture; not a fresh calibration",
+  "platform_version": "8.3.27.2342",
+  "platform_binary_sha256": "2a9ef3653367b6de29000a3a51749a19e6450134347925713c9075674e9f0956",
+  "starter_dt_sha256": "f40d084818b0d1cfe503fc7653a6a13f1a8e47fcd1688dad6245b12744eb4638",
+  "observer_sha256": "73bd4f8783c1e2d97b1904dfdede627d4e59974c9441bf5459e3304d2f18b0fd",
+  "entry_contract": {
+    "policy": "CommonModule.BenchFrequencyInput.Policy",
+    "specification": "CommonModule.BenchFrequencyInput.Specification"
+  },
+  "observations": {
+    "guarded": {
+      "p_initial": "ok",
+      "p_correction": "ok",
+      "p_same_year": "BENCH_FREQUENCY_GUARD",
+      "p_next_year": "ok",
+      "s_initial": "ok",
+      "s_correction": "ok",
+      "s_same_week": "BENCH_FREQUENCY_GUARD",
+      "s_next_week": "ok",
+      "policy_records": [
+        {
+          "date": "2025-01-01",
+          "method": "LIFO"
+        },
+        {
+          "date": "2026-01-01",
+          "method": "LIFO"
+        }
+      ],
+      "spec_records": [
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_A",
+          "qty": 3
+        },
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_B",
+          "qty": 4
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_A",
+          "qty": 5
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_B",
+          "qty": 6
+        }
+      ]
+    },
+    "unguarded": {
+      "p_initial": "ok",
+      "p_correction": "ok",
+      "p_same_year": "ok",
+      "p_next_year": "ok",
+      "s_initial": "ok",
+      "s_correction": "ok",
+      "s_same_week": "ok",
+      "s_next_week": "ok",
+      "policy_records": [
+        {
+          "date": "2025-01-01",
+          "method": "LIFO"
+        },
+        {
+          "date": "2025-06-01",
+          "method": "FIFO"
+        },
+        {
+          "date": "2026-01-01",
+          "method": "LIFO"
+        }
+      ],
+      "spec_records": [
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_A",
+          "qty": 3
+        },
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_B",
+          "qty": 4
+        },
+        {
+          "date": "2026-01-01",
+          "item": "FREQ_A",
+          "qty": 4
+        },
+        {
+          "date": "2026-01-01",
+          "item": "FREQ_B",
+          "qty": 5
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_A",
+          "qty": 5
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_B",
+          "qty": 6
+        }
+      ]
+    },
+    "year_native": {
+      "p_initial": "ok",
+      "p_correction": "ok",
+      "p_same_year": "ok",
+      "p_next_year": "ok",
+      "s_initial": "ok",
+      "s_correction": "ok",
+      "s_same_week": "BENCH_FREQUENCY_GUARD",
+      "s_next_week": "ok",
+      "policy_records": [
+        {
+          "date": "2025-01-01",
+          "method": "FIFO"
+        },
+        {
+          "date": "2026-01-01",
+          "method": "LIFO"
+        }
+      ],
+      "spec_records": [
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_A",
+          "qty": 3
+        },
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_B",
+          "qty": 4
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_A",
+          "qty": 5
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_B",
+          "qty": 6
+        }
+      ]
+    }
+  }
+}

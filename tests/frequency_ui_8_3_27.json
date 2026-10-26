@@ -1,0 +1,298 @@
+{
+  "description": "Recorded standard-form diagnostic fixture, not a fresh calibration",
+  "platform_version": "8.3.27.2342",
+  "platform_binary_sha256": "2a9ef3653367b6de29000a3a51749a19e6450134347925713c9075674e9f0956",
+  "starter_dt_sha256": "f40d084818b0d1cfe503fc7653a6a13f1a8e47fcd1688dad6245b12744eb4638",
+  "observer_sha256": "39610f9dcb2efe2ca2c3760610afa1ffd7211d3a18944589ab157c9dd7c4c036",
+  "observations": {
+    "guarded": {
+      "seed": "ok",
+      "elements": [
+        {
+          "name": "Период",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ПериодКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Block",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "BlockКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Item",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ItemКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Property",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "PropertyКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Qty",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "QtyКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаКоманднаяПанель",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаЗаписатьИЗакрыть",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаЗаписать",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаСкопировать",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаПеречитать",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаУдалить",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаИзменитьФорму",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаСправка",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаСоздатьНаОсновании",
+          "visible": true,
+          "enabled": true
+        }
+      ],
+      "policy": [
+        "ok",
+        "BENCH_FREQUENCY_GUARD",
+        "ok"
+      ],
+      "policy_snapshot": [
+        "2025-01-01",
+        "2026-01-01"
+      ],
+      "spec": [
+        "ok",
+        "ok",
+        "BENCH_FREQUENCY_GUARD",
+        "BENCH_FREQUENCY_GUARD",
+        "ok",
+        "ok"
+      ],
+      "spec_snapshot": [
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_FormA",
+          "qty": 1
+        },
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_FormB",
+          "qty": 2
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_FormA",
+          "qty": 1
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_FormB",
+          "qty": 2
+        }
+      ]
+    },
+    "unguarded": {
+      "seed": "ok",
+      "elements": [
+        {
+          "name": "Период",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ПериодКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Block",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "BlockКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Item",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ItemКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Property",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "PropertyКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "Qty",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "QtyКонтекстноеМеню",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаКоманднаяПанель",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаЗаписатьИЗакрыть",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаЗаписать",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаСкопировать",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаПеречитать",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаУдалить",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаИзменитьФорму",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаСправка",
+          "visible": true,
+          "enabled": true
+        },
+        {
+          "name": "ФормаСоздатьНаОсновании",
+          "visible": true,
+          "enabled": true
+        }
+      ],
+      "policy": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "policy_snapshot": [
+        "2025-01-01",
+        "2025-06-01",
+        "2026-01-01"
+      ],
+      "spec": [
+        "ok",
+        "ok",
+        "ok",
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "spec_snapshot": [
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_FormA",
+          "qty": 1
+        },
+        {
+          "date": "2025-12-30",
+          "item": "FREQ_FormB",
+          "qty": 2
+        },
+        {
+          "date": "2026-01-01",
+          "item": "FREQ_FormA",
+          "qty": 1
+        },
+        {
+          "date": "2026-01-01",
+          "item": "FREQ_FormB",
+          "qty": 2
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_FormA",
+          "qty": 1
+        },
+        {
+          "date": "2026-01-05",
+          "item": "FREQ_FormB",
+          "qty": 2
+        }
+      ]
+    }
+  }
+}
