@@ -145,6 +145,7 @@ function renderExaminer(exam, file) {
       </button>
       <div class="more">
         <p><b>Как проверяется.</b> ${esc(x.check.how)}</p>
+        ${x.penalty_via ? `<p><a href="checks.html#rules:${encodeURIComponent(x.penalty_via)}">Основание штрафа: ${esc(x.penalty_via)}</a> · отдельный штраф за эту практику не добавляется.</p>` : ''}
         <p class="links"><span class="muted">${x.link ? 'Источник:' : 'В видео:'}</span> ${x.at.map(t => at(t, x.video, x.link)).join(' ')}</p>
         ${editHint(`rules/${book.id}/${file}.json`, x.id)}
       </div>
