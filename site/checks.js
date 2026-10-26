@@ -120,7 +120,8 @@ function renderRules() {
       <div class="more">
         ${touched.map(d => `<p class="decision"><b>${esc(d.id)}. ${esc(d.title)}.</b> ${esc(d.decision || '')} ${d.open_part ? `<span class="muted">Не решено: ${esc(d.open_part)}</span>` : ''}</p>`).join('')}
         <p><b>Как проверяется.</b> ${esc(r.stand_check.how)}</p>
-        ${a ? `<p><b>${esc(APPLIES[a.applicability] || a.applicability)}.</b> ${esc(a.ticket_check)}</p>` : ''}
+        ${a ? `<p><b>${esc(APPLIES[a.applicability] || a.applicability)}. Полная целевая проверка:</b> ${esc(a.ticket_check)}</p>` : ''}
+        ${a?.coverage === 'not_implemented' && ['ready', 'partial'].includes(r.stand_check.readiness) ? '<p class="why">Целевая проверка ещё не завершена; уже работающие отдельные признаки описаны выше. Их наличие не означает полного покрытия.</p>' : ''}
         ${a?.ticket_parameter ? `<p class="muted">Основание в билете: «${esc(a.ticket_parameter.source.quote)}»</p>` : ''}
         ${rangeNote(r) ? `<p class="muted">${esc(rangeNote(r))}</p>` : ''}
         ${!r.barrier ? `<p class="muted">Код штрафа стенда: F1C-${esc(r.id)}. Это идентификатор правила, не ошибка платформы 1С.</p>` : ''}
