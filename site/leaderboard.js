@@ -21,7 +21,7 @@ function fromCommunity(r) {
   return {id: r.id, local: false, model: v.model, agent: c.client || (String(v.model).startsWith('claude') ? 'claude' : 'codex'),
     agentVersion: c.client_version, effort: c.reasoning_effort, harness: v.harness, e: v, limit: c.solve_timeout_seconds,
     tokens: c.tokens || {}, tools: c.tools || {}, env: m.environment || {}, author: m.operator || {}, date: v.created_at,
-    download: r.download, sha: r.archive_sha256, verification: r.verification, ownerVerification: r.owner_verification, regrade: r.regrade_required || [],
+    download: r.download, sha: r.archive_sha256, verification: r.verification, ownerVerification: r.owner_verification, sourceContext: r.source_context, regrade: r.regrade_required || [],
     runId: r.run_id || v.run_id || r.id, history: (r.previous_evaluations || []).map(fromCommunity)};
 }
 
@@ -29,7 +29,8 @@ function fromLocal(item) {
   const e = item.evaluation, run = item.run || {}, m = item.measurement || {};
   return {id: item.job_id, local: true, item, model: run.model || e.model, agent: run.client || 'codex', agentVersion: run.client_version,
     effort: run.reasoning_effort, harness: item.harness, e, limit: run.solve_timeout_seconds, tokens: run.tokens || {},
-    tools: run.tools || {}, env: m.environment || {}, author: m.operator || {}, date: e.created_at};
+    tools: run.tools || {}, env: m.environment || {}, author: m.operator || {}, date: e.created_at,
+    sourceContext: 'api/source-context?id=' + encodeURIComponent(item.job_id)};
 }
 
 // A score from an earlier grader, or one the current code cannot reproduce, stays visible but is not ranked.
@@ -78,7 +79,7 @@ function violations(r) {
   const charges = node('div', null, 'run-errors'); charges.append(node('h4', 'Штрафы'));
   if (r.e.charges?.length) {
     const list = node('ul');
-    renderCharges(list, r.e.charges, penaltyMetadata, {methodology: Boolean(local)});
+    renderCharges(list, r.e.charges, penaltyMetadata, {methodology: Boolean(local), sourceContext: r.sourceContext});
     charges.append(list);
   } else charges.append(node('p', 'Нет', 'why'));
   const failed = node('div', null, 'run-failures'); failed.append(node('h4', 'Не пройденные требования'));

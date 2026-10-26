@@ -1,4 +1,5 @@
 // Presentation only: never enrich or rewrite the saved charge objects.
+import {sourceEvidence} from './source-viewer.js';
 const textNode = (tag, text, cls) => {
   const element = document.createElement(tag);
   if (text != null) element.textContent = text;
@@ -85,13 +86,13 @@ function reference(parent, label, entry, target, methodology) {
   line.append(value); parent.append(line);
 }
 
-export function renderCharges(container, charges, metadata = {}, {methodology = false} = {}) {
+export function renderCharges(container, charges, metadata = {}, {methodology = false, sourceContext = null} = {}) {
   const signature = JSON.stringify(charges);
   const previous = rendered.get(container);
   // Polling the unchanged evaluation must not close a diagnostic the reader opened.
-  if (previous?.signature === signature && previous.metadata === metadata && previous.methodology === methodology) return;
+  if (previous?.signature === signature && previous.metadata === metadata && previous.methodology === methodology && previous.sourceContext === sourceContext) return;
   container.classList.add('penalty-list');
-  container.replaceChildren(...charges.map(charge => {
+  container.replaceChildren(...charges.map((charge, index) => {
     const description = describeCharge(charge, metadata);
     const card = textNode('li', null, 'penalty-card');
     card.append(textNode('h4', `−${amount(charge.points)} · ${description.title}`, 'penalty-title'),
@@ -112,7 +113,8 @@ export function renderCharges(container, charges, metadata = {}, {methodology = 
     reference(card, 'Основание штрафа', description.rule, 'rules', methodology);
     reference(card, 'Не выполнено требование', description.requirement, 'ticket', methodology);
     card.append(textNode('p', `Код штрафа: ${charge.id}`, 'penalty-basis'));
-    if (description.locations.length) {
+    if (sourceContext) card.append(sourceEvidence(charge, index, sourceContext));
+    if (!sourceContext && description.locations.length) {
       const locations = textNode('details', null, 'penalty-locations');
       locations.append(textNode('summary', `Места в исходниках: ${description.locations.length} (один штраф)`));
       const list = textNode('ul');
@@ -124,5 +126,5 @@ export function renderCharges(container, charges, metadata = {}, {methodology = 
     card.append(original);
     return card;
   }));
-  rendered.set(container, {signature, metadata, methodology});
+  rendered.set(container, {signature, metadata, methodology, sourceContext});
 }

@@ -250,7 +250,8 @@ function renderJob(demo, results, githubReady) {
   const kv2 = [['Проверки', checksText(e)], ['Оценка', gradeText(e) || '—'], ['Без оценки', String(e.not_assessed)], ['Время решения', duration(e.solve_seconds)]];
   $('outcome-kv').replaceChildren(...kv2.map(([k, v]) => { const s = node('span', k + ': '); s.append(node('b', v)); return s; }));
   $('outcome-charges').hidden = !e.charges.length;
-  renderCharges($('charges'), e.charges, penaltyMetadata, {methodology: true});
+  renderCharges($('charges'), e.charges, penaltyMetadata, {methodology: true,
+    sourceContext: 'api/source-context?id=' + encodeURIComponent(item.job_id)});
   if (job.mode === 'run') renderSubmit($('submit'), item, demo.community, githubReady, refresh);
 }
 

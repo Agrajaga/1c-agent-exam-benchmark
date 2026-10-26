@@ -108,6 +108,15 @@ class StaticHandler(http.server.SimpleHTTPRequestHandler):
                 return self.json_response(200, agent_log(ROOT, parse_qs(urlsplit(self.path).query)['id'][0]))
             except (ValueError, KeyError, OSError) as error:
                 return self.json_response(404, {'error': str(error) if isinstance(error, ValueError) else 'Лог не найден'})
+        if self.path.split('?')[0] == '/api/source-context':
+            if not self.local_request():
+                return self.json_response(403, {'error': 'Local host required'})
+            from urllib.parse import parse_qs, urlsplit
+            from tools.demo_runner import local_source_context
+            try:
+                return self.json_response(200, local_source_context(ROOT, parse_qs(urlsplit(self.path).query)['id'][0]))
+            except (ValueError, KeyError, OSError):
+                return self.json_response(404, {'error': 'Исходники оценки недоступны или не прошли проверку целостности.'})
         if self.path.split('?')[0] in ('/api/readiness', '/api/results'):
             if not self.local_request():
                 return self.json_response(403, {'error': 'Local host required'})

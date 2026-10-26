@@ -160,7 +160,7 @@ def posting_failure(evaluation):
 
 
 PAGES = ('index.html', 'results.html', 'leaderboard.html', 'checks.html', 'inputs.html')
-SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'scoring-display.js', 'inputs.js', 'penalty-cards.js')
+SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'scoring-display.js', 'inputs.js', 'penalty-cards.js', 'source-viewer.js')
 SITE_FILES = PAGES + SCRIPTS
 RULEBOOK_INPUTS = {'ledger': 'ledger.json', 'decisions': 'decisions.json', 'examiner': 'examiner.json',
                    'course': 'chistov.json', 'standards': 'standards.json'}
@@ -325,6 +325,10 @@ def build(root=ROOT, output=None, catalogue_only=False):
             shutil.copyfile(site / name, stage / name)
     # Entry-point versions must also refresh their shared presentation module.
     presenter = stage / 'penalty-cards.js'
+    source_viewer = stage / 'source-viewer.js'
+    if presenter.is_file() and source_viewer.is_file():
+        presenter.write_text(presenter.read_text(encoding='utf-8').replace(
+            "'./source-viewer.js'", f"'./source-viewer.js?v={digest(source_viewer)[:12]}'"), encoding='utf-8')
     if presenter.is_file():
         for name in ('measure.js', 'leaderboard.js'):
             script = stage / name

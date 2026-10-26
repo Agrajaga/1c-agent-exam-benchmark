@@ -428,11 +428,15 @@ def export_public(root, stage):
         plan = read(folder / 'run.json')
         dest = stage / 'community-downloads' / folder.name
         dest.mkdir(parents=True)
+        from tools.source_context import contexts
+        write(dest / 'source-context.json', contexts(folder / 'src', result.get('charges', []),
+                                                       read(folder / 'assessment.json'), read(folder / 'binding.json')))
         with zipfile.ZipFile(dest / 'solution.zip', 'w', zipfile.ZIP_DEFLATED) as z:
             for p in sorted(folder.rglob('*')):
                 if p.is_file(): z.write(p, p.relative_to(folder).as_posix())
         records.append({'id': folder.name, 'run_id': manifest['run_id'], 'result': result, 'measurement': measurement, 'conditions': plan,
                         'verification': manifest['verification'], 'download': f'community-downloads/{folder.name}/solution.zip',
+                        'source_context': f'community-downloads/{folder.name}/source-context.json',
                         'regrade_required': regrade_reasons(folder, current),
                         'grader_revision_sha256': hashlib.sha256(json.dumps(read(folder / 'grading-implementation.json'), sort_keys=True).encode()).hexdigest(),
                         'archive_sha256': digest(dest / 'solution.zip')})

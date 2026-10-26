@@ -105,6 +105,22 @@ def public_evaluation(root, path):
                 if (root / 'site/dist/downloads' / r['run_id'] / 'solution.zip').is_file() else []}
 
 
+def local_source_context(root, job_id):
+    """Show only source belonging to an integrity-checked local evaluation."""
+    from tools.community_results import check_id
+    from tools.source_context import contexts
+    job = root / '.local/demo/jobs' / check_id(job_id)
+    if not job.resolve().is_relative_to((root / '.local/demo/jobs').resolve()):
+        raise ValueError('Invalid local job')
+    path = job / 'evaluation.json'
+    record = read(path)
+    run_id = check_id(record['run_id'])
+    public = public_evaluation(root, path)
+    art = root / '.local/runs' / run_id / 'artifacts'
+    binding = job / 'binding-adapter.json' if (job / 'binding-adapter.json').is_file() else art / 'binding.json'
+    return contexts(art / 'src', public.get('charges', []), record['assessment'], read(binding) if binding.is_file() else {})
+
+
 def publication(root=ROOT):
     cfg = config(root)
     evaluations = [local_path(root, cfg['baseline_evaluation'])]

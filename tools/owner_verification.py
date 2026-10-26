@@ -59,7 +59,8 @@ def publish(record, folder, root):
     public.pop('evaluation_sha256', None)
     receipt = {'schema_version': 1, 'submission_id': folder.name,
                'original_manifest_sha256': record['original_manifest_sha256'],
-               'owner_verification': record['owner_verification'], 'result': public}
+               'owner_verification': record['owner_verification'], 'result': public,
+               'source_findings': record['assessment'].get('findings', [])}
     name = 'owner-' + record['owner_verification']['completed_at'].replace(':', '').replace('.', '').replace('+', '-')
     check_id(name)
     target = root / 'community/rechecks' / folder.name / (name + '.json')
@@ -99,6 +100,9 @@ def export_receipts(root, stage, records, current):
         revision_id = source['id'] + '--' + path.stem
         dest = stage / 'community-downloads' / revision_id
         dest.mkdir(parents=True)
+        from tools.source_context import contexts
+        write(dest / 'source-context.json', contexts(folder / 'src', receipt['result'].get('charges', []),
+                    {'findings': receipt.get('source_findings', [])}, read(folder / 'binding.json')))
         with zipfile.ZipFile(dest / 'solution.zip', 'w', zipfile.ZIP_DEFLATED) as z:
             for p in sorted(folder.rglob('*')):
                 if p.is_file(): z.write(p, 'original/' + p.relative_to(folder).as_posix())
@@ -110,4 +114,5 @@ def export_receipts(root, stage, records, current):
                 + [r for r in source['regrade_required'] if r['id'] != 'grader_changed'],
             'grader_revision_sha256': v['grader']['sha256'],
             'download': 'community-downloads/' + revision_id + '/solution.zip',
+            'source_context': 'community-downloads/' + revision_id + '/source-context.json',
             'archive_sha256': digest(dest / 'solution.zip')})
