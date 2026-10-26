@@ -1,0 +1,45 @@
+{
+  "client": "cursor",
+  "model": "grok-4.7-high",
+  "client_version": "2026.10.22-27dcf5f",
+  "reasoning_effort": null,
+  "harness": "none",
+  "billing_channel": "subscription",
+  "solve_timeout_seconds": 18000,
+  "time_series": "exam",
+  "delegation": "requested_disabled_unverified",
+  "network_profile": "open-book_shell",
+  "deadline_disclosed": true,
+  "statement_sha256": "8a6ccb3e673826d1f8220fda53eb310e3ec18c136d87ce8f4cebb2a08614e7e5",
+  "starter_dt_sha256": "f40d084818b0d1cfe503fc7653a6a13f1a8e47fcd1688dad6245b12744eb4638",
+  "profile_sha256": "7ccb3ce209cd8fe3586084914b2e201edf921d75e28b4d7415276587424765dd",
+  "execution_policy_sha256": "fd2cd554bb1eff56e5a09f817ecf5eaa2f4d29851499d98c9a0a1675fd07aa4b",
+  "calibration_sha256": "201d0591454d3b4cea9a26fde9088181f106b37b26f26392edb010457480b5c8",
+  "started_at": "2026-10-25T14:54:48.106383+00:00",
+  "timing": {
+    "prepare_ms": 16331,
+    "solve_ms": 5394921,
+    "grade_ms": null
+  },
+  "original_submission_valid": true,
+  "model_provenance": "client_reported",
+  "tokens": {
+    "input": 36819638,
+    "cached_input": 36221440,
+    "fresh_input": 598198,
+    "output": 347182,
+    "reasoning_output": null,
+    "total": 37166820,
+    "coverage": "client_final_result"
+  },
+  "tools": {
+    "mcp_calls": 0,
+    "unica_calls": 0,
+    "failed_calls": 0
+  },
+  "process": {
+    "status": "completed",
+    "exit_code": 0,
+    "stop_confirmed": true
+  }
+}
