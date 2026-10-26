@@ -98,8 +98,11 @@ function violations(r) {
   const verification = r.ownerVerification;
   if (verification) {
     const grader = verification.grader, server = verification.server, hw = server.hardware || {};
-    const review = node('div', null, 'run-verification'); review.append(node('h4', 'Проверено владельцем репозитория'));
+    const review = node('div', null, 'run-verification');
+    review.append(node('h4', verification.outcome === 'incomplete' ? 'Неполная проверка владельца' : 'Проверено владельцем репозитория'));
     review.append(node('p', `@${verification.operator.github} · ${new Date(verification.completed_at).toLocaleString('ru-RU')}`));
+    if (verification.method === 'saved_platform_observations') review.append(node('p', 'Оценка пересчитана по сохранённым наблюдениям 1С. Исходное решение повторно не запускалось.', 'why'));
+    if (verification.outcome === 'incomplete') review.append(node('p', 'Часть сценариев не завершилась; оценка неполная.', 'why'));
     review.append(node('p', `Грейдер: ${grader.profile} · коммит ${grader.commit || 'не указан'}${grader.working_tree_dirty ? ' (с локальными изменениями)' : ''}`));
     review.append(node('p', 'SHA-256 грейдера: ' + grader.sha256, 'why'));
     review.append(node('p', `Сервер: ${server.name} · ${server.os.system} ${server.os.release || ''} · ${server.os.architecture || ''}`));
@@ -159,6 +162,7 @@ function openRun(r) {
   }
   const status = node('p', stale(r) ? 'Оценка ожидает пересчёта обновлённым грейдером.'
     : r.e.infrastructure_errors ? 'Часть сценариев не завершилась. Результат проверки неполный.'
+    : r.ownerVerification?.method === 'saved_platform_observations' ? 'Пересчитано владельцем по сохранённым наблюдениям 1С.'
     : r.ownerVerification ? 'Перепроверено владельцем репозитория.'
     : 'Оценка предоставлена участником.', 'run-status');
   const layout = node('div', null, 'run-layout');
@@ -242,6 +246,10 @@ function render() {
       const verification = node('small', '✓ проверил владелец', 'mobile-verification');
       verification.title = 'Перепроверено владельцем репозитория';
       score.append(verification);
+    } else if (r.verification === 'repository_owner_incomplete') {
+      const verification = node('small', '⚠ проверка неполная', 'mobile-verification incomplete');
+      verification.title = 'Часть сценариев не завершилась';
+      score.append(verification);
     }
     const who = node('td'); who.append(node('b', r.model));
     sub(who, [agents[r.agent] || r.agent, r.agentVersion, r.effort].filter(Boolean).join(' · '));
@@ -257,7 +265,7 @@ function render() {
     if (r.author?.github) { const a = node('a', r.author.name || r.author.github); a.href = 'https://github.com/' + r.author.github; author.append(a); sub(author, '@' + r.author.github); }
     else author.append(node('span', r.author?.name || '—'));
     sub(author, r.date ? new Date(r.date).toLocaleDateString('ru-RU') : '');
-    sub(author, r.local ? 'не отправлен' : r.verification === 'repository_owner' ? 'проверено владельцем репозитория' : r.verification === 'contributor_reported' ? 'заявлено участником' : r.verification);
+    sub(author, r.local ? 'не отправлен' : r.verification === 'repository_owner' ? 'проверено владельцем репозитория' : r.verification === 'repository_owner_incomplete' ? 'проверка владельца неполная' : r.verification === 'contributor_reported' ? 'заявлено участником' : r.verification);
     const cellActions = node('td'), act = node('div', null, 'row-actions');
     cellActions.append(act);
     if (r.local && submit) { const box = node('div', null, 'actions'); submit(box, r.item, local.community, local.githubReady, load); act.append(box); }

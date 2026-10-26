@@ -37,8 +37,8 @@ def tree_manifest(root):
     return result
 
 
-GRADING_FILES = ('grader.py', 'observer.py', 'platform.py', 'submission.py',
-                 'common.py', 'process.py', 'windows_job.py', 'workspaces.py', 'runtime.py', 'isolation.py', 'gates.py', 'ou.py','pr.py','forms.py','interface.py', 'calibration.py', 'calibration_ou.py','calibration_pr.py','calibration_forms.py','calibration_interface.py', 'calibrate.py', 'replay_calibration.py', 'smoke_check.py')
+GRADING_FILES = ('grader.py', 'observer.py', 'platform.py', 'submission.py', 'queries.py',
+                 'common.py', 'process.py', 'windows_job.py', 'workspaces.py', 'runtime.py', 'isolation.py', 'gates.py', 'ou.py','pr.py','forms.py','interface.py', 'calibration.py', 'calibration_ou.py','calibration_pr.py','calibration_forms.py','calibration_interface.py', 'calibration_query.py', 'calibrate.py', 'replay_calibration.py', 'smoke_check.py')
 
 
 def runtime_fingerprint():

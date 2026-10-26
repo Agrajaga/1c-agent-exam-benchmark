@@ -39,6 +39,9 @@ def smoke_check(starter_source, starter_dt, binary, root):
     write_json(root / 'progress.json', {'phase': 'mutant'})
     mutation, cases, rule = MUTANT
     bad, bad_unchanged = run(starter_source, starter_dt, binary, root / mutation, mutation, cases)
+    write_json(root / 'progress.json', {'phase': 'query_parameter'})
+    from .calibration_query import run as calibrate_query
+    query_calibration = calibrate_query(starter_source, starter_dt, binary, root / 'query-parameter')
     passed = [r['id'] for r in good['rules'] if r['verdict'] == 'pass']
     failed = [r['id'] for r in good['rules'] if r['verdict'] == 'fail']
     caught = next(r['verdict'] for r in bad['rules'] if r['id'] == rule) == 'fail'
@@ -50,12 +53,15 @@ def smoke_check(starter_source, starter_dt, binary, root):
                'cases': CASES, 'positive': {'passed_rules': passed, 'failed_rules': failed, 'errors': good['errors'],
                                              'observed': sorted(good['observations'])},
                'mutant': {'mutation': mutation, 'rule': rule, 'caught': caught, 'errors': bad['errors']},
+               'query_parameter_calibration': query_calibration,
                'positives': [], 'negatives': [], 'implementation_files': implementation,
                'readonly_sources_verified': good_unchanged and bad_unchanged, 'machine': machine_identity()}
     summary['accepted'] = bool(passed and not failed and not good['errors'] and not bad['errors'] and caught
-                               and set(good['observations']) == set(CASES) and summary['readonly_sources_verified'])
+                               and set(good['observations']) == set(CASES) and summary['readonly_sources_verified']
+                               and query_calibration['passed'])
     if not summary['accepted']:
         summary['reason'] = ('1C errors: ' + ', '.join(sorted({**good['errors'], **bad['errors']}))) if good['errors'] or bad['errors'] else \
-            'correct variant failed: ' + ', '.join(failed) if failed else 'known mistake not caught' if not caught else 'incomplete observations'
+            'correct variant failed: ' + ', '.join(failed) if failed else 'known mistake not caught' if not caught else \
+            'table parameter calibration failed' if not query_calibration['passed'] else 'incomplete observations'
     write_json(root / 'summary.json', summary)
     return summary

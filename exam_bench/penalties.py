@@ -228,10 +228,14 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
             find('F1C-GEN12', 'code.query.%s:%d' % (q['file'], q['line']), 'текст запроса не разбирается платформой: %s:%d — %s' % (q['file'], q['line'], text),
                  [{'file': q['file'], 'line': q['line'], 'text': q['error'][:300]}])
         unseen = [q for q in checked if q['status'] == 'not_observed']
+        unresolved_parameters = [q for q in checked if q['status'] == 'unresolved_parameter_schema']
+        if unresolved_parameters and not bad and 'F1C-GEN12' not in status:
+            status['F1C-GEN12'] = {'status': 'not_assessed', 'reason':
+                'структура табличного параметра неизвестна: проверка не установила наличие или отсутствие поля (%d запросов)' % len(unresolved_parameters)}
         if not bad and not unseen:
             temp = sum(q['status'] == 'unresolved_temp_table' for q in checked)
             clean('F1C-GEN12', 'платформа разобрала %d текстов запросов без ошибок; не проверено: %d собираемых из частей, %d со ссылкой на временную таблицу другого запроса'
-                  % (len(checked) - temp, len(skipped), temp))
+                  % (len(checked) - temp - len(unresolved_parameters), len(skipped), temp))
     # М4.14, М4.15, М4.22, М4.24, М4.28, М7.9: the platform's reading of each parsed query (СхемаЗапроса) and the storage indexes.
     # One query place and one table (or outer-joined alias) is one defect; several items on it charge the smallest (A02).
     observed = observations.get(queries.CASE) or {}

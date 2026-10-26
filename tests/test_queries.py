@@ -58,6 +58,22 @@ class QueryTexts(unittest.TestCase):
         self.assertEqual(queries.message(checked[0]['error']), 'Поле не найдено "Т.Поле"')
         self.assertEqual([q['status'] for q in queries.verdicts(self.src, {})[0]], ['not_observed', 'not_observed'])
 
+    def test_table_parameter_field_error_is_unresolved_but_other_errors_are_not_hidden(self):
+        path = self.src / 'CommonModules/Запросы/Ext/Module.bsl'
+        path.write_text('''Процедура Тест()
+Запрос = Новый Запрос("ВЫБРАТЬ Сотрудник ПОМЕСТИТЬ ВТ ИЗ &Периоды КАК Т");
+Запрос = Новый Запрос("ВЫБРАТЬ НетТакогоПоля ПОМЕСТИТЬ ВТ ИЗ &Периоды КАК Т");
+Запрос = Новый Запрос("ВЫБРАТЬ ИЗ &Периоды КАК Т");
+Запрос = Новый Запрос("ВЫБРАТЬ Т.Нет ИЗ Справочник.Склады КАК Т");
+КонецПроцедуры''', encoding='utf-8')
+        observation = {'checked': [{'index': 0, 'error': 'Поле не найдено "Сотрудник"'},
+                                   {'index': 1, 'error': 'Поле не найдено "НетТакогоПоля"'},
+                                   {'index': 2, 'error': 'Синтаксическая ошибка'},
+                                   {'index': 3, 'error': 'Поле не найдено "Т.Нет"'}]}
+        result, _ = queries.verdicts(self.src, observation)
+        self.assertEqual([x['status'] for x in result],
+                         ['unresolved_parameter_schema', 'unresolved_parameter_schema', 'error', 'error'])
+
 
 if __name__ == '__main__':
     unittest.main()

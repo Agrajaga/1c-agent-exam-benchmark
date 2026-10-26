@@ -40,10 +40,12 @@ def complete(verification):
                 'sha256': fingerprint_id(verification['grader']['fingerprint'])}}
 
 
-def publish(record, folder, root):
+def publish(record, folder, root, *, allow_incomplete=False):
     """Publish a new receipt, never edit or relabel an original contributor bundle."""
-    if not record.get('owner_verification') or 'assessment' not in record or record.get('errors'):
+    if not record.get('owner_verification') or 'assessment' not in record or (record.get('errors') and not allow_incomplete):
         raise ValueError('Only a completed owner recheck with an assessment can be published')
+    if record.get('errors') and record['owner_verification'].get('outcome') != 'incomplete':
+        raise ValueError('An incomplete recheck must be identified as incomplete')
     original = read(folder / 'evaluation.json')
     score = record['assessment']['score']
     public = {**original, 'created_at': record['owner_verification']['completed_at'],
@@ -61,6 +63,8 @@ def publish(record, folder, root):
                'original_manifest_sha256': record['original_manifest_sha256'],
                'owner_verification': record['owner_verification'], 'result': public,
                'source_findings': record['assessment'].get('findings', [])}
+    if record.get('reassessment'):
+        receipt['reassessment'] = record['reassessment']
     name = 'owner-' + record['owner_verification']['completed_at'].replace(':', '').replace('.', '').replace('+', '-')
     check_id(name)
     target = root / 'community/rechecks' / folder.name / (name + '.json')
@@ -109,7 +113,7 @@ def export_receipts(root, stage, records, current):
             z.write(path, 'owner-recheck.json')
         changed = sorted(k for k in set(files) | set(current) if files.get(k) != current.get(k))
         records.append({**source, 'id': revision_id, 'result': receipt['result'],
-            'verification': 'repository_owner', 'owner_verification': v,
+            'verification': 'repository_owner_incomplete' if v.get('outcome') == 'incomplete' else 'repository_owner', 'owner_verification': v,
             'regrade_required': ([{'id': 'grader_changed', 'files': changed}] if changed else [])
                 + [r for r in source['regrade_required'] if r['id'] != 'grader_changed'],
             'grader_revision_sha256': v['grader']['sha256'],

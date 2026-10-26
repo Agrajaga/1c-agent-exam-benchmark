@@ -87,6 +87,27 @@ class Penalties(unittest.TestCase):
         result = self.run_with(self.bu(BU03='fail', BU08='fail'), observations)
         self.assertEqual([f['defect_id'][:12] for f in result['findings']], ['code.ОбщийМо'])
 
+    def test_missing_field_in_table_parameter_does_not_create_unproved_penalty(self):
+        path = self.src / 'CommonModules/Учет/Ext/Module.bsl'
+        path.parent.mkdir(parents=True)
+        path.write_text('Запрос = Новый Запрос("ВЫБРАТЬ Сотрудник ПОМЕСТИТЬ ВТ ИЗ &Периоды КАК Т");', encoding='utf-8')
+        observations = {'query_texts': {'checked': [{'index': 0, 'error': 'Поле не найдено "Сотрудник"'}]}}
+        result = self.run_with(self.bu(), observations)
+        self.assertFalse(any(f['penalty_id'] == 'F1C-GEN12' for f in result['findings']))
+        self.assertEqual(result['statuses']['F1C-GEN12']['status'], 'not_assessed')
+
+    def test_runtime_error_still_counts_when_parameter_schema_is_unresolved(self):
+        path = self.src / 'CommonModules/Учет/Ext/Module.bsl'
+        path.parent.mkdir(parents=True)
+        path.write_text('Запрос = Новый Запрос("ВЫБРАТЬ Нет ПОМЕСТИТЬ ВТ ИЗ &Периоды КАК Т");', encoding='utf-8')
+        error = ('{ОбщийМодуль.BenchmarkObserver.Модуль(41)}: Ошибка при вызове метода контекста (Записать): '
+                 '{ОбщийМодуль.Учет.Модуль(1)}: Ошибка при вызове метода контекста (Выполнить): {(1, 10)}: Поле не найдено "Нет"')
+        observations = {case: {'posting_error': error} for case in ('chain', 'own_first')}
+        observations['query_texts'] = {'checked': [{'index': 0, 'error': 'Поле не найдено "Нет"'}]}
+        result = self.run_with(self.bu(BU03='fail', BU08='fail'), observations)
+        self.assertTrue(any(f['penalty_id'] == 'F1C-GEN12' and f['proof_kind'] == 'runtime_error' for f in result['findings']))
+        self.assertEqual(result['statuses']['F1C-GEN12']['status'], 'violation')
+
     def test_all_query_texts_parsed_is_no_violation_with_its_limits(self):
         self.query_module()
         result = self.run_with(self.bu(), {'query_texts': {'checked': [{'index': 0, 'error': ''}, {'index': 1, 'error': '{(1, 14)}: Таблица не найдена "ВТ"'}]}})

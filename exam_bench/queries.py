@@ -10,6 +10,8 @@ Not checked, and reported as such:
 - a literal joined with other strings by «+»: the full text exists only at run time;
 - a reference to a temporary table without a dot in its name: such a table may come from a temporary tables manager
   filled by another query, which a single text does not see.
+- a missing field in a query using a table-valued parameter as a source: НайтиПараметры does not know its columns,
+  even when that parameter is set. An actual runtime failure is assessed separately.
 """
 import re
 from pathlib import Path
@@ -23,6 +25,8 @@ START_ANY_CASE = re.compile(r'\s*(ВЫБРАТЬ|SELECT)\b', re.I)
 FROM = re.compile(r'\b(ИЗ|FROM)\b', re.I)
 # The parser names the missing table; a name without a dot is a temporary table.
 TEMP_TABLE = re.compile(r'Таблица не найдена "[^".]+"|Table not found "[^".]+"')
+PARAMETER_SOURCE = re.compile(r'\b(?:ИЗ|FROM|СОЕДИНЕНИЕ|JOIN)\s*&[\wА-Яа-яЁё]+', re.I)
+MISSING_FIELD = re.compile(r'(?:Поле не найдено|Field not found)\s+"[^"\r\n]+"', re.I)
 
 
 def modules(src):
@@ -165,13 +169,15 @@ def code(src):
 
 
 def verdicts(src, observation):
-    """Each extracted query with the platform's answer: status ok, error, unresolved_temp_table or not_observed."""
+    """Classify parser errors that depend on unavailable table schemas as inconclusive."""
     found, skipped = extract(src)
     answers = {item['index']: item['error'] for item in (observation or {}).get('checked') or []}
     out = []
     for index, query in enumerate(found):
         error = answers.get(index)
-        status = 'not_observed' if error is None else 'ok' if error == '' else 'unresolved_temp_table' if TEMP_TABLE.search(error) else 'error'
+        status = ('not_observed' if error is None else 'ok' if error == '' else
+                  'unresolved_temp_table' if TEMP_TABLE.search(error) else
+                  'unresolved_parameter_schema' if MISSING_FIELD.search(error) and PARAMETER_SOURCE.search(query['text']) else 'error')
         out.append({'file': query['file'], 'line': query['line'], 'status': status, 'error': error or ''})
     return out, skipped
 

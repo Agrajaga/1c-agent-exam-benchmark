@@ -525,6 +525,7 @@ code { font-family: var(--mono); font-size: 12px; }
  .board .score-value { font-size: 15px; }
  .board td .badge { margin-left: auto; font-size: 10px; padding: 2px 6px; }
  .board td small.mobile-verification { display: block; color: var(--pass); font-size: 10px; }
+ .board td small.mobile-verification.incomplete { color: var(--unknown); }
  .board .row-actions { align-items: end; }
  .board .row-actions > a { display: none; }
  .board .row-actions .btn { max-width: none; padding: 6px 8px; font-size: 12px; }

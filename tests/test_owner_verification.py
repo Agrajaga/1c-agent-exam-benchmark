@@ -12,7 +12,7 @@ from test_community_results import fixture
 
 
 class OwnerVerification(unittest.TestCase):
-    def receipt(self, root, folder):
+    def receipt(self, root, folder, *, incomplete=False):
         files = grading_fingerprint()
         v = {'kind': 'repository_owner', 'repository': 'zeegin/1c-agent-exam-benchmark',
              'operator': {'name': 'Owner', 'github': 'zeegin'},
@@ -28,7 +28,10 @@ class OwnerVerification(unittest.TestCase):
                                          'grade': None, 'deductions': '0'},
                                  'statuses': {'F1C-PR11': {'status': 'not_assessed'}}},
                   'errors': {}, 'gates': {}}
-        return publish(record, folder, root)
+        if incomplete:
+            v['outcome'] = 'incomplete'
+            record['errors'] = {'ou_assembly': {'kind': 'observation_error'}}
+        return publish(record, folder, root, allow_incomplete=incomplete)
 
     def test_revision_keeps_author_and_original_bytes_with_separate_verification(self):
         with tempfile.TemporaryDirectory() as td:
@@ -74,3 +77,14 @@ class OwnerVerification(unittest.TestCase):
     def test_incomplete_recheck_cannot_be_published(self):
         with self.assertRaisesRegex(ValueError, 'completed owner recheck'):
             publish({}, Path('.'), Path('.'))
+
+    def test_explicit_incomplete_recheck_remains_unranked_and_keeps_history(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); folder = fixture(root)
+            self.receipt(root, folder, incomplete=True)
+            export_public(root, root / 'dist')
+            row = read(root / 'dist/community.json')['results'][0]
+            self.assertEqual(row['verification'], 'repository_owner_incomplete')
+            self.assertTrue(row['result']['infrastructure_errors'])
+            self.assertFalse(row['result']['comparison_eligible'])
+            self.assertEqual(row['previous_evaluations'][0]['verification'], 'contributor_reported')
