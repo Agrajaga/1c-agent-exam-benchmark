@@ -268,5 +268,17 @@ document.addEventListener('click', e => {
 fetch('checks.json', {cache: 'no-store'}).then(r => r.json()).then(json => {
   data = json; ticket = data.tickets[0]; book = data.rulebooks[ticket.rulebook];
   units = Object.fromEntries([...book.ledger.units, ...ticket.ledger.units].map(u => [u.id, u]));
-  setView(location.hash.slice(1));
+  const followHash = () => {
+    const [target, encoded] = location.hash.slice(1).split(':');
+    let id;
+    try { id = decodeURIComponent(encoded || ''); } catch { id = ''; }
+    const exists = target === 'rules' ? book.rules.some(r => r.id === id)
+      : target === 'ticket' && ticket.requirements.some(r => r.id === id);
+    if (exists) {
+      goto(target, id);
+      history.replaceState(null, '', `#${target}:${encodeURIComponent(id)}`);
+    } else setView(target);
+  };
+  followHash();
+  window.addEventListener('hashchange', followHash);
 }).catch(err => { $('view').innerHTML = `<p class="empty">Не удалось загрузить данные: ${esc(err.message)}</p>`; });

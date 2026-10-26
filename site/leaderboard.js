@@ -1,5 +1,8 @@
 // One leaderboard table: accepted community results plus, on a local stand, this machine's own
 // results highlighted with a send button. A row expands into violations and, locally, the agent log.
+import {loadPenaltyMetadata, renderCharges} from './penalty-cards.js';
+
+const penaltyMetadata = await loadPenaltyMetadata();
 const $ = id => document.getElementById(id);
 const node = (tag, text, cls) => { const n = document.createElement(tag); if (text != null) n.textContent = text; if (cls) n.className = cls; return n; };
 const number = v => String(v).replace('.', ',');
@@ -56,7 +59,7 @@ function violations(r) {
   const charges = node('div'); charges.append(node('h4', 'Штрафы'));
   if (r.e.charges?.length) {
     const list = node('ul');
-    list.append(...r.e.charges.map(c => node('li', `${c.id} · −${number(c.points)} · ${c.reason || ''}`)));
+    renderCharges(list, r.e.charges, penaltyMetadata, {methodology: Boolean(local)});
     charges.append(list);
   } else charges.append(node('p', 'Нет', 'why'));
   const failed = node('div'); failed.append(node('h4', 'Не пройденные требования'));

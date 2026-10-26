@@ -160,7 +160,7 @@ def posting_failure(evaluation):
 
 
 PAGES = ('index.html', 'results.html', 'leaderboard.html', 'checks.html', 'inputs.html')
-SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'inputs.js')
+SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'inputs.js', 'penalty-cards.js')
 SITE_FILES = PAGES + SCRIPTS
 
 # What each delivered file is for; shown on the «Что получает агент» page.
@@ -275,6 +275,22 @@ def checks_export(root, config):
     return {'schema_version': 1, 'starters': starters, 'rulebooks': rulebooks, 'tickets': tickets}
 
 
+def penalty_metadata(checks):
+    """Public presentation labels only; never modify evaluations or export grader oracles."""
+    def labels(groups, key):
+        values, ambiguous = {}, set()
+        for group in groups:
+            for item in group.get(key, []):
+                value = {field: item[field] for field in ('title', 'number')}
+                identifier = item['id']
+                if identifier in values and values[identifier] != value:
+                    ambiguous.add(identifier)
+                values[identifier] = value
+        return {key: value for key, value in values.items() if key not in ambiguous}
+    return {'rules': labels(checks['rulebooks'].values(), 'rules'),
+            'requirements': labels(checks['tickets'], 'requirements')}
+
+
 def build(root=ROOT, output=None, catalogue_only=False):
     root = Path(root).resolve()
     site = root / 'site'
@@ -316,6 +332,14 @@ def build(root=ROOT, output=None, catalogue_only=False):
     for name in SITE_FILES:
         if (site / name).is_file():
             shutil.copyfile(site / name, stage / name)
+    # Entry-point versions must also refresh their shared presentation module.
+    presenter = stage / 'penalty-cards.js'
+    if presenter.is_file():
+        for name in ('measure.js', 'leaderboard.js'):
+            script = stage / name
+            if script.is_file():
+                script.write_text(script.read_text(encoding='utf-8').replace(
+                    "'./penalty-cards.js'", f"'./penalty-cards.js?v={digest(presenter)[:12]}'"), encoding='utf-8')
     # Content-hashed asset URLs: browsers never run a stale script or stylesheet after a rebuild.
     for page in PAGES:
         if (stage / page).is_file():
@@ -324,7 +348,9 @@ def build(root=ROOT, output=None, catalogue_only=False):
                 if (stage / asset).is_file():
                     html = html.replace(f'"{asset}"', f'"{asset}?v={digest(stage / asset)[:12]}"')
             (stage / page).write_text(html, encoding='utf-8')
-    write_json(stage / 'checks.json', checks_export(root, config))
+    checks = checks_export(root, config)
+    write_json(stage / 'checks.json', checks)
+    write_json(stage / 'penalty-info.json', penalty_metadata(checks))
     write_json(stage / 'inputs.json', inputs_export(root, config, stage, catalogue_only))
     from tools.demo_runner import export as export_demo
     export_demo(root, stage)

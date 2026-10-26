@@ -109,6 +109,19 @@ select.field { appearance: none; -webkit-appearance: none; padding-right: 36px;
 .details-grid li { margin: 3px 0; }
 .details-grid .why { margin: 0 0 6px; }
 .details-grid > .btn { grid-column: 1 / -1; justify-self: start; }
+.details-grid > :first-child { grid-column: 1 / -1; }
+.penalty-list, .details-grid .penalty-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 12px; }
+.penalty-card, .details-grid .penalty-card { min-width: 0; padding: 16px; margin: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow-wrap: anywhere; }
+.penalty-title, .details-grid .penalty-title { color: var(--ink); margin: 0 0 8px; font-size: 15px; font-weight: 650; text-transform: none; letter-spacing: normal; }
+.penalty-explanation { margin: 0 0 12px; font-size: 14px; line-height: 1.5; }
+.penalty-basis { margin: 5px 0; color: var(--muted); font-size: 13px; }
+.penalty-basis a { color: var(--ink); }
+.penalty-card details { margin-top: 12px; font-size: 13px; }
+.penalty-card summary { cursor: pointer; color: var(--muted); }
+.penalty-original pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.5 var(--mono); background: var(--bg); padding: 12px; border-radius: 8px; margin: 8px 0 0; }
+.penalty-locations li { font: 12px/1.5 var(--mono); }
+.penalty-comparison { border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.penalty-comparison th, .penalty-comparison td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; }
 .log-dialog { width: min(980px, calc(100vw - 32px)); }
 .log { max-height: 65vh; overflow: auto; margin: 10px 0 14px; font-size: 13px; }
 .log-message { margin: 10px 0; padding: 8px 10px; border-left: 3px solid var(--accent); background: var(--bg); white-space: pre-wrap; }
