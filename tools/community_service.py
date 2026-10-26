@@ -4,9 +4,10 @@ import os
 import subprocess
 import sys
 import zipfile
+from contextlib import ExitStack
 from pathlib import Path
 
-from tools.community_results import ROOT, check_id, read, write, prepare_bundle, make_pr
+from tools.community_results import ROOT, check_id, read, write, prepare_bundle, make_pr, require_visible_result
 
 
 def snapshot(root=ROOT):
@@ -29,10 +30,16 @@ def snapshot(root=ROOT):
 
 def start(action, data, root=ROOT):
     from exam_bench.locking import file_lock
-    if action not in ('prepare', 'pr', 'setup', 'harness'):
+    if action not in ('prepare', 'pr', 'setup', 'harness', 'delete'):
         raise ValueError('Unknown community action')
-    with file_lock(root / '.local/community/action.lock'):
+    with ExitStack() as stack:
+        try:
+            stack.enter_context(file_lock(root / '.local/community/action.lock', blocking=False))
+        except BlockingIOError:
+            raise RuntimeError('Подготовка или отправка уже выполняется. Повторите действие позже.') from None
         state = snapshot(root)['action']
+        if action == 'delete':
+            return delete_result(data, state, root)
         if state and state.get('phase') == 'working':
             raise RuntimeError('Подготовка или отправка уже выполняется')
         if action == 'setup':
@@ -55,7 +62,7 @@ def start(action, data, root=ROOT):
         else:
             if set(data) != {'id'}:
                 raise ValueError('Only a result ID is accepted')
-            result_id = check_id(data['id'])
+            result_id = require_visible_result(data['id'], root)
             if not (root / '.local/demo/jobs' / result_id / 'evaluation.json').is_file():
                 raise ValueError('Result has no completed evaluation')
         log = root / '.local/community/worker.log'
@@ -66,6 +73,32 @@ def start(action, data, root=ROOT):
                                        cwd=root, stdout=stream, stderr=stream, **opts)
             write(root / '.local/community/action.json', {'action': action, 'id': result_id, 'phase': 'working', 'pid': process.pid})
         return {'started': True}
+
+
+def delete_result(data, state, root):
+    """Called under action.lock, shared with prepare/PR reservations.
+
+    Keep evidence: regrades can refer to the same run and its frozen artifacts.
+    """
+    if not isinstance(data, dict) or set(data) != {'id'}:
+        raise ValueError('Only a result ID is accepted')
+    result_id = check_id(data['id'])
+    job = root / '.local/demo/jobs' / result_id
+    if not result_id.startswith('demo-') or not (job / 'status.json').is_file():
+        raise ValueError('Результат не найден')
+    status = read(job / 'status.json')
+    if status.get('phase') not in ('finished', 'failed', 'invalid_submission', 'rejected'):
+        raise RuntimeError('Дождитесь завершения прогона')
+    if status.get('mode') not in ('run', 'regrade'):
+        raise ValueError('Результат не найден')
+    if (root / '.local/community/pr' / (result_id + '.json')).exists() or (
+            state and state.get('id') == result_id and state.get('pr_url')):
+        raise RuntimeError('Результат уже отправлен в рейтинг: удаление запрещено')
+    if state and state.get('id') == result_id and state.get('phase') == 'working':
+        raise RuntimeError('Дождитесь завершения подготовки или отправки PR')
+    from tools.demo_runner import atomic
+    atomic(root / '.local/community/deleted' / (result_id + '.json'), {'id': result_id})
+    return {'deleted': True}
 
 
 def run(action, result_id, root=ROOT):
@@ -95,7 +128,6 @@ def run(action, result_id, root=ROOT):
                 raise ValueError('Харнес установлен, но проверка на каркасе не прошла. Подробности: .local/harnesses/' + result_id + '/capability.json')
         elif action == 'pr':
             state['pr_url'] = make_pr(result_id, root)
-            write(root / '.local/community/pr' / (result_id + '.json'), {'url': state['pr_url']})
         state.update(phase='finished')
     except Exception as e:
         import traceback

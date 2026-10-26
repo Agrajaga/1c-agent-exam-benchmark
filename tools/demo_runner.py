@@ -137,6 +137,8 @@ def history(root=ROOT):
     """Every local attempt, newest first, with its evaluation and submission state."""
     items = []
     for job in sorted((root / '.local/demo/jobs').glob('demo-*'), reverse=True):
+        if (root / '.local/community/deleted' / (job.name + '.json')).exists():
+            continue
         if not (job / 'status.json').is_file():
             continue
         status = read(job / 'status.json')
@@ -150,6 +152,7 @@ def history(root=ROOT):
         pr = root / '.local/community/pr' / (job.name + '.json')
         if pr.is_file():
             item['pr_url'] = read(pr)['url']
+        item['deletable'] = not pr.exists() and status['phase'] in ('finished', 'failed', 'invalid_submission', 'rejected')
         if (job / 'evaluation.json').is_file():
             try:
                 item['evaluation'] = public_evaluation(root, job / 'evaluation.json')
