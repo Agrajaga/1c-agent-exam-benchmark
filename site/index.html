@@ -38,7 +38,13 @@ python -m venv .venv
     <p class="sub" id="launch-sub">Агент получает билет и каркас, решает его в отдельной рабочей папке, затем стенд проверяет сдачу.</p>
     <div class="launch">
       <label>Модель<select id="model" class="field"></select></label>
-      <label>Окружение агента<select id="harness" class="field"><option value="none">Без харнеса</option></select></label>
+      <div class="harness-choice">
+        <div class="harness-heading">
+          <label for="harness">Окружение агента</label>
+          <button id="harness-versions" type="button" class="btn small" aria-controls="harness" aria-expanded="false" hidden>Другие версии</button>
+        </div>
+        <select id="harness" class="field"><option value="none">Без харнеса</option></select>
+      </div>
       <label>Лимит на решение<select id="hours" class="field">
         <option value="0.5">30 минут</option><option value="1">1 час</option><option value="2">2 часа</option><option value="3">3 часа</option><option value="5">5 часов</option>
       </select></label>

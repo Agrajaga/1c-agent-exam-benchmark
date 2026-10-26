@@ -183,7 +183,10 @@ def harness_steps(root, action, calibrated):
     working = action.get('phase') == 'working' and action.get('action') == 'harness'
     items = []
     for name, doc in catalogue().items():
-        item = {'id': name, 'label': doc['label'], 'description': doc.get('description'), 'homepage': doc.get('homepage'), 'action': None}
+        version = doc.get('version', '')
+        family = name.removesuffix('-' + version) if version else name
+        item = {'id': name, 'family': family, 'version': version, 'label': doc['label'],
+                'description': doc.get('description'), 'homepage': doc.get('homepage'), 'action': None}
         receipt = root / '.local/harnesses' / name / 'capability.json'
         if working and action.get('id') == name:
             item.update(state='preparing', note='Скачиваем, устанавливаем и проверяем на каркасе…')
@@ -390,7 +393,7 @@ def snapshot(root=ROOT):
     ready_count = sum(h['state'] == 'ready' for h in usable)
     steps.append(step('harnesses', 'Харнесы', 'working' if any(h['state'] == 'preparing' for h in usable) else
                       'ok' if usable and ready_count == len(usable) else 'optional',
-                      f'Готово {ready_count} из {len(usable)} для этой ОС.' if usable else
+                      f'Подготовлено версий: {ready_count} из {len(usable)} для этой ОС.' if usable else
                       'Для этой ОС пакетов харнесов пока нет. Доступен замер без харнеса.',
                       'Необязательно. Подготовленный харнес появится в выборе окружения для экзамена. '
                       'Свой харнес — файл harnesses/<id>.json, формат описан в docs/harnesses.md.',

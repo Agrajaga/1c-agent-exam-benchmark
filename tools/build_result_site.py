@@ -160,7 +160,7 @@ def posting_failure(evaluation):
 
 
 PAGES = ('index.html', 'results.html', 'leaderboard.html', 'checks.html', 'inputs.html')
-SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'inputs.js', 'penalty-cards.js')
+SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'inputs.js', 'penalty-cards.js')
 SITE_FILES = PAGES + SCRIPTS
 
 # What each delivered file is for; shown on the «Что получает агент» page.
@@ -340,6 +340,11 @@ def build(root=ROOT, output=None, catalogue_only=False):
             if script.is_file():
                 script.write_text(script.read_text(encoding='utf-8').replace(
                     "'./penalty-cards.js'", f"'./penalty-cards.js?v={digest(presenter)[:12]}'"), encoding='utf-8')
+    versions = stage / 'harness-versions.js'
+    measure = stage / 'measure.js'
+    if versions.is_file() and measure.is_file():
+        measure.write_text(measure.read_text(encoding='utf-8').replace(
+            "'./harness-versions.js'", f"'./harness-versions.js?v={digest(versions)[:12]}'"), encoding='utf-8')
     # Content-hashed asset URLs: browsers never run a stale script or stylesheet after a rebuild.
     for page in PAGES:
         if (stage / page).is_file():

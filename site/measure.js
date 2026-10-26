@@ -1,6 +1,7 @@
 import {$, node, get, post, ask, duration, scoreText, gradeText, checksText, harnessLabel} from './local.js';
 import {renderSubmit} from './submit.js';
 import {ADD_HARNESS_PROMPT} from './harness-prompt.js';
+import {groupHarnessVersions, harnessChoices} from './harness-versions.js';
 import {loadPenaltyMetadata, renderCharges} from './penalty-cards.js';
 
 const penaltyMetadata = await loadPenaltyMetadata();
@@ -15,6 +16,8 @@ const MARKS = {ok: '✓', missing: '!', working: '…', blocked: '·', optional:
 const store = {get: k => { try { return localStorage.getItem(k); } catch { return null; } },
                set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } }};
 let busy = false, stepsSignature = '', launchError = null;
+let showOlderHarnesses = false;
+const expandedHarnessFamilies = new Set();
 
 async function perform(fn) {
   busy = true;
@@ -95,6 +98,23 @@ function harnessList(items, standBusy) {
   return list;
 }
 
+function groupedHarnessList(items, standBusy) {
+  const box = node('div');
+  for (const group of groupHarnessVersions(items)) {
+    box.append(harnessList([group.latest], standBusy));
+    if (!group.older.length) continue;
+    const details = node('details', null, 'harness-versions');
+    details.open = expandedHarnessFamilies.has(group.family) || group.older.some(h => h.state === 'preparing');
+    details.append(node('summary', `Другие версии (${group.older.length})`), harnessList(group.older, standBusy));
+    details.addEventListener('toggle', () => {
+      if (details.open) expandedHarnessFamilies.add(group.family);
+      else expandedHarnessFamilies.delete(group.family);
+    });
+    box.append(details);
+  }
+  return box;
+}
+
 function renderSteps(readiness) {
   const signature = JSON.stringify(readiness.steps) + busy + launchError;
   // Do not rebuild while the user is typing a token.
@@ -134,7 +154,7 @@ function renderSteps(readiness) {
       form.addEventListener('submit', e => { e.preventDefault(); perform(() => post('api/readiness/' + s.input.action, {value: field.value})); });
       body.append(form);
     }
-    if (s.items?.length) body.append(harnessList(s.items, readiness.busy));
+    if (s.items?.length) body.append(groupedHarnessList(s.items, readiness.busy));
     if (s.id === 'harnesses') {
       const add = node('button', 'Добавить харнес', 'btn small add-harness');
       add.addEventListener('click', showHarnessPrompt);
@@ -157,11 +177,17 @@ function renderSteps(readiness) {
 function renderLaunch(readiness, demo) {
   const harnesses = readiness.steps.find(s => s.id === 'harnesses')?.items || [];
   const agent = readiness.steps.find(s => s.id === 'agent');
-  const options = [{id: 'none', label: 'Без харнеса', ready: true}, ...harnesses.filter(h => h.state !== 'unavailable')
-    .map(h => ({id: h.id, label: h.label, ready: h.state === 'ready'}))];
+  const wanted = $('harness').dataset.signature ? $('harness').value : store.get('harness');
+  const groups = groupHarnessVersions(harnesses);
+  const olderIds = new Set(groups.flatMap(g => g.older.map(h => h.id)));
+  const options = [{id: 'none', label: 'Без харнеса', ready: true}, ...harnessChoices(harnesses, showOlderHarnesses, wanted)
+    .filter(h => h.state !== 'unavailable')
+    .map(h => ({id: h.id, label: h.label + (olderIds.has(h.id) ? ' · предыдущая версия' : ''), ready: h.state === 'ready'}))];
+  $('harness-versions').hidden = !olderIds.size;
+  $('harness-versions').textContent = showOlderHarnesses ? 'Скрыть старые версии' : 'Другие версии';
+  $('harness-versions').setAttribute('aria-expanded', String(showOlderHarnesses));
   const signature = JSON.stringify(options);
   if ($('harness').dataset.signature !== signature) {
-    const wanted = $('harness').dataset.signature ? $('harness').value : store.get('harness');
     $('harness').replaceChildren(...options.map(h => {
       const o = node('option', h.label + (h.ready ? '' : ' — сначала подготовьте')); o.value = h.id; o.disabled = !h.ready; return o;
     }));
@@ -185,6 +211,7 @@ function renderLaunch(readiness, demo) {
     + (model ? ` Агент: ${model}.` : '');
   $('start').disabled = busy || !readiness.ready || !demo.enabled || running || readiness.busy;
   $('harness').disabled = $('hours').disabled = $('model').disabled = running;
+  $('harness-versions').disabled = running;
   $('regrade-line').hidden = !demo.regrade_available;
   $('regrade').disabled = busy || running || readiness.busy || !demo.enabled;
   $('start-why').textContent = running ? 'Экзамен уже идёт — следите за ходом ниже.'
@@ -246,6 +273,7 @@ async function refresh() {
 }
 
 $('harness').addEventListener('change', () => store.set('harness', $('harness').value));
+$('harness-versions').addEventListener('click', () => { showOlderHarnesses = !showOlderHarnesses; refresh(); });
 $('hours').addEventListener('change', () => store.set('hours', $('hours').value));
 $('model').addEventListener('change', () => store.set('model-' + $('model').dataset.agent, $('model').value));
 $('start').addEventListener('click', () => perform(async () => {

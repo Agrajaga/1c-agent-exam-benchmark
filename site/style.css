@@ -48,6 +48,11 @@ select.field { appearance: none; -webkit-appearance: none; padding-right: 36px;
 .harness.unavailable { opacity: .6; }
 .harness a, .harness b { font-weight: 600; }
 .harness .state-text { font-size: 13px; color: var(--muted); }
+.harness-versions { margin: 0 0 12px 32px; }
+.harness-versions summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+.harness-choice { display: flex; flex-direction: column; gap: 6px; }
+.harness-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+.harness-heading .btn { padding: 3px 6px; font-size: 12px; }
 .launch { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; align-items: end; }
 .launch label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
 .why { color: var(--muted); font-size: 13px; margin: 12px 0 0; }

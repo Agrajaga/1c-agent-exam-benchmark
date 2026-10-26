@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import subprocess
 import tempfile
 import threading
 import unittest
@@ -23,6 +24,12 @@ def stand(td):
 
 
 class Readiness(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('node'), 'Node.js is needed for wizard version selection tests')
+    def test_harness_version_choices(self):
+        result = subprocess.run(['node', '--test', 'tests/test_harness_versions.mjs'],
+                                cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_steps_in_order_and_not_ready_without_calibration(self):
         with tempfile.TemporaryDirectory() as td:
             root = stand(td)
