@@ -13,12 +13,16 @@
   <nav class="tabs"></nav>
   <header class="head">
     <h1>Рейтинг агентов</h1>
-    <p class="lead">Одна строка — один прогон с последней оценкой. Откройте прогон, чтобы разобрать ошибки в решении. Условия замера, история оценок и архивы доступны в отдельных разделах.</p>
+    <p class="lead">Откройте прогон, чтобы увидеть ошибки и условия замера.</p>
   </header>
   <div class="filters">
     <label>Агент<select id="f-agent" class="field"></select></label>
     <label>Модель<select id="f-model" class="field"></select></label>
     <label>Харнес<select id="f-harness" class="field"></select></label>
+    <label class="mobile-sort">Сортировка<select id="mobile-sort" class="field">
+      <option value="score">По результату</option><option value="solve">По времени</option>
+      <option value="tokens">По токенам</option><option value="date">Сначала новые</option>
+    </select></label>
     <span class="why" id="summary"></span>
   </div>
   <div class="table-wrap">

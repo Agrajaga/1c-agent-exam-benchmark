@@ -167,7 +167,7 @@ function openRun(r) {
   const details = violations(r);
   const errors = details.querySelector('.run-errors');
   errors.querySelector('h4').textContent = 'Ошибки в решении';
-  const intro = node('p', 'Каждая карточка объясняет нарушение и основание штрафа. Исходная диагностика и известные места в исходниках раскрываются внутри карточки.', 'run-intro');
+  const intro = node('p', 'Откройте карточку, чтобы увидеть код и обоснование.', 'run-intro');
   errors.insertBefore(intro, errors.children[1] || null);
   if (!r.e.charges?.length) errors.append(node('p', 'Штрафов не начислено. Это не подтверждает выполнение непроверенных требований.', 'why'));
   const checks = node('section'); checks.append(node('h3', 'Проверки билета'));
@@ -204,14 +204,17 @@ function openRun(r) {
   const verification = details.querySelector('.run-verification'); if (verification) technical.append(verification);
   if (r.history?.length) technical.append(revisionHistory(r));
   if (r.local) { const log = node('button', 'Лог агента', 'btn'); log.addEventListener('click', () => showLog(r)); technical.append(log); }
-  const tabs = [['Ошибки в решении', errors], ['Проверки билета', checks], ['Условия замера', conditions], ['История и данные', technical]];
+  const tabs = [['Ошибки в решении', errors, 'Ошибки'], ['Проверки билета', checks, 'Проверки'],
+    ['Условия замера', conditions, 'Условия'], ['История и данные', technical, 'История']];
   const controls = [];
   function select(index) {
     tabs.forEach(([, panel], i) => { panel.hidden = i !== index; controls[i].setAttribute('aria-pressed', String(i === index)); });
     content.scrollTop = 0;
   }
-  tabs.forEach(([label, panel], i) => {
-    const button = node('button', label); button.addEventListener('click', () => select(i));
+  tabs.forEach(([label, panel, short], i) => {
+    const button = node('button'); button.setAttribute('aria-label', label);
+    button.append(node('span', label, 'run-tab-full'), node('span', short, 'run-tab-short'));
+    button.addEventListener('click', () => select(i));
     controls.push(button); nav.append(button); panel.classList.add('run-panel'); content.append(panel);
   });
   select(0); layout.append(nav, content); dialog.append(header, metrics, status, layout);
@@ -235,6 +238,11 @@ function render() {
     if (stale(r)) { const b = node('span', 'требуется пересчёт', 'badge warn'); b.title = 'Оценка выполнена прежним грейдером; подробности внутри прогона.'; score.append(b); }
     const total = Object.values(r.e.counts || {}).reduce((a, b) => a + b, 0);
     sub(score, `проверок ${r.e.counts?.pass || 0} из ${total}`);
+    if (r.verification === 'repository_owner') {
+      const verification = node('small', '✓ проверил владелец', 'mobile-verification');
+      verification.title = 'Перепроверено владельцем репозитория';
+      score.append(verification);
+    }
     const who = node('td'); who.append(node('b', r.model));
     sub(who, [agents[r.agent] || r.agent, r.agentVersion, r.effort].filter(Boolean).join(' · '));
     sub(who, harnessName(r.harness));
@@ -289,8 +297,14 @@ async function load() {
 }
 
 for (const id of ['f-agent', 'f-model', 'f-harness']) $(id).addEventListener('change', render);
+$('mobile-sort').addEventListener('change', () => {
+  const key = $('mobile-sort').value;
+  sort = {key, dir: key === 'solve' || key === 'tokens' ? 1 : -1};
+  render();
+});
 for (const th of document.querySelectorAll('.sort')) th.addEventListener('click', () => {
   sort = {key: th.dataset.key, dir: sort.key === th.dataset.key ? -sort.dir : (th.dataset.key === 'solve' || th.dataset.key === 'tokens' ? 1 : -1)};
+  $('mobile-sort').value = sort.key;
   render();
 });
 load();

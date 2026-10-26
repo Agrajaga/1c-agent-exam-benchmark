@@ -110,9 +110,6 @@ export function renderCharges(container, charges, metadata = {}, {methodology = 
       }
       table.append(body); card.append(table);
     }
-    reference(card, 'Основание штрафа', description.rule, 'rules', methodology);
-    reference(card, 'Не выполнено требование', description.requirement, 'ticket', methodology);
-    card.append(textNode('p', `Код штрафа: ${charge.id}`, 'penalty-basis'));
     if (sourceContext) card.append(sourceEvidence(charge, index, sourceContext));
     if (!sourceContext && description.locations.length) {
       const locations = textNode('details', null, 'penalty-locations');
@@ -121,6 +118,12 @@ export function renderCharges(container, charges, metadata = {}, {methodology = 
       for (const location of description.locations) list.append(textNode('li', location));
       locations.append(list); card.append(locations);
     }
+    const basis = textNode('details', null, 'penalty-details');
+    basis.append(textNode('summary', 'Основание штрафа'));
+    reference(basis, 'Правило', description.rule, 'rules', methodology);
+    reference(basis, 'Требование', description.requirement, 'ticket', methodology);
+    basis.append(textNode('p', `Код штрафа: ${charge.id}`, 'penalty-basis'));
+    card.append(basis);
     const original = textNode('details', null, 'penalty-original');
     original.append(textNode('summary', 'Исходная диагностика'), textNode('pre', description.original));
     card.append(original);

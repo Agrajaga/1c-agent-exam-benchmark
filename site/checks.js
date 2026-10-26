@@ -49,7 +49,8 @@ function setView(next) {
 }
 
 function sideNav(groups) {
-  return `<nav class="side" aria-label="Разделы">${groups.map(g =>
+  const options = groups.map(g => `<option value="${esc(g.id)}" ${g.id === section ? 'selected' : ''}>${esc(g.title)} · ${g.done}/${g.total}</option>`).join('');
+  return `<nav class="side" aria-label="Разделы"><label class="side-mobile">Раздел<select class="field" data-section-select>${options}</select></label>${groups.map(g =>
     `<button class="${g.id === section ? 'on' : ''}" data-section="${esc(g.id)}"><span>${esc(g.title)}</span><small>${g.done}/${g.total}</small></button>`).join('')}</nav>`;
 }
 
@@ -256,6 +257,12 @@ function goto(target, id) {
   open = id; render();
   document.querySelector(`[data-open="${id}"]`)?.scrollIntoView({block: 'center'});
 }
+
+document.addEventListener('change', e => {
+  if (!e.target.matches('[data-section-select]')) return;
+  section = e.target.value; open = null; render();
+  window.scrollTo({top: $('view').offsetTop - 16});
+});
 
 document.addEventListener('click', e => {
   const more = e.target.closest('[data-expand]');
