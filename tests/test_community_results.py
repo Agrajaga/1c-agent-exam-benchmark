@@ -91,6 +91,20 @@ class CommunityBundle(unittest.TestCase):
             f = fixture(Path(td)); write(f / 'grading-implementation.json', grading_fingerprint())
             self.assertEqual(regrade_reasons(f), [])
 
+    def test_only_the_attested_telemetry_change_is_compatible(self):
+        from exam_bench.common import grading_fingerprint
+        from test_grading_compatibility import OLD, NEW
+        from tools.community_results import regrade_reasons
+        with tempfile.TemporaryDirectory() as td:
+            f = fixture(Path(td))
+            current = grading_fingerprint()
+            self.assertEqual(current['claude.py'], NEW)
+            previous = {**current, 'claude.py': OLD}
+            write(f / 'grading-implementation.json', previous)
+            self.assertEqual(regrade_reasons(f, current), [])
+            self.assertEqual(regrade_reasons(f, {**current, 'grader.py': 'changed'}),
+                             [{'id': 'grader_changed', 'files': ['grader.py']}])
+
     def test_unclamped_negative_bound_is_not_rewritten(self):
         with tempfile.TemporaryDirectory() as td:
             f = fixture(Path(td))

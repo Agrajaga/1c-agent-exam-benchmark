@@ -111,7 +111,8 @@ def export_receipts(root, stage, records, current):
             for p in sorted(folder.rglob('*')):
                 if p.is_file(): z.write(p, 'original/' + p.relative_to(folder).as_posix())
             z.write(path, 'owner-recheck.json')
-        changed = sorted(k for k in set(files) | set(current) if files.get(k) != current.get(k))
+        from tools.grading_compatibility import changed_grading_files
+        changed = changed_grading_files(files, current)
         records.append({**source, 'id': revision_id, 'result': receipt['result'],
             'verification': 'repository_owner_incomplete' if v.get('outcome') == 'incomplete' else 'repository_owner', 'owner_verification': v,
             'regrade_required': ([{'id': 'grader_changed', 'files': changed}] if changed else [])

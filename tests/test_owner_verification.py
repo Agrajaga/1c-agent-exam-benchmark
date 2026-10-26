@@ -52,6 +52,23 @@ class OwnerVerification(unittest.TestCase):
                 self.assertEqual(z.read('original/solution.dt'), (folder / 'solution.dt').read_bytes())
             self.assertEqual(tree_manifest(folder), original)
 
+    def test_telemetry_compatibility_keeps_receipt_history_without_falsely_regrading(self):
+        from test_grading_compatibility import OLD, NEW
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); folder = fixture(root)
+            current = grading_fingerprint()
+            self.assertEqual(current['claude.py'], NEW)
+            previous = {**current, 'claude.py': OLD}
+            with patch('test_owner_verification.grading_fingerprint', return_value=previous):
+                path = self.receipt(root, folder)
+            before = path.read_bytes()
+            export_public(root, root / 'dist')
+            row = read(root / 'dist/community.json')['results'][0]
+            self.assertEqual(row['regrade_required'], [])
+            self.assertEqual(row['owner_verification']['grader']['fingerprint']['claude.py'], OLD)
+            self.assertEqual(path.read_bytes(), before)
+            self.assertTrue(row['previous_evaluations'])
+
     def test_rejects_wrong_owner_source_or_fingerprint(self):
         for field in ('owner', 'source', 'fingerprint'):
             with self.subTest(field=field), tempfile.TemporaryDirectory() as td:

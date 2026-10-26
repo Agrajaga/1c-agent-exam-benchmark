@@ -407,7 +407,8 @@ def regrade_reasons(folder, current=None):
     Such results are published with their score marked, not refused."""
     current = current or grading_fingerprint()
     graded = read(folder / 'grading-implementation.json')
-    changed = sorted(name for name in set(graded) | set(current) if graded.get(name) != current.get(name))
+    from tools.grading_compatibility import changed_grading_files
+    changed = changed_grading_files(graded, current)
     reasons = [{'id': 'grader_changed', 'files': changed}] if changed else []
     if (folder / 'binding-adapter-proof.json').is_file() and read(folder / 'binding-adapter-proof.json').get('scope') not in ADAPTERS:
         reasons.append({'id': 'adapter_not_in_repository'})
