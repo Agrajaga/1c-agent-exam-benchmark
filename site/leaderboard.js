@@ -21,7 +21,8 @@ function fromCommunity(r) {
   return {id: r.id, local: false, model: v.model, agent: c.client || (String(v.model).startsWith('claude') ? 'claude' : 'codex'),
     agentVersion: c.client_version, effort: c.reasoning_effort, harness: v.harness, e: v, limit: c.solve_timeout_seconds,
     tokens: c.tokens || {}, tools: c.tools || {}, env: m.environment || {}, author: m.operator || {}, date: v.created_at,
-    download: r.download, sha: r.archive_sha256, verification: r.verification, regrade: r.regrade_required || []};
+    download: r.download, sha: r.archive_sha256, verification: r.verification, regrade: r.regrade_required || [],
+    runId: r.run_id || v.run_id || r.id, history: (r.previous_evaluations || []).map(fromCommunity)};
 }
 
 function fromLocal(item) {
@@ -53,6 +54,24 @@ function fillFilter(id, values, label) {
 }
 
 function sub(parent, text) { if (text) parent.append(node('small', text)); return parent; }
+
+function revisionHistory(r) {
+  const history = node('details', null, 'evaluation-history');
+  history.append(node('summary', `Предыдущие оценки (${r.history.length})`),
+    node('p', 'Это пересчёты одного прогона, а не дополнительные попытки агента. В таблице показана последняя оценка. Каждый пакет сохранён отдельно.', 'why'));
+  for (const old of r.history) {
+    const revision = node('details');
+    const score = old.e.score != null ? `${number(old.e.score)} из 5` : `не выше ${number(Math.max(0, old.e.score_upper_bound ?? 0))} из 5`;
+    revision.append(node('summary', `${old.date ? new Date(old.date).toLocaleString('ru-RU') : old.id} · ${score}`),
+      node('p', old.id, 'why'), violations(old));
+    const download = node('a', 'Скачать эту оценку и решение XML/DT', 'btn small');
+    download.href = old.download; download.download = '';
+    download.title = 'SHA-256 ' + old.sha;
+    revision.append(download);
+    history.append(revision);
+  }
+  return history;
+}
 
 function violations(r) {
   const box = node('div', null, 'details-grid');
@@ -146,6 +165,10 @@ function render() {
     tr.append(place, score, who, time, tok, pc, author, cellActions);
     const detail = node('tr', null, 'row-detail' + (r.local ? ' mine' : '')); detail.hidden = true;
     const cell = node('td'); cell.colSpan = 8; cell.append(violations(r)); detail.append(cell);
+    if (r.history?.length) {
+      sub(score, `оценок: ${r.history.length + 1}`);
+      cell.append(node('p', 'Исходный прогон: ' + r.runId, 'why'), revisionHistory(r));
+    }
     more.addEventListener('click', () => { detail.hidden = !detail.hidden; more.textContent = detail.hidden ? 'Подробнее' : 'Скрыть'; });
     return [tr, detail];
   }));
@@ -161,7 +184,7 @@ async function load() {
     const response = await fetch('community.json', {cache: 'no-store'});
     if (response.ok) community = (await response.json()).results.map(fromCommunity);
   } catch { /* the table still shows local results */ }
-  const sent = new Set(community.map(r => r.id));
+  const sent = new Set(community.flatMap(r => [r.runId, r.id, ...r.history.map(old => old.id)]));
   let mine = [];
   try {
     const [results, state, readiness] = await Promise.all(['api/results', 'api/community', 'api/readiness']

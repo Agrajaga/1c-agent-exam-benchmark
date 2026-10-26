@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -430,12 +431,28 @@ def export_public(root, stage):
         with zipfile.ZipFile(dest / 'solution.zip', 'w', zipfile.ZIP_DEFLATED) as z:
             for p in sorted(folder.rglob('*')):
                 if p.is_file(): z.write(p, p.relative_to(folder).as_posix())
-        records.append({'id': folder.name, 'result': result, 'measurement': measurement, 'conditions': plan,
+        records.append({'id': folder.name, 'run_id': manifest['run_id'], 'result': result, 'measurement': measurement, 'conditions': plan,
                         'verification': manifest['verification'], 'download': f'community-downloads/{folder.name}/solution.zip',
                         'regrade_required': regrade_reasons(folder, current),
                         'grader_revision_sha256': hashlib.sha256(json.dumps(read(folder / 'grading-implementation.json'), sort_keys=True).encode()).hexdigest(),
                         'archive_sha256': digest(dest / 'solution.zip')})
-    write(stage / 'community.json', {'schema_version': 1, 'results': records, 'repository': 'https://github.com/' + UPSTREAM})
+    # A regrade is a revision of an existing attempt, not another solver run.
+    # Keep every immutable package downloadable, with earlier evaluations nested under the latest.
+    grouped = {}
+    for record in records:
+        grouped.setdefault(record['run_id'], []).append(record)
+    results = []
+    def revision_key(record):
+        try:
+            date = datetime.fromisoformat(record['result'].get('created_at', '').replace('Z', '+00:00'))
+            timestamp = (date if date.tzinfo else date.replace(tzinfo=timezone.utc)).timestamp()
+        except (ValueError, TypeError, AttributeError):
+            timestamp = float('-inf')
+        return timestamp, record['id']
+    for revisions in grouped.values():
+        revisions.sort(key=revision_key, reverse=True)
+        results.append({**revisions[0], 'previous_evaluations': revisions[1:]})
+    write(stage / 'community.json', {'schema_version': 1, 'results': results, 'repository': 'https://github.com/' + UPSTREAM})
 
 
 if __name__ == '__main__':
