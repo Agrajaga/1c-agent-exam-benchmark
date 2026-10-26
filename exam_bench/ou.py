@@ -344,9 +344,23 @@ def snapshot_code(obj, f):
 
 
 def static_signs(src, binding=None):
-    """Q09: a violation needs a concrete sign. Disassembly sign: a document or processing named as disassembly."""
+    """Read declared register periodicity and Q09 disassembly metadata."""
+    import xml.etree.ElementTree as ET
+    from .submission import descriptor, MD
     names = [p.stem for group in ('Documents', 'DataProcessors') for p in (Path(src) / group).glob('*.xml')]
-    return {'disassembly_objects': [n for n in names if re.search(r'разбор|disassembl', n, re.I)]}
+    objects = ((binding or {}).get('ou') or {}).get('objects') or {}
+    periods = {}
+    for role in ('policies', 'specification'):
+        try:
+            ref = objects[role]
+            if not isinstance(ref, str) or not ref.startswith('InformationRegister.'):
+                raise ValueError('Not an information register')
+            node = descriptor(Path(src), ref)
+            value = node.findtext(MD + 'Properties/' + MD + 'InformationRegisterPeriodicity')
+            periods[role] = value if value in ('Year', 'Quarter', 'Month', 'Day', 'Second', 'Nonperiodical', 'RecorderPosition') else None
+        except (KeyError, OSError, ValueError, ET.ParseError):
+            periods[role] = None
+    return {'disassembly_objects': [n for n in names if re.search(r'разбор|disassembl', n, re.I)], 'periodicity': periods}
 
 
 def compare(observations, binding, static=None):
@@ -428,6 +442,24 @@ def compare(observations, binding, static=None):
 
     def spec(rows):
         return sorted((r['item'], r.get('property', ''), d(r['qty'])) for r in rows)
+
+    def frequency_period(role, expected, history):
+        """Combine proved history and metadata without turning missing data into failure."""
+        observed, missing = None, None
+        try:
+            observed = history()
+        except (KeyError, TypeError, ValueError) as exc:
+            missing = exc
+        if observed is False:
+            return False
+        period = (static.get('periodicity') or {}).get(role)
+        if period is None:
+            raise ValueError('не удалось установить периодичность регистра ' + role)
+        if period != expected:
+            raise ValueError('периодичность регистра %s — %s, ожидается %s; проверка другим способом не исключена' % (role, period, expected))
+        if missing is not None:
+            raise ValueError('история не подтверждена: ' + str(missing))
+        return True
     checks = {
         'OU15': lambda: policy('F', (2, 40)),
         'OU16': lambda: policy('L', (2, 20)),
@@ -437,11 +469,11 @@ def compare(observations, binding, static=None):
         'OU14': lambda: sale_rows_static and observations['ou_policies']['posted'].get('sale') is True,
         'OU01': lambda: observations['ou_policies']['posted'].get('sale') is True and asm_ok('ou_assembly') and observations['ou_assembly']['posted'].get('rS') is True
                         and bal(observations['ou_assembly']['snapshots']['after'], 'D', 'K')[0] == 2,
-        'OU03': lambda: history_sale('s23a', 's23b', 10) and history_sale('s25a', 's25b', 30),
+        'OU03': lambda: frequency_period('policies', 'Year', lambda: history_sale('s23a', 's23b', 10) and history_sale('s25a', 's25b', 30)),
         'OU05': lambda: asm_ok('ou_assembly') and consumed('ou_assembly', 'S', 'A', 'P1')[0] == 5 and bal(observations['ou_assembly']['snapshots']['after'], 'S', 'A', 'P2') == (10, 700),
         'OU06': lambda: not static.get('disassembly_objects'),
         'OU07': lambda: spec(observations['ou_assembly']['snapshots']['spec']) == [('BENCH_A', 'BENCH_P1', d(2)), ('BENCH_B', 'BENCH_Q1', d(1))],
-        'OU08': lambda: spec(observations['ou_history']['snapshots']['spec_jan']) == [('BENCH_A', 'BENCH_P1', d(1))] and spec(observations['ou_history']['snapshots']['spec_feb']) == [('BENCH_A', 'BENCH_P1', d(2))],
+        'OU08': lambda: frequency_period('specification', 'Day', lambda: spec(observations['ou_history']['snapshots']['spec_jan']) == [('BENCH_A', 'BENCH_P1', d(1))] and spec(observations['ou_history']['snapshots']['spec_feb']) == [('BENCH_A', 'BENCH_P1', d(2))]),
         'OU09': lambda: two_tables and asm_ok('ou_assembly'),
         'OU10': lambda: asm_ok('ou_assembly') and bal(observations['ou_assembly']['snapshots']['after'], 'D', 'K')[0] == 2
                         and bal(observations['ou_assembly']['snapshots']['after'], 'Z', 'A', 'P1') == (10, 900) and consumed('ou_assembly', 'D', 'A', 'P1') == (0, 0),
@@ -464,7 +496,11 @@ def compare(observations, binding, static=None):
             if verdict == 'fail' and why:
                 reason = '; '.join(why)
         except (KeyError, TypeError, ValueError) as exc:
-            verdict, reason = 'inconclusive', 'Required observations unavailable: ' + str(exc)[:200]
-        coverage = 'no_violation_found' if rule == 'OU06' and verdict == 'pass' else 'selected_fixture'
+            verdict, reason = 'inconclusive', ('Недостаточно данных: ' if rule in ('OU03', 'OU08') else 'Required observations unavailable: ') + str(exc)[:200]
+        coverage = 'no_violation_found' if rule == 'OU06' and verdict == 'pass' else 'history_and_periodicity' if rule in ('OU03', 'OU08') else 'selected_fixture'
+        if rule == 'OU03' and verdict == 'pass':
+            reason = 'История и годовая периодичность регистра подтверждены.'
+        if rule == 'OU08' and verdict == 'pass':
+            reason = 'История и дневная периодичность подтверждены; ограничение одной версии в неделю отдельно не проверяется.'
         out.append({'id': rule, 'verdict': verdict, 'reason': reason, 'coverage': coverage, 'assertion_id': rule + '.selected_fixture'})
     return out

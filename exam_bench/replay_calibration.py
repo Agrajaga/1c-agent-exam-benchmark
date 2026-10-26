@@ -198,11 +198,14 @@ def replay_calibrate(source_dir, starter_source, starter_dt, binary, root):
     leak_check = next(r for r in grader.compare(leaked, b) if r['id'] == 'BU10')['verdict'] == 'fail'
     from .calibration_query import run as calibrate_query
     query_calibration = calibrate_query(starter_source, starter_dt, binary, root / 'query-parameter')
+    from .calibration_periodicity import run as calibrate_periodicity
+    periodicity_calibration = calibrate_periodicity(starter_source, starter_dt, binary, root / 'periodicity')
     if implementation != grading_fingerprint():
         raise ValueError('Grading implementation changed during calibration')
     result.update(unposted_movement_leak_oracle_check=leak_check, readonly_sources_verified=True,
                   query_parameter_calibration=query_calibration,
-                  accepted=leak_check and query_calibration['passed'] and all(p['passed'] and p['same_observations_as_prior'] for p in result['positives']) and
+                  periodicity_calibration=periodicity_calibration,
+                  accepted=leak_check and query_calibration['passed'] and periodicity_calibration['passed'] and all(p['passed'] and p['same_observations_as_prior'] for p in result['positives']) and
                   all(n['target_verdict'] == 'fail' and n['runtime_observations_available'] and not n['syntax_or_adapter_errors']
                       for n in result['negatives']))
     if not result['accepted']:
