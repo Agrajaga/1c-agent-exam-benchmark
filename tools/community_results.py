@@ -174,7 +174,21 @@ def check_id(value):
     return value
 
 
+def require_visible_result(job_id, root=ROOT):
+    job_id = check_id(job_id)
+    if (root / '.local/community/deleted' / (job_id + '.json')).exists():
+        raise ValueError('Результат удалён из списка')
+    return job_id
+
+
 def prepare_bundle(job_id, root=ROOT):
+    # CLI and HTTP workers share the deletion lock.
+    from exam_bench.locking import file_lock
+    with file_lock(root / '.local/community/action.lock'):
+        return _prepare_bundle(require_visible_result(job_id, root), root)
+
+
+def _prepare_bundle(job_id, root=ROOT):
     """Build DT from immutable XML in a fresh base; never edit the solver's artifacts."""
     from tools.demo_runner import public_evaluation
     from exam_bench.platform import OneC
@@ -313,6 +327,16 @@ def validate_bundle(folder):
 
 
 def make_pr(job_id, root=ROOT):
+    from exam_bench.locking import file_lock
+    with file_lock(root / '.local/community/action.lock'):
+        job_id = require_visible_result(job_id, root)
+        url = _make_pr(job_id, root)
+        # Persist CLI submissions too, before deletion can acquire the lock.
+        write(root / '.local/community/pr' / (job_id + '.json'), {'url': url})
+        return url
+
+
+def _make_pr(job_id, root=ROOT):
     """Only called after the user presses Send PR; touches an isolated checkout."""
     folder = root / '.local/community/prepared' / check_id(job_id)
     validate_bundle(folder)

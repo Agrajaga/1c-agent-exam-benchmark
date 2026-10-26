@@ -1,4 +1,4 @@
-import {$, node, get, duration, scoreText, gradeText, checksText, harnessLabel, date} from './local.js';
+import {$, node, get, post, ask, duration, scoreText, gradeText, checksText, harnessLabel, date} from './local.js';
 import {renderSubmit} from './submit.js';
 
 const STATES = {queued: 'В очереди', preparing: 'Подготовка', solving: 'Агент решает', checking_gates: 'Загрузка в 1С',
@@ -38,11 +38,29 @@ async function refresh() {
     const checks = node('td', e ? checksText(e) : '—', 'num');
     const time = node('td', e ? duration(e.solve_seconds) : '—', 'num');
     const send = node('td');
+    const box = node('div', null, 'actions');
     if (e) {
-      const box = node('div', null, 'actions');
       renderSubmit(box, item, community, githubReady, refresh);
-      send.append(box);
     }
+    const action = community.action?.id === item.job_id ? community.action : null;
+    if (item.deletable && !action?.pr_url) {
+      const remove = node('button', 'Удалить', 'btn small');
+      remove.disabled = action?.phase === 'working';
+      remove.addEventListener('click', async () => {
+        remove.disabled = true;
+        try {
+          if (!await ask('Удалить результат из «Моих результатов»? Исходные материалы запуска сохранятся для повторных оценок.', 'Удалить')) return;
+          await post('api/community/delete', {id: item.job_id});
+          await refresh();
+        } catch (error) {
+          box.append(node('p', error.message, 'message error'));
+        } finally {
+          remove.disabled = false;
+        }
+      });
+      box.append(remove);
+    }
+    send.append(box);
     tr.append(when, env, score, checks, time, send);
     return tr;
   }));
