@@ -1,0 +1,161 @@
+{
+  "created_at": "2026-10-26T21:43:13.480632+00:00",
+  "method": "saved_platform_observations",
+  "previous_grader_revision": "3d64767edfeff53a91eae4e866e7406ee32552ce",
+  "results": [
+    {
+      "submission_id": "demo-20261024T041533Z-ddc64e",
+      "previous_local_upper_bound": "-2.0",
+      "new_upper_bound": "-2.0",
+      "affected": false,
+      "scenario_errors": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "outcome": "not_reassessed_incomplete"
+    },
+    {
+      "submission_id": "demo-20261024T230428Z-a2980e",
+      "previous_local_upper_bound": "-5.25",
+      "new_upper_bound": "-5.25",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261024T230428Z-a2980e\\owner-2026-10-26T214319526992-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T063054Z-b9676e",
+      "previous_local_upper_bound": "-4.75",
+      "new_upper_bound": "-4.5",
+      "affected": true,
+      "scenario_errors": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "outcome": "incomplete",
+      "receipt": "community\\rechecks\\demo-20261025T063054Z-b9676e\\owner-2026-10-26T214326254722-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T110836Z-adapter",
+      "previous_local_upper_bound": "-3.5",
+      "new_upper_bound": "-3.5",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T110836Z-adapter\\owner-2026-10-26T214331344039-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T112228Z-adapter",
+      "previous_local_upper_bound": "-6.0",
+      "new_upper_bound": "-6.0",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T112228Z-adapter\\owner-2026-10-26T214337676149-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T112622Z-adapter",
+      "previous_local_upper_bound": "-0.5",
+      "new_upper_bound": "-0.5",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T112622Z-adapter\\owner-2026-10-26T214342867449-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T113017Z-40b49c",
+      "previous_local_upper_bound": "-4.25",
+      "new_upper_bound": "-4.0",
+      "affected": true,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T113017Z-40b49c\\owner-2026-10-26T214349521774-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T113419Z-de9981",
+      "previous_local_upper_bound": "4.25",
+      "new_upper_bound": "4.5",
+      "affected": true,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T113419Z-de9981\\owner-2026-10-26T214355535165-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T113819Z-9d209c",
+      "previous_local_upper_bound": "-5.5",
+      "new_upper_bound": "-5.5",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T113819Z-9d209c\\owner-2026-10-26T214400531590-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T114214Z-de8c5f",
+      "previous_local_upper_bound": "1.5",
+      "new_upper_bound": "1.5",
+      "affected": false,
+      "scenario_errors": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "outcome": "not_reassessed_incomplete"
+    },
+    {
+      "submission_id": "demo-20261025T145428Z-209efd",
+      "previous_local_upper_bound": "-4.25",
+      "new_upper_bound": "-4.25",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T145428Z-209efd\\owner-2026-10-26T214406769623-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T153915Z-adapter",
+      "previous_local_upper_bound": "-2.5",
+      "new_upper_bound": "-2.5",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T153915Z-adapter\\owner-2026-10-26T214413925241-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T154959Z-adapter",
+      "previous_local_upper_bound": "-0.25",
+      "new_upper_bound": "0.0",
+      "affected": true,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T154959Z-adapter\\owner-2026-10-26T214420434620-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T192940Z-5ea870",
+      "previous_local_upper_bound": "2.0",
+      "new_upper_bound": "2.0",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261025T192940Z-5ea870\\owner-2026-10-26T214427226417-0000.json"
+    },
+    {
+      "submission_id": "demo-20261026T070850Z-84a3a7",
+      "previous_local_upper_bound": "-3.25",
+      "new_upper_bound": "-3.25",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261026T070850Z-84a3a7\\owner-2026-10-26T214433831904-0000.json"
+    },
+    {
+      "submission_id": "demo-20261026T113637Z-010c79",
+      "previous_local_upper_bound": "0.5",
+      "new_upper_bound": "0.5",
+      "affected": false,
+      "scenario_errors": [],
+      "outcome": "complete",
+      "receipt": "community\\rechecks\\demo-20261026T113637Z-010c79\\owner-2026-10-26T214441318235-0000.json"
+    }
+  ]
+}
