@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-10-26T18:41:25.737355+00:00",
+  "finished_at": "2026-10-26T19:31:14.835924+00:00",
+  "grader_sha256": "4a12b62d2c10085e1fc710f377f84903abdf2fb787dda19628d944da990a86b2",
+  "platform_version": "8.3.27.2342",
+  "attempts": 16,
+  "completed": 13,
+  "incomplete": 3,
+  "results": [
+    {
+      "submission_id": "demo-20261025T112228Z-adapter",
+      "run_id": "demo-20261024T050719Z-7a9caa",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-6.0",
+      "score_upper_bound": "-6.0"
+    },
+    {
+      "submission_id": "demo-20261025T112622Z-adapter",
+      "run_id": "demo-20261024T065406Z-45954e",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-2.5",
+      "score_upper_bound": "-0.5"
+    },
+    {
+      "submission_id": "demo-20261025T110836Z-adapter",
+      "run_id": "demo-20261024T095243Z-21ac56",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-3.5",
+      "score_upper_bound": "-3.5"
+    },
+    {
+      "submission_id": "demo-20261025T113017Z-40b49c",
+      "run_id": "demo-20261024T123219Z-93678e",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-4.25",
+      "score_upper_bound": "-4.25"
+    },
+    {
+      "submission_id": "demo-20261024T230428Z-a2980e",
+      "run_id": "demo-20261024T230428Z-a2980e",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-5.75",
+      "score_upper_bound": "-5.25"
+    },
+    {
+      "submission_id": "demo-20261025T113419Z-de9981",
+      "run_id": "demo-20261025T031725Z-2076a5",
+      "status": "rechecked",
+      "previous_score_upper_bound": "2.25",
+      "score_upper_bound": "4.25"
+    },
+    {
+      "submission_id": "demo-20261025T113819Z-9d209c",
+      "run_id": "demo-20261025T043533Z-b8847b",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-5.5",
+      "score_upper_bound": "-5.5"
+    },
+    {
+      "submission_id": "demo-20261025T145428Z-209efd",
+      "run_id": "demo-20261025T145428Z-209efd",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-6.25",
+      "score_upper_bound": "-4.25"
+    },
+    {
+      "submission_id": "demo-20261025T153915Z-adapter",
+      "run_id": "demo-20261024T153359Z-bbf7c4",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-2.5",
+      "score_upper_bound": "-2.5"
+    },
+    {
+      "submission_id": "demo-20261025T154959Z-adapter",
+      "run_id": "demo-20261024T203042Z-421bbf",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-4.25",
+      "score_upper_bound": "-0.25"
+    },
+    {
+      "submission_id": "demo-20261025T192940Z-5ea870",
+      "run_id": "demo-20261025T192940Z-5ea870",
+      "status": "rechecked",
+      "previous_score_upper_bound": "0.0",
+      "score_upper_bound": "2.0"
+    },
+    {
+      "submission_id": "demo-20261026T070850Z-84a3a7",
+      "run_id": "demo-20261026T070850Z-84a3a7",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-4.25",
+      "score_upper_bound": "-3.25"
+    },
+    {
+      "submission_id": "demo-20261026T113637Z-010c79",
+      "run_id": "demo-20261026T113637Z-010c79",
+      "status": "rechecked",
+      "previous_score_upper_bound": "-1.5",
+      "score_upper_bound": "0.5"
+    },
+    {
+      "submission_id": "demo-20261024T041533Z-ddc64e",
+      "run_id": "demo-20261024T041533Z-ddc64e",
+      "status": "incomplete",
+      "reason": "runtime_observation_errors",
+      "affected_cases": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "reason_detail": "В сценариях сборки и истории при записи спецификации значение периода не соответствовало установленному отбору. Причина не классифицирована; оценка не опубликована."
+    },
+    {
+      "submission_id": "demo-20261025T114214Z-de8c5f",
+      "run_id": "demo-20261025T052655Z-9c0f1c",
+      "status": "incomplete",
+      "reason": "runtime_observation_errors",
+      "affected_cases": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "reason_detail": "В сценариях сборки и истории при записи спецификации значение периода не соответствовало установленному отбору. Причина не классифицирована; оценка не опубликована."
+    },
+    {
+      "submission_id": "demo-20261025T063054Z-b9676e",
+      "run_id": "demo-20261025T063054Z-b9676e",
+      "status": "incomplete",
+      "reason": "runtime_observation_errors",
+      "affected_cases": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "reason_detail": "В сценариях сборки и истории при записи спецификации значение периода не соответствовало установленному отбору. Причина не классифицирована; оценка не опубликована."
+    }
+  ]
+}
