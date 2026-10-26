@@ -1,6 +1,9 @@
 import {$, node, get, post, ask, duration, scoreText, gradeText, checksText, harnessLabel} from './local.js';
 import {renderSubmit} from './submit.js';
 import {ADD_HARNESS_PROMPT} from './harness-prompt.js';
+import {loadPenaltyMetadata, renderCharges} from './penalty-cards.js';
+
+const penaltyMetadata = await loadPenaltyMetadata();
 
 const ORDER = ['preparing', 'solving', 'checking_gates', 'grading', 'finished'];
 const ACTIVE = new Set(['queued', 'preparing', 'solving', 'checking_gates', 'grading', 'publishing']);
@@ -220,7 +223,7 @@ function renderJob(demo, results, githubReady) {
   const kv2 = [['Проверки', checksText(e)], ['Оценка', gradeText(e) || '—'], ['Без оценки', String(e.not_assessed)], ['Время решения', duration(e.solve_seconds)]];
   $('outcome-kv').replaceChildren(...kv2.map(([k, v]) => { const s = node('span', k + ': '); s.append(node('b', v)); return s; }));
   $('outcome-charges').hidden = !e.charges.length;
-  $('charges').replaceChildren(...e.charges.map(c => node('li', `${c.id} · −${String(c.points).replace('.', ',')} · ${c.reason || ''}`)));
+  renderCharges($('charges'), e.charges, penaltyMetadata, {methodology: true});
   if (job.mode === 'run') renderSubmit($('submit'), item, demo.community, githubReady, refresh);
 }
 
