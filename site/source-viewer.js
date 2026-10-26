@@ -98,7 +98,7 @@ function renderView(container, view) {
 }
 
 async function load(ref) {
-  if (!cached.has(ref)) cached.set(ref, fetch(ref).then(r => {
+  if (!cached.has(ref)) cached.set(ref, fetch(ref, {cache: 'no-store'}).then(r => {
     if (!r.ok) throw new Error('Исходники для этой оценки недоступны');
     return r.json();
   }).catch(error => { cached.delete(ref); throw error; }));
