@@ -22,6 +22,9 @@ class CodexMcpStartup(unittest.TestCase):
     def test_no_harness_does_not_register_or_require_an_mcp_server(self):
         self.check_preparation('none', {})
 
+    def test_unica_015_uses_the_sealed_portable_registration(self):
+        self.check_preparation('unica-0.15.0-rc.1', {'unica': True})
+
     def check_preparation(self, name, expected):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -32,7 +35,7 @@ class CodexMcpStartup(unittest.TestCase):
             if name != 'none':
                 package = root / '.local/harnesses' / name / 'package'; package.mkdir(parents=True)
                 (package / 'fixture.txt').write_text('fixture', encoding='utf-8')
-                config = {'version': 'fixture', 'server': 'bsl-analyzer', 'command': sys.executable,
+                config = {'version': 'fixture', 'server': next(iter(expected)), 'command': sys.executable,
                           'args': [], 'registration': 'test-only package; never launched'}
                 write_json(root / '.local/harnesses/portable.json', {name: config})
                 manifest = package.parent / 'package-manifest.json'; write_json(manifest, tree_manifest(package))
@@ -55,6 +58,6 @@ class CodexMcpStartup(unittest.TestCase):
                 self.assertIn('--ignore-user-config', argv)
                 self.assertEqual(env['CODEX_HOME'], str(ws / 'client-home'))
                 if expected:
-                    self.assertEqual(overrides['mcp_servers.bsl-analyzer.startup_timeout_sec'], '120')
+                    self.assertEqual(overrides['mcp_servers.' + next(iter(expected)) + '.startup_timeout_sec'], '120')
             finally:
                 shutil.rmtree(ws)

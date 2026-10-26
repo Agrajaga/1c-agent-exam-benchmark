@@ -11,7 +11,7 @@ PROFILE_FILES={'none':'none-macos.json','unica-0.13.0':'unica-0.13.0-macos.json'
 
 
 def is_unica(name):
-    return name in ('unica-0.12.3','unica-0.13.0','unica-0.14.0-rc.1')
+    return name in ('unica-0.12.3','unica-0.13.0','unica-0.14.0-rc.1','unica-0.15.0-rc.1')
 
 
 def mcp_call_succeeded(item):

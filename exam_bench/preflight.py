@@ -67,7 +67,7 @@ def main_gates(plan,task,client,starter,passport,calibration):
         probe=(root/plan['model_probe_ref']).resolve().parent
         if json.loads((probe/'plan.json').read_text(encoding='utf-8'))['harness']!=plan['harness']:raise ValueError('Unica has no native integration probe')
         events=[json.loads(line) for line in (probe/'raw/stdout.jsonl').read_text(encoding='utf-8').splitlines()]
-        root_tool='unica.view' if plan['harness']=='unica-0.13.0' else 'unica.project.status'
+        root_tool='unica.project.status' if plan['harness']=='unica-0.12.3' else 'unica.view'
         if plan.get('client','codex')=='claude':
             if not claude_mcp_call_succeeded(events,root_tool):raise ValueError('Unica root unavailable in native client')
         else:

@@ -44,6 +44,9 @@ for _name,_prompt in STDIO_PROMPTS.items():
 CLIENTS={'codex':(codex,ROOT/'.local/clients/codex-0.162.1/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex',Path.home()/'.codex/auth.json'),
          'claude':(claude,Path.home()/'.local/bin/claude',Path.home()/'.config/1c-exam-bench/claude-oauth-token')}
 UNICA_TOOLS={'unica-0.13.0':('unica.view',),'unica-0.12.3':('unica.project.status','unica.meta.info')}
+for name in ('unica-0.14.0-rc.1', 'unica-0.15.0-rc.1'):
+    PROMPTS[name] = CLAUDE_PROMPTS[name] = CLAUDE_PROMPTS['unica-0.13.0']
+    UNICA_TOOLS[name] = ('unica.view',)
 
 # The agents of the stand: client version, exact model ID and reasoning effort of every probe and run.
 MODELS={'codex':('0.162.1','gpt-6.1-sol'),'claude':('2.1.290','claude-opus-5-5')}

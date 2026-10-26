@@ -5,7 +5,7 @@ export const ADD_HARNESS_PROMPT = `Добавь в стенд 1c-agent-exam-benc
 Порядок работы:
 1. Прочитай docs/harnesses.md — формат описания, разрешённые шаги установки, подстановки и проверку.
    Посмотри примеры: harnesses/bsl-analyzer-0.3.2.json (один исполняемый файл),
-   harnesses/code-index-1.9.0.json (архив), harnesses/unica-0.14.0-rc.1.json (MCP и skills),
+   harnesses/code-index-1.9.0.json (архив), harnesses/unica-0.15.0-rc.1.json (MCP и skills),
    harnesses/rlm-tools-bsl-1.43.0.json (Python-пакет).
 2. Найди официальный релиз харнеса по параметрам в конце. Для каждой ОС — windows-x64, macos-arm64,
    linux-x64 — для которой автор публикует сборку, возьми прямую https-ссылку на файл и его SHA-256.
