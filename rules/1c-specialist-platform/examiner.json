@@ -135,7 +135,8 @@
    },
    "related_rules": [
     "PR14"
-   ]
+   ],
+   "penalty_via": "PR14"
   },
   {
    "id": "EXM07",

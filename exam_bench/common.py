@@ -1,4 +1,5 @@
 import hashlib
+import ast
 import json
 import os
 from pathlib import Path
@@ -40,6 +41,39 @@ GRADING_FILES = ('grader.py', 'observer.py', 'platform.py', 'submission.py',
                  'common.py', 'process.py', 'windows_job.py', 'workspaces.py', 'runtime.py', 'isolation.py', 'gates.py', 'ou.py','pr.py','forms.py','interface.py', 'calibration.py', 'calibration_ou.py','calibration_pr.py','calibration_forms.py','calibration_interface.py', 'calibrate.py', 'replay_calibration.py', 'smoke_check.py')
 
 
-def grading_fingerprint():
+def runtime_fingerprint():
+    """The platform/scenario calibration, independent of penalty policy edits."""
     root = Path(__file__).parent
     return {name: digest(root / name) for name in GRADING_FILES}
+
+
+def grading_inputs(root=None):
+    """Transitive local Python imports and the exact data used by the current ticket."""
+    root = Path(root) if root else Path(__file__).resolve().parents[1]
+    modules, pending = set(), list(GRADING_FILES) + ['penalties.py', 'assessment.py']
+    while pending:
+        name = pending.pop()
+        if name in modules:
+            continue
+        path = root / 'exam_bench' / name
+        if not path.is_file():
+            continue
+        modules.add(name)
+        for node in ast.walk(ast.parse(path.read_text(encoding='utf-8-sig'))):
+            if isinstance(node, ast.ImportFrom) and node.level == 1:
+                imports = [node.module.split('.')[0]] if node.module else [a.name for a in node.names]
+                pending.extend(m + '.py' for m in imports if (root / 'exam_bench' / (m + '.py')).is_file())
+    inputs = {name: root / 'exam_bench' / name for name in sorted(modules)}
+    task = root / 'tasks/1c-platform-official-sample'
+    checks = json.loads((task / 'checks.json').read_text(encoding='utf-8'))
+    data = [task / 'checks.json', task / 'private/official-assessment-mapping.json',
+            task / 'private/owner-scoring-policy.json', root / 'starters' / checks['starter'] / 'starter.json']
+    data += [root / 'rules' / checks['rulebook'] / name for name in
+             ('rules.json', 'examiner.json', 'chistov.json', 'standards.json')]
+    inputs.update({p.relative_to(root).as_posix(): p for p in data})
+    return inputs
+
+
+def grading_fingerprint():
+    # New keys make old incomplete fingerprints explicitly incompatible; no historical receipt is rewritten.
+    return {name: digest(path) for name, path in grading_inputs().items()}

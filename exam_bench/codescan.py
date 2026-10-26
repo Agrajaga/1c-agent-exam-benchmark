@@ -129,7 +129,7 @@ def scan(src, binding):
     src = Path(src)
     demo = ((binding.get('demo_data') or {}).get('procedure') or '').split('.')
     exclude = {demo[1]} if len(demo) > 2 else set()
-    signs = {'loop_reads': [], 'empty_virtual_parameters': [], 'where_on_dimension': [], 'schedule_table': [], 'calculation_main_table': []}
+    signs = {'loop_reads': [], 'unknown_loop_reads': [], 'empty_virtual_parameters': [], 'where_on_dimension': [], 'schedule_table': [], 'calculation_main_table': []}
     schedule = ((binding.get('pr') or {}).get('objects') or {}).get('schedules', '').split('.', 1)[-1]
     results = [r['register'].split('.', 1)[1] for r in ((binding.get('pr') or {}).get('results') or [])]
     base_api = False
@@ -159,7 +159,14 @@ def scan(src, binding):
                 # Methods («Набор.Отбор.Регистратор.Установить(…)») and key-value pairs are not reads of the base.
                 for _, var in stack:
                     if var:
-                        found += [m.start() for m in re.finditer(r'(?<![\wЁё.])' + re.escape(var) + r'\.(?!Отбор\.|Значение\.|Ключ\.)' + IDENT + r'\.' + IDENT + r'(?![\wЁё])(?!\s*\()', segment)]
+                        from .querytypes import loop_fields
+                        fields = loop_fields(src, text, cursor, var)
+                        for m in re.finditer(r'(?<![\wЁё.])' + re.escape(var) + r'\.(?!Отбор\.|Значение\.|Ключ\.)(' + IDENT + r')\.' + IDENT + r'(?![\wЁё])(?!\s*\()', segment):
+                            types = fields.get(m[1].lower())
+                            if types and any('Ref.' in t for t in types):
+                                found.append(m.start())
+                            elif types is None:
+                                signs['unknown_loop_reads'].append((rel, flat.count('\n', 0, cursor + m.start()) + 1, m.group(0)))
                         # A reference turned into a string (concatenation, a message, a template parameter) reads its
                         # presentation from the base on every pass; the query should select ПРЕДСТАВЛЕНИЕ.
                         field = re.escape(var) + r'\.(' + IDENT + r')(?![\wЁё.(])'
@@ -167,7 +174,8 @@ def scan(src, binding):
                                         r'\.Параметры\.' + IDENT + r'\s*=\s*' + field):
                             # A message on a branch that leaves the loop («…; Возврат;») runs once, not on every pass.
                             found += [m.start() for m in re.finditer(pattern, segment) if m.group(1) in named
-                                      and not re.match(r'(?:(?!КонецЕсли|КонецЦикла|ИначеЕсли|Иначе(?![\wЁё])).)*?(?<![\wЁё])(?:Возврат|Прервать|ВызватьИсключение)(?![\wЁё])', segment[m.end():], re.S)]
+                                      and not re.match(r'(?:(?!КонецЕсли|КонецЦикла|ИначеЕсли|Иначе(?![\wЁё])).)*?(?<![\wЁё])(?:Возврат|Прервать|ВызватьИсключение)(?![\wЁё])', segment[m.end():], re.S)
+                                      and not re.search(r'(?<![\wЁё])ВызватьИсключение(?![\wЁё])[^;]*$', segment[:m.start()], re.I)]
                 for start in sorted(set(found)):
                     no = flat.count('\n', 0, cursor + start) + 1
                     signs['loop_reads'].append((rel, no, source_lines[no - 1].strip()[:160]))
@@ -184,8 +192,14 @@ def scan(src, binding):
                 stack = []
             cursor = token.end()
         for literal, line in strings:
-            for m in re.finditer(r'(РегистрНакопления|РегистрБухгалтерии|РегистрСведений)\.(\w+)\.' + VIRTUAL + r'\s*\(\s*([,)])', literal):
-                signs['empty_virtual_parameters'].append((rel, line + literal.count('\n', 0, m.start()), m.group(0)[:120]))
+            for m in re.finditer(r'(РегистрНакопления|РегистрБухгалтерии|РегистрСведений)\.(\w+)\.' + VIRTUAL + r'\s*\(', literal):
+                depth, end = 1, m.end()
+                while end < len(literal) and depth:
+                    depth += {'(': 1, ')': -1}.get(literal[end], 0)
+                    end += 1
+                arguments = literal[m.end():end-1]
+                if depth == 0 and not arguments.replace(',', '').strip():
+                    signs['empty_virtual_parameters'].append((rel, line + literal.count('\n', 0, m.start()), literal[m.start():end][:120]))
             for m in re.finditer(r'(РегистрНакопления|РегистрБухгалтерии|РегистрСведений)\.(\w+)\.' + VIRTUAL + r'\s*\(', literal):
                 depth_, j = 1, m.end()
                 while j < len(literal) and depth_:

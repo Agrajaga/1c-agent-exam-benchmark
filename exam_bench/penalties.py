@@ -78,6 +78,11 @@ def lock_signs(src):
     from .calcwrite import entered_after_write, methods, writes
     table = {n: [d for d in defs if d[0].parts[-4] in ('Documents', 'CommonModules')] for n, defs in methods(src).items()}
     table = {n: defs for n, defs in table.items() if defs}
+    scoped = {d[0] for defs in table.values() for d in defs}
+    for path in posting_modules(src):
+        if path not in scoped:
+            code = lex(read(path))[0]
+            table['__module__.' + path.relative_to(src).as_posix()] = [(path, code, 0, code)]
     after = entered_after_write(table)
     texts = [read(f) for f in sorted(src.rglob('*.bsl')) if 'BenchmarkObserver' not in f.parts]
     helpers = set()
@@ -373,6 +378,9 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
     # М8 business processes and М7.10, М7.12 recalculations, by metadata: only where the ticket makes the rule applicable.
     applies = {item['id']: item['applicability'] for item in catalogue['items']}
     for penalty, (state, why) in {**business_processes(src), **recalculations(src)}.items():
+        if penalty == 'F1C-PR10' and policy.get('recalculation', {}).get('current_task_mode') == 'prohibited':
+            status[penalty] = {'status': 'not_assessed', 'reason': 'билет запрещает перерасчёты; требования их настройки неприменимы'}
+            continue
         if applies.get(penalty, 'not_applicable') == 'not_applicable':
             continue
         if state == 'violation':
@@ -419,7 +427,7 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
 
     mechanism_failed = [i for i in MECHANISM_REQUIREMENTS if verdict.get(i, {}).get('verdict') == 'fail']
     for i in mechanism_failed:
-        find('F1C-GEN04', 'mechanism.' + i, 'не соблюдён механизм, предписанный билетом: ' + i)
+        find('F1C-GEN04', 'requirement.' + i, 'не соблюдён механизм, предписанный билетом: ' + i)
 
     # Batch 2: concrete signs in exported metadata.
     config = read(src / 'Configuration.xml')
@@ -444,8 +452,8 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
         unlocked, late = lock_signs(src)
         if for_update:
             find('F1C-GEN29', 'locks.for_update', 'в запросах проведения автоматическая блокировка «ДЛЯ ИЗМЕНЕНИЯ» при управляемом режиме: ' + ', '.join(for_update[:3]))
-        elif reads and any('БлокировкаДанных' in code for code, _ in posting.values()) and unlocked:
-            find('F1C-GEN29', 'locks.unlocked_reads', 'проведение читает остатки регистров до записи их движений, а управляемой блокировки этих регистров нет нигде: ' + ', '.join(unlocked))
+        elif unlocked:
+            find('F1C-GEN29', 'locks.none' if not any('БлокировкаДанных' in code for code, _ in posting.values()) else 'locks.unlocked_reads', 'проведение читает остатки регистров до записи их движений, а управляемой блокировки этих регистров нет нигде: ' + ', '.join(unlocked))
         elif late:
             find('F1C-GEN29', 'locks.after_read', 'управляемая блокировка устанавливается после чтения остатков (#std460: блокировать до чтения): ' + '; '.join(late[:3]))
         # #std648 2.1: data read and then changed are locked exclusively; a shared lock of a register whose movements the
@@ -462,8 +470,6 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
                     shared.append('%s: %s' % (f.relative_to(src), m.group(2)))
         if shared:
             find('F1C-GEN29', 'locks.shared_on_written', 'разделяемая блокировка регистра, движения которого записываются (#std648: исключительная до чтения): ' + '; '.join(shared[:3]))
-        elif reads and not any('БлокировкаДанных' in code for code, _ in posting.values()):
-            find('F1C-GEN29', 'locks.none', 'проведение читает остатки (%s), а управляемые блокировки (БлокировкаДанных) не устанавливаются нигде' % ', '.join(reads[:3]))
         else:
             clean('F1C-GEN29', 'управляемый режим у конфигурации и у задействованных регистров и документов; правильность каждой блокировки в коде не проверяется')
 
@@ -673,6 +679,8 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
         return '; '.join('%s:%d' % (f, n) for f, n, _ in items[:3]) + (' и ещё %d' % (len(items) - 3) if len(items) > 3 else '')
     if signs['loop_reads']:
         find('F1C-GEN20', 'code.loop_reads', 'данные базы читаются в цикле по записям: ' + first(signs['loop_reads']), where(signs['loop_reads']))
+    elif signs['unknown_loop_reads']:
+        status['F1C-GEN20'] = {'status': 'not_assessed', 'reason': 'тип промежуточного значения не установлен: ' + first(signs['unknown_loop_reads'])}
     else:
         clean('F1C-GEN20', 'запросов и чтений регистров в циклах по данным не найдено')
     virtual = signs['empty_virtual_parameters'] + signs['where_on_dimension']
@@ -693,10 +701,11 @@ def assess(rules, src, binding, requirements, starter, catalogue, policy, gates=
             clean('F1C-PR08', 'база получается механизмом регистра расчёта или основная таблица не читается')
     if 'PR14' not in section_of:
         status['F1C-PR11'] = {'status': 'not_assessed', 'reason': 'билет не запрещает перерасчёты'}
-    elif signs['recalculations']:
+    elif verdict.get('PR14', {}).get('verdict') == 'fail':
         # The same defect as a failed Т4.14 (no recalculations): one penalty, the smallest applicable.
-        find('F1C-PR11', 'mechanism.PR14', 'в регистре расчёта создан перерасчёт, хотя по билету его быть не может: '
-             + ', '.join(t for _, _, t in signs['recalculations']))
+        find('F1C-PR11', 'requirement.PR14', 'подтверждено нарушение запрета использования перерасчётов (Т4.14)')
+    elif signs['recalculations'] or verdict.get('PR14', {}).get('verdict') == 'inconclusive':
+        status['F1C-PR11'] = {'status': 'not_assessed', 'reason': 'наличие объекта не доказывает использование перерасчётов; runtime-доказательство пока не получено (A08)'}
     else:
         clean('F1C-PR11', 'перерасчётов нет')
 

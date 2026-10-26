@@ -111,7 +111,7 @@ export function renderCharges(container, charges, metadata = {}, {methodology = 
     }
     reference(card, 'Основание штрафа', description.rule, 'rules', methodology);
     reference(card, 'Не выполнено требование', description.requirement, 'ticket', methodology);
-    if (!description.rule) card.append(textNode('p', `Код штрафа: ${charge.id}`, 'penalty-basis'));
+    card.append(textNode('p', `Код штрафа: ${charge.id}`, 'penalty-basis'));
     if (description.locations.length) {
       const locations = textNode('details', null, 'penalty-locations');
       locations.append(textNode('summary', `Места в исходниках: ${description.locations.length} (один штраф)`));

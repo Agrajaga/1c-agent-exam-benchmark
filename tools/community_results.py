@@ -262,7 +262,7 @@ def _prepare_bundle(job_id, root=ROOT):
                           process={k: execution.get('process', {}).get(k) for k in ('status', 'exit_code', 'stop_confirmed')})
         write(stage / 'run.json', run_record)
         calibration = read(root / cfg['calibration'])
-        write(stage / 'calibration.json', {k: calibration.get(k) for k in ('accepted', 'profile_id', 'grader_sha256', 'implementation_files', 'readonly_sources_verified')})
+        write(stage / 'calibration.json', {k: calibration.get(k) for k in ('accepted', 'profile_id', 'grader_sha256', 'implementation_files', 'readonly_sources_verified', 'fingerprint_version', 'runtime_implementation_files')})
         # Keep the full formal assessment for future evaluator comparisons. It is structured evidence, not raw logs.
         write(stage / 'assessment.json', evaluation['assessment'])
         write(stage / 'grading-implementation.json', evaluation['grading_fingerprint'])

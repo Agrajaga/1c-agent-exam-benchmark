@@ -160,8 +160,10 @@ def posting_failure(evaluation):
 
 
 PAGES = ('index.html', 'results.html', 'leaderboard.html', 'checks.html', 'inputs.html')
-SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'inputs.js', 'penalty-cards.js')
+SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'scoring-display.js', 'inputs.js', 'penalty-cards.js')
 SITE_FILES = PAGES + SCRIPTS
+RULEBOOK_INPUTS = {'ledger': 'ledger.json', 'decisions': 'decisions.json', 'examiner': 'examiner.json',
+                   'course': 'chistov.json', 'standards': 'standards.json'}
 
 # What each delivered file is for; shown on the «Что получает агент» page.
 PUBLIC_PURPOSE = {
@@ -250,21 +252,10 @@ def checks_export(root, config):
         tickets.append(ticket)
         if ticket['rulebook'] not in rulebooks:
             book = read(inside(root, f"rules/{ticket['rulebook']}/rules.json"))
-            ledger = inside(root, f"rules/{ticket['rulebook']}/ledger.json")
-            if ledger.is_file():
-                book['ledger'] = read(ledger)
-            decisions = inside(root, f"rules/{ticket['rulebook']}/decisions.json")
-            if decisions.is_file():
-                book['decisions'] = read(decisions)
-            examiner = inside(root, f"rules/{ticket['rulebook']}/examiner.json")
-            if examiner.is_file():
-                book['examiner'] = read(examiner)
-            course = inside(root, f"rules/{ticket['rulebook']}/chistov.json")
-            if course.is_file():
-                book['course'] = read(course)
-            std = inside(root, f"rules/{ticket['rulebook']}/standards.json")
-            if std.is_file():
-                book['standards'] = read(std)
+            for key, filename in RULEBOOK_INPUTS.items():
+                source = inside(root, f"rules/{ticket['rulebook']}/{filename}")
+                if source.is_file():
+                    book[key] = read(source)
             rulebooks[ticket['rulebook']] = book
         starters.setdefault(ticket['starter'], read(inside(root, f"starters/{ticket['starter']}/starter.json")))
     for ticket in tickets:
@@ -345,6 +336,11 @@ def build(root=ROOT, output=None, catalogue_only=False):
     if versions.is_file() and measure.is_file():
         measure.write_text(measure.read_text(encoding='utf-8').replace(
             "'./harness-versions.js'", f"'./harness-versions.js?v={digest(versions)[:12]}'"), encoding='utf-8')
+    display = stage / 'scoring-display.js'
+    checks_script = stage / 'checks.js'
+    if display.is_file() and checks_script.is_file():
+        checks_script.write_text(checks_script.read_text(encoding='utf-8').replace(
+            "'./scoring-display.js'", f"'./scoring-display.js?v={digest(display)[:12]}'"), encoding='utf-8')
     # Content-hashed asset URLs: browsers never run a stale script or stylesheet after a rebuild.
     for page in PAGES:
         if (stage / page).is_file():

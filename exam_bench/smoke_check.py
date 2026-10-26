@@ -8,7 +8,7 @@ variant passes the rules its cases decide, a known mistake is caught. Four 1C ru
 from pathlib import Path
 
 from .calibration import generate
-from .common import digest, grading_fingerprint, tree_manifest, write_json
+from .common import digest, grading_fingerprint, runtime_fingerprint, tree_manifest, write_json
 from .grader import grade, PROFILE
 
 # One case per section with its own observer: accounting, payroll, operational accounting.
@@ -44,7 +44,7 @@ def smoke_check(starter_source, starter_dt, binary, root):
     caught = next(r['verdict'] for r in bad['rules'] if r['id'] == rule) == 'fail'
     if implementation != grading_fingerprint():
         raise ValueError('Grading implementation changed during the check')
-    summary = {'schema_version': 1, 'mode': 'smoke', 'profile_id': PROFILE['id'],
+    summary = {'schema_version': 1, 'fingerprint_version': 2, 'runtime_implementation_files': runtime_fingerprint(), 'mode': 'smoke', 'profile_id': PROFILE['id'],
                'grader_sha256': digest(Path(__file__).parent / 'grader.py'),
                'calibration_generator_sha256': digest(Path(__file__).parent / 'calibration.py'),
                'cases': CASES, 'positive': {'passed_rules': passed, 'failed_rules': failed, 'errors': good['errors'],

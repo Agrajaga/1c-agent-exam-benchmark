@@ -2757,7 +2757,7 @@
     "reason": "No calibrated penalty classifier; owner policy specified, remaining readiness issues open",
     "charge_under_owner_policy": "interval_min_max_after_applicability_and_violation_proved"
    },
-   "applicability": "conditional",
+   "applicability": "not_applicable",
    "linked_rule_ids": [
     "PR14"
    ],
@@ -4577,5 +4577,6 @@
    "context": [],
    "gap": []
   }
- }
+ },
+ "runtime_interpretation": "Historical curatorial coverage snapshot. ready/scoring.enabled/automatic_eligible describe full official calibration, not whether exam_bench.penalties.assess runs. Current scoring policy is owner-scoring-policy-v4; current coverage is recorded per assessment."
 }

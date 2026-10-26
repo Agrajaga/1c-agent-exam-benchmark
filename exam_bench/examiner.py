@@ -118,7 +118,7 @@ def signs(src):
 
 
 def course(src):
-    """Practices of the course «СпецКурс 1С 8.3» (rules/<book>/chistov.json): {id: (status, reason)}, never scored."""
+    """Course practice signs; penalties.py applies the currently approved mappings (including CHS03/A24)."""
     src = Path(src)
     out = {}
     changed = []
@@ -133,12 +133,19 @@ def course(src):
                 changed.append('%s.%s: %s' % (owner.name, m.group(1), ', '.join(sorted(set(hit)))))
     out['CHS01'] = ('violation', 'реквизиты объекта меняются после записи: ' + '; '.join(changed)) if changed \
         else ('no_violation_found', 'в ПриЗаписи и ОбработкаПроведения реквизиты объекта не меняются')
-    # CHS03 (owner decision Д5, unscored): a field of a composite reference type dereferenced in a query without
+    # CHS03 (A24, GEN01): a field of a composite reference type dereferenced in a query without
     # ВЫРАЗИТЬ joins every table of the type (#std654).
-    composite = composite_fields(src)
-    dotted = ['%s: %s' % (file, m.group(0)) for file, _, strings in code_of(src) for text, _ in strings
-              for m in re.finditer(r'(?<![\wЁё.])[\wЁё]+\.(' + '|'.join(map(re.escape, sorted(composite))) + r')\.[\wЁё]+', text) if composite]
+    from .querytypes import query_dereferences
+    dotted, unknown = [], []
+    for file, _, strings in code_of(src):
+        for text, _ in strings:
+            for match, types in query_dereferences(src, text):
+                if types is None:
+                    unknown.append(file)
+                elif len(set(types)) > 1 and any('Ref.' in t for t in types):
+                    dotted.append('%s: %s' % (file, match.group(0)))
     out['CHS03'] = ('violation', 'разыменование поля составного типа без ВЫРАЗИТЬ: ' + '; '.join(sorted(set(dotted))[:3])) if dotted \
+        else ('not_assessed', 'тип разыменованного поля не установлен: ' + ', '.join(sorted(set(unknown)))) if unknown \
         else ('no_violation_found', 'поля составного типа в запросах приводятся через ВЫРАЗИТЬ или не разыменовываются')
     if not list(src.glob('CalculationRegisters/*.xml')):
         out['CHS02'] = ('not_assessed', 'регистров расчёта в решении нет')

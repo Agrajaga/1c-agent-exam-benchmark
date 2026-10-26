@@ -12,8 +12,8 @@
  },
  "scoring": {
   "initial_points": "5",
-  "deduction_choice": "interval: whole range of each penalty (A01, as in the document)",
-  "one_penalty_per_defect": "largest applicable (A02)",
+  "deduction_choice": "minimum (A01, owner-scoring-policy-v4)",
+  "one_penalty_per_defect": "smallest applicable minimum (A02)",
   "pass_threshold": "2.2",
   "grade_boundaries": "half-open as in the document (A03)",
   "owner_decisions": [
@@ -168,7 +168,12 @@
     ]
    },
    "owner_decisions": [],
-   "number": "М1.5"
+   "number": "М1.5",
+   "stand_effect": {
+    "kind": "penalty",
+    "rule": "GEN04",
+    "points": "1.0"
+   }
   },
   {
    "id": "GATE-CLIENTS",
@@ -242,7 +247,12 @@
     ]
    },
    "owner_decisions": [],
-   "number": "М2.3.2"
+   "number": "М2.3.2",
+   "stand_effect": {
+    "kind": "penalty",
+    "rule": "GEN29",
+    "points": "1.5"
+   }
   },
   {
    "id": "PROCEDURE-TIME",
@@ -2667,10 +2677,10 @@
    "barrier": false,
    "stand_check": {
     "methods": [
-     "runtime"
+     "static"
     ],
-    "how": "Хотя бы у одного регистра начислений есть период действия и связь с графиком; связь задана в реквизите, а не в измерении.",
-    "readiness": "ready",
+    "how": "Проверяется наличие хотя бы у одного объявленного регистра расчёта периода действия и непустой связи Schedule с графиком. Место связи (реквизит или измерение), её соответствие смыслу графика и корректность каждой связи отдельно не проверяются. Отсутствие периода действия со связью выявляется только в билете, который требует работу по графику.",
+    "readiness": "partial",
     "authored_by": "stand"
    },
    "source": {
@@ -2928,8 +2938,8 @@
      "static",
      "runtime"
     ],
-    "how": "По выгрузке: у регистра расчёта есть объект перерасчёта, хотя по билету перерасчётов быть не может (один дефект с Т4.14).",
-    "readiness": "ready",
+    "how": "Запрет относится к использованию механизма на рабочих путях (A08). Наличие объекта или текстового обращения само по себе не доказывает использование. При таких признаках и отсутствии runtime-доказательства пункт остаётся не оценённым; дополнительный штраф за сам XML не начисляется.",
+    "readiness": "partial",
     "authored_by": "stand"
    },
    "source": {

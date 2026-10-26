@@ -124,7 +124,10 @@ def claude_mcp_call_succeeded(events,tool):
 
 
 def verify_calibration(calibration):
-    if not calibration.get('accepted') or calibration.get('grader_sha256')!=digest(Path(__file__).parent/'grader.py') or calibration.get('implementation_files')!=grading_fingerprint() or not calibration.get('readonly_sources_verified'):
+    from .common import runtime_fingerprint
+    identity_ok = (calibration.get('runtime_implementation_files') == runtime_fingerprint()
+                   if calibration.get('fingerprint_version') == 2 else calibration.get('implementation_files') == grading_fingerprint())
+    if not calibration.get('accepted') or calibration.get('grader_sha256')!=digest(Path(__file__).parent/'grader.py') or not identity_ok or not calibration.get('readonly_sources_verified'):
         raise ValueError('FR-05 calibration absent or stale')
 
 

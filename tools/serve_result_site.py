@@ -17,13 +17,18 @@ from tools.build_result_site import build
 
 
 def watch_signature(root, catalogue_only=False):
-    from tools.build_result_site import SITE_FILES
+    from tools.build_result_site import SITE_FILES, RULEBOOK_INPUTS
     refs = ['site/catalogue.json', '.local/demo/config.json'] + ['site/' + name for name in SITE_FILES]
     refs = [r for r in refs if (root / r).is_file()]
     refs += [str(p.relative_to(root)) for p in (root / 'community/results').rglob('*') if p.is_file()]
     refs += [str(p.relative_to(root)) for p in (root / 'docs').glob('*RUN.md')]
     if (root / 'docs/COMMUNITY.md').is_file(): refs.append('docs/COMMUNITY.md')
     refs += [str(p.relative_to(root)) for p in sorted((root / 'rules').glob('*/rules.json'))]
+    refs += [str(p.relative_to(root)) for name in RULEBOOK_INPUTS.values() for p in sorted((root / 'rules').glob('*/' + name))]
+    # Penalty changes affect stale-result notices even though immutable evaluations stay unchanged.
+    if (root / 'exam_bench/common.py').is_file():
+        from exam_bench.common import grading_inputs
+        refs += [str(p.relative_to(root)) for p in grading_inputs(root).values() if p.is_file()]
     refs += [str(p.relative_to(root)) for p in sorted((root / 'starters').glob('*/starter.json'))]
     refs += [str(p.relative_to(root)) for p in sorted((root / 'tasks').glob('*/checks.json'))]
     refs += [str(p.relative_to(root)) for p in sorted(root.glob('*/*/ledger.json'))]
@@ -36,7 +41,8 @@ def watch_signature(root, catalogue_only=False):
         refs.append(config['campaign_state_ref'])
     for item in config['tasks']:
         refs += [item['directory'] + '/' + name for name in
-                 ('manifest.json', 'private/rules.json', 'private/official-assessment-mapping.json')]
+                 ('manifest.json', 'private/rules.json', 'private/official-assessment-mapping.json', 'private/owner-scoring-policy.json')
+                 if (root / item['directory'] / name).is_file()]
     for result in (root / '.local/runs').glob('*/result.json'):
         run = result.parent
         for name in ('result.json', 'plan.json', 'artifact-manifest.json', 'artifacts/interpretations.json',

@@ -1,3 +1,4 @@
+import {ruleCharge, rangeNote, practiceCharge} from './scoring-display.js';
 const $ = id => document.getElementById(id);
 // Only the final rule is shown: references to owner decisions and their history are dropped from displayed text.
 const tidy = v => String(v ?? '')
@@ -113,21 +114,22 @@ function renderRules() {
         <span class="line">${place(r.source)}</span>
         ${quoteText(r.id, r.source.quote)}
         <span class="meta"><span class="rid">${esc(r.number)}</span> ${esc(r.title)} <span class="alias">${esc(r.id)}</span>${touched.length ? ` · <span class="owner">уточнение ${touched.map(d => esc(d.id)).join(', ')}</span>` : ''}</span>
-        <span class="right">${r.barrier ? '<b class="pen">незачёт</b>' : `<b class="pen">−${esc(r.penalty.max)}</b>`}${dot(RULE_STATUS[r.stand_check.readiness])}</span>
+        <span class="right"><b class="pen">${esc(ruleCharge(r, a?.applicability))}</b>${dot(RULE_STATUS[r.stand_check.readiness])}</span>
       </button>
       <div class="more">
         ${touched.map(d => `<p class="decision"><b>${esc(d.id)}. ${esc(d.title)}.</b> ${esc(d.decision || '')} ${d.open_part ? `<span class="muted">Не решено: ${esc(d.open_part)}</span>` : ''}</p>`).join('')}
         <p><b>Как проверяется.</b> ${esc(r.stand_check.how)}</p>
         ${a ? `<p><b>${esc(APPLIES[a.applicability] || a.applicability)}.</b> ${esc(a.ticket_check)}</p>` : ''}
         ${a?.ticket_parameter ? `<p class="muted">Основание в билете: «${esc(a.ticket_parameter.source.quote)}»</p>` : ''}
-        ${!r.barrier && r.penalty.min !== r.penalty.max ? `<p class="muted">Штраф ${esc(r.penalty.min)}–${esc(r.penalty.max)} учитывается всем диапазоном: балл — интервал (A01, как в документе).</p>` : ''}
+        ${rangeNote(r) ? `<p class="muted">${esc(rangeNote(r))}</p>` : ''}
+        ${!r.barrier ? `<p class="muted">Код штрафа стенда: F1C-${esc(r.id)}. Это идентификатор правила, не ошибка платформы 1С.</p>` : ''}
         ${editHint(file, r.id)}
       </div>
     </article>`;
   }).join('')}</div>`;
 }
 
-// Practices of the examiner from a recorded webinar: not in the official list, never scored.
+// Practices retain their origin; some are charged via an existing official rule.
 function renderExaminer(exam, file) {
   const src = exam.source;
   const at = (t, video, link) => { if (link) return `<a href="${esc(link)}" target="_blank" rel="noopener">${esc(t)}</a>`; const [h, m, s] = t.split(':').map(Number); const url = video ? `https://www.youtube.com/watch?v=${video}` : src.url; return `<a href="${esc(url)}&t=${h * 3600 + m * 60 + s}s" target="_blank" rel="noopener">${esc(t)}</a>`; };
@@ -139,7 +141,7 @@ function renderExaminer(exam, file) {
         <span class="line">${esc(src.short || 'Белоусов П. С.')} <span class="muted">· ${x.at.map(esc).join(', ')}</span></span>
         <p>${esc(x.said)}</p>
         <span class="meta"><span class="rid">${esc(x.id)}</span> ${esc(x.title)}${x.related_rules.length ? ` · <span class="owner">см. ${x.related_rules.map(esc).join(', ')}</span>` : ''}</span>
-        <span class="right"><b class="pen">${x.penalty ? `−${esc(x.penalty.points)} · ${esc(x.penalty.rule)}` : 'без штрафа'}</b>${dot(RULE_STATUS[x.check.readiness])}</span>
+        <span class="right"><b class="pen">${esc(practiceCharge(x, book.rules))}</b>${dot(RULE_STATUS[x.check.readiness])}</span>
       </button>
       <div class="more">
         <p><b>Как проверяется.</b> ${esc(x.check.how)}</p>

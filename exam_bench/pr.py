@@ -514,7 +514,9 @@ def compare(observations, binding, static=None):
         # An unexplained wrong amount is one defect, already charged under PR11: PR12 is then not judged separately.
         'PR12': lambda: posted('pr_trip', 'trip') and ({None: True, 'days': True, 'rate': False}.get(trip_cause('pr_trip'))),
         'PR13': lambda: displaced('pr_backdate') & order_independent(),
-        'PR14': lambda: not static.get('recalculation_signs') or why.append('recalculation signs: ' + ', '.join(static['recalculation_signs'])[:200]) or False,
+        # Metadata and textual signs do not prove use on an operative path (A08).
+        # Until the observer provides runtime evidence, retain explicit incomplete coverage.
+        'PR14': lambda: None if static.get('recalculation_signs') else True,
         'PR15': lambda: all_posted('pr_tariff') & all_posted('pr_bonus') & same('pr_bonus', 'W1', 'A', 'tariff', feb),
         'PR16': lambda: (observations['pr_tariff']['posted'].get('span') is False or why.append('a tariff row 10.03-03.04 was accepted') or False)
                         & posted('pr_tariff', 'part') & same('pr_tariff', 'E1', 'A', 'tariff', mar),
@@ -536,7 +538,8 @@ def compare(observations, binding, static=None):
             verdict = 'inconclusive' if result is None else 'pass' if result else 'fail'
             reason = '; '.join(why)[:600] if verdict == 'fail' and why else None
             if verdict == 'inconclusive':
-                reason = 'Trip amount wrong for an undetermined reason; the defect is charged once under PR11. ' + '; '.join(why)[:400]
+                reason = ('Recalculation objects/code signs exist, but runtime use is not established (A08).'
+                          if rule == 'PR14' else 'Trip amount wrong for an undetermined reason; the defect is charged once under PR11. ' + '; '.join(why)[:400])
         except (KeyError, TypeError, ValueError) as exc:
             verdict, reason = 'inconclusive', 'Required observations unavailable: ' + str(exc)[:200]
         coverage = 'no_violation_found' if rule == 'PR14' and verdict == 'pass' else 'selected_fixture'

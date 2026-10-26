@@ -2,7 +2,7 @@
 import copy,json
 from pathlib import Path
 from .calibration import generate
-from .common import digest,write_json,grading_fingerprint,tree_manifest
+from .common import digest,write_json,grading_fingerprint,runtime_fingerprint,tree_manifest
 from .grader import grade,compare,PROFILE
 
 
@@ -46,7 +46,7 @@ def calibrate(starter_source,starter_dt,binary,root,fail_fast=False):
                                 ('statement_ignores_department',['ou_report'],'OU19'),('statement_without_characteristics',['ou_report'],'OU20'),('ou_sales_profit_wrong',['ou_report'],'OU21'),
                                 ('parttime_merged',['pr_tariff'],'PR02'),('schedule_common',['pr_tariff'],'PR03'),('rate_times_days',['pr_tariff'],'PR04'),
                                 ('rates_monthly',['pr_tariff'],'PR05'),('rate_no_history',['pr_tariff'],'PR18'),('rate_at_month_end',['pr_tariff'],'PR06'),('one_month_unchecked',['pr_tariff'],'PR16'),
-                                ('doc_date_period',['pr_tariff'],'PR18'),('recalculation_sign',['pr_tariff'],'PR14'),('mixed_kinds_refused',['pr_tariff','pr_bonus'],'PR15'),
+                                ('doc_date_period',['pr_tariff'],'PR18'),('mixed_kinds_refused',['pr_tariff','pr_bonus'],'PR15'),
                                 ('trip_displaces_whole_month',['pr_trip'],'PR01'),('no_displacement',['pr_trip','pr_bonus'],'PR10'),('bonus_not_displaced',['pr_trip','pr_bonus'],'PR10'),
                                 ('trip_calendar_days',['pr_trip'],'PR11'),('trip_rate_wrong_months',['pr_trip'],'PR12'),('cross_month_refused',['pr_trip'],'PR17'),
                                 ('no_backdate',['pr_trip','pr_backdate'],'PR13'),('bonus_includes_head',['pr_bonus'],'PR07'),('bonus_current_month',['pr_bonus'],'PR07'),
@@ -71,7 +71,7 @@ def calibrate(starter_source,starter_dt,binary,root,fail_fast=False):
     leak_check=next(r for r in compare(leaked,b) if r['id']=='BU10')['verdict']=='fail'
     accepted=all(p['passed'] and p['same_observations_as_prior'] for p in positives) and all(n['target_verdict']=='fail' and n['runtime_observations_available'] and not n['syntax_or_adapter_errors'] for n in negatives) and leak_check
     if implementation!=grading_fingerprint():raise ValueError('Grading implementation changed during calibration')
-    summary={'schema_version':1,'profile_id':PROFILE['id'],'grader_sha256':digest(Path(__file__).parent/'grader.py'),'calibration_generator_sha256':digest(Path(__file__).parent/'calibration.py'),'accepted':accepted,'positives':positives,'negatives':negatives,'unposted_movement_leak_oracle_check':leak_check,'limitations':['partial_refusal native mutant posts incomplete expense instead of refusing; an actual leak after refusal is checked on controlled observation data because native posting transaction rolls writes back','BU02 reports and other readers are not checked','ledger item/warehouse as physical dimensions (variants one, two) or predefined subconto kinds (variant sub); analogs as an information register pair or a tabular section of the items catalog (variant tab); indexed СубконтоДтN bindings and other analog storage modes not supported yet','OU04, OU05, OU07, OU09 have no dedicated mutant: they are checked by positives only'],'models_probed':[],'model_probe_ref':None}
-    summary.update(implementation_files=implementation,readonly_sources_verified=True,machine=machine_identity())
+    summary={'schema_version':1,'profile_id':PROFILE['id'],'grader_sha256':digest(Path(__file__).parent/'grader.py'),'calibration_generator_sha256':digest(Path(__file__).parent/'calibration.py'),'accepted':accepted,'positives':positives,'negatives':negatives,'unposted_movement_leak_oracle_check':leak_check,'limitations':['partial_refusal native mutant posts incomplete expense instead of refusing; an actual leak after refusal is checked on controlled observation data because native posting transaction rolls writes back','BU02 reports and other readers are not checked','ledger item/warehouse as physical dimensions (variants one, two) or predefined subconto kinds (variant sub); analogs as an information register pair or a tabular section of the items catalog (variant tab); indexed СубконтоДтN bindings and other analog storage modes not supported yet','OU04, OU05, OU07, OU09 have no dedicated mutant: they are checked by positives only','PR14: metadata and code signs alone do not prove runtime use (A08); the old unreachable recalculation_sign mutant is excluded, operative-path detection remains uncalibrated'],'models_probed':[],'model_probe_ref':None}
+    summary.update(fingerprint_version=2,runtime_implementation_files=runtime_fingerprint(),implementation_files=implementation,readonly_sources_verified=True,machine=machine_identity())
     write_json(root/'summary.json',summary)
     return summary
