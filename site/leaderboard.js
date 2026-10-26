@@ -1,6 +1,7 @@
 // One leaderboard table: accepted community results plus, on a local stand, this machine's own
 // results highlighted with a send button. A row expands into violations and, locally, the agent log.
 import {loadPenaltyMetadata, renderCharges} from './penalty-cards.js';
+import {estimateApiCost, API_PRICE_SOURCE} from './api-cost.js';
 
 const penaltyMetadata = await loadPenaltyMetadata();
 const $ = id => document.getElementById(id);
@@ -195,10 +196,13 @@ function openRun(r) {
     ['Время решения', minutes(r.e.solve_seconds)], ['Автор', r.author.name || r.author.github],
     ['Платформа исходного замера', env.platform_version && '1С ' + env.platform_version],
     ['Компьютер', [systems[env.os?.system] || env.os?.system, hw.cpu, hw.ram_bytes && Math.round(hw.ram_bytes / 1073741824) + ' ГБ RAM'].filter(Boolean).join(' · ')],
-    ['Токены', `вход ${tokens(r.tokens.fresh_input)}, кеш ${tokens(r.tokens.cached_input)}, выход ${tokens(r.tokens.output)}`]]) {
+    ['Токены', `новый вход ${tokens(r.tokens.fresh_input)}, кешированный вход ${tokens(r.tokens.cached_input)}, выход ${tokens(r.tokens.output)}`],
+    ['Оценка API', estimateApiCost(r.model, r.tokens) == null ? 'Нет данных для расчёта' : `≈ $${number(estimateApiCost(r.model, r.tokens).toFixed(2))} · условный расчёт`]]) {
     list.append(node('dt', label), node('dd', value || '—'));
   }
   conditions.append(list);
+  const pricing = node('p', 'Оценка по стандартным тарифам API на 27.10.2026: новый и кешированный вход, выход. Это не счёт за подписку; длинный контекст, запись кеша, режим обработки и дополнительные услуги не учтены. ', 'why');
+  const pricingLink = node('a', 'Тарифы OpenAI'); pricingLink.href = API_PRICE_SOURCE; pricingLink.target = '_blank'; pricingLink.rel = 'noopener noreferrer'; pricing.append(pricingLink); conditions.append(pricing);
   if (r.ownerVerification) conditions.append(node('p', `Перепроверка: @${r.ownerVerification.operator.github} · ${r.ownerVerification.server.name} · 1С ${r.ownerVerification.platform_version}.`, 'run-status'));
   const technical = node('section'); technical.append(node('h3', 'История и технические данные'), node('p', 'Архивы, контрольные суммы и происхождение оценки нужны для независимой проверки.', 'why'));
   if (r.download) { const a = node('a', 'Скачать решение XML / DT и оценку', 'btn'); a.href = r.download; a.download = ''; technical.append(a); }
@@ -255,8 +259,11 @@ function render() {
     sub(who, [agents[r.agent] || r.agent, r.agentVersion, r.effort].filter(Boolean).join(' · '));
     sub(who, harnessName(r.harness));
     const time = node('td', minutes(r.e.solve_seconds), 'num'); sub(time, r.limit ? `лимит ${Math.round(r.limit / 60)} мин` : '');
-    const tok = node('td', tokens(r.tokens.fresh_input), 'num');
-    sub(tok, `кеш ${tokens(r.tokens.cached_input)}`); sub(tok, `выход ${tokens(r.tokens.output)}`);
+    const estimate = estimateApiCost(r.model, r.tokens);
+    const tok = node('td', null, 'num cost-cell');
+    tok.append(node('b', estimate == null ? 'Нет расчёта' : `≈ $${number(estimate.toFixed(2))}`, 'cost-value'));
+    sub(tok, `вход ${tokens(r.tokens.fresh_input)}`); sub(tok, `кеш ${tokens(r.tokens.cached_input)}`); sub(tok, `выход ${tokens(r.tokens.output)}`);
+    tok.title = 'Вход — новые токены; кеш — повторный вход. Стоимость приблизительная: тариф API на 27.10.2026, не счёт за подписку. Подробности в условиях замера.';
     const env = r.env, hw = env.hardware || {};
     const pc = node('td', [systems[env.os?.system] || env.os?.system, env.os?.architecture && arch(env.os.architecture)].filter(Boolean).join(' ') || '—', 'pc');
     sub(pc, [hw.cpu, hw.logical_cpus && hw.logical_cpus + ' потоков', hw.ram_bytes && Math.round(hw.ram_bytes / 1073741824) + ' ГБ'].filter(Boolean).join(' · '));

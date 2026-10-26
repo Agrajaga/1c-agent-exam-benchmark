@@ -102,6 +102,7 @@ select.field { appearance: none; -webkit-appearance: none; padding-right: 36px;
 .sort[data-dir="desc"]::after { content: ' ↓'; opacity: 1; }
 .board td { white-space: normal; }
 .board .score-value { font-size: 17px; white-space: nowrap; }
+.board .cost-value { font-size: 15px; white-space: nowrap; }
 .board td small.mobile-verification { display: none; }
 .board td .badge { display: table; margin-top: 4px; cursor: help; }
 .board .place { font-weight: 700; }
@@ -508,7 +509,7 @@ code { font-family: var(--mono); font-size: 12px; }
  .page.wide .table-wrap { border: 0; border-radius: 0; overflow: visible; }
  .board, .board tbody { display: block; width: 100%; background: transparent; }
  .board thead { display: none; }
- .board tr.row-main { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; grid-template-areas: 'place who score' 'place time score' 'place author actions'; gap: 2px 8px; align-items: start; margin-bottom: 8px; padding: 11px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+ .board tr.row-main { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; grid-template-areas: 'place who score' 'place time score' 'place cost cost' 'place author actions'; gap: 2px 8px; align-items: start; margin-bottom: 8px; padding: 11px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
  .board tr.row-main td { min-width: 0; padding: 0; border: 0; background: transparent; text-align: left; white-space: normal; }
  .board tr.row-main td:nth-child(1) { grid-area: place; color: var(--muted); }
  .board tr.row-main td:nth-child(2) { grid-area: score; text-align: right; }
@@ -517,7 +518,10 @@ code { font-family: var(--mono); font-size: 12px; }
  .board tr.row-main td:nth-child(4) { grid-area: time; color: var(--muted); font-size: 12px; }
  .board tr.row-main td:nth-child(4)::before { content: 'Время: '; }
  .board tr.row-main td:nth-child(4) small { display: inline; margin-left: 6px; }
- .board tr.row-main td:nth-child(5), .board tr.row-main td:nth-child(6) { display: none; }
+ .board tr.row-main td:nth-child(5) { grid-area: cost; color: var(--muted); font-size: 12px; }
+ .board tr.row-main td:nth-child(5)::before { content: 'API: '; }
+ .board tr.row-main td:nth-child(5) small { display: inline; margin-left: 6px; }
+ .board tr.row-main td:nth-child(6) { display: none; }
  .board tr.row-main td:nth-child(7) { grid-area: author; font-size: 12px; }
  .board tr.row-main td:nth-child(7) small { display: none; }
  .board tr.row-main td:nth-child(8) { grid-area: actions; align-self: end; }

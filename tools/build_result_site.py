@@ -160,7 +160,7 @@ def posting_failure(evaluation):
 
 
 PAGES = ('index.html', 'results.html', 'leaderboard.html', 'checks.html', 'inputs.html')
-SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'checks.js', 'scoring-display.js', 'inputs.js', 'penalty-cards.js', 'source-viewer.js')
+SCRIPTS = ('style.css', 'nav.js', 'local.js', 'submit.js', 'harness-prompt.js', 'harness-versions.js', 'measure.js', 'results.js', 'leaderboard.js', 'api-cost.js', 'checks.js', 'scoring-display.js', 'inputs.js', 'penalty-cards.js', 'source-viewer.js')
 SITE_FILES = PAGES + SCRIPTS
 RULEBOOK_INPUTS = {'ledger': 'ledger.json', 'decisions': 'decisions.json', 'examiner': 'examiner.json',
                    'course': 'chistov.json', 'standards': 'standards.json'}
