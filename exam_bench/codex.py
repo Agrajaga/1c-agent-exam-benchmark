@@ -169,6 +169,10 @@ def prepare(plan, run, starter, task, client, auth_seed, starter_dt=None):
         argv+=codex_overrides(plan['harness'],ws)
     if plan['harness']==TOOLKIT:
         argv+=['-c','mcp_servers.onec.url='+json.dumps(TOOLKIT_URL),'-c','mcp_servers.onec.startup_timeout_sec=60','-c','mcp_servers.onec.tool_timeout_sec=600']
+    # A selected harness must be ready for the first turn. Optional MCP servers
+    # can miss Codex's startup grace and silently disappear from the tool catalog.
+    for server in harness.get('mcp_servers',[]):
+        argv+=['-c','mcp_servers.'+server+'.required=true']
     if plan.get('reasoning_effort'):argv+=['-c','model_reasoning_effort='+json.dumps(plan['reasoning_effort'])]
     argv+=['-']
     # HOME is inherited as required by the native runtime; user config/skills are isolated with CODEX_HOME.
