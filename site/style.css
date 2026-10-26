@@ -417,3 +417,49 @@ code { font-family: var(--mono); font-size: 12px; }
 .env-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 2px; }
 .env-tab { font: inherit; font-size: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
 .env-tab.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* The run is a workspace: errors first, provenance on demand. */
+.run-viewer { inset: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; color: var(--ink); background: var(--bg); }
+.run-viewer[open] { display: flex; flex-direction: column; }
+.run-viewer::backdrop { background: var(--bg); }
+.run-viewer-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 28px 40px 18px; background: var(--surface); }
+.run-viewer-head h2 { margin: 2px 0 8px; font-size: clamp(24px, 3vw, 34px); letter-spacing: -.035em; }
+.run-eyebrow { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .14em; margin: 0; }
+.run-viewer-head .why { margin: 0; }
+.run-metrics { display: flex; gap: 0; padding: 4px 40px 22px; background: var(--surface); }
+.run-metrics > div { display: flex; flex-direction: column; gap: 4px; min-width: 180px; padding: 0 32px; border-left: 1px solid var(--line); }
+.run-metrics > div:first-child { padding-left: 0; border: 0; }
+.run-metrics strong { font-size: 26px; font-weight: 650; letter-spacing: -.035em; }
+.run-metrics span { color: var(--muted); font-size: 12px; }
+.run-status { padding: 12px 40px; margin: 0; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.run-layout { min-height: 0; flex: 1; display: grid; grid-template-columns: 235px minmax(0, 1fr); }
+.run-navigation { padding: 24px 16px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+.run-navigation button { text-align: left; border: 0; padding: 12px 16px; font: inherit; font-size: 14px; cursor: pointer; border-radius: 8px; color: var(--muted); background: transparent; }
+.run-navigation button[aria-pressed=true] { background: var(--surface); color: var(--ink); font-weight: 650; box-shadow: 0 1px 4px #00000009; }
+.run-navigation button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.run-content { padding: 28px 40px 60px; overflow: auto; min-width: 0; }
+.run-panel { max-width: 1050px; margin: 0 auto; }
+.run-panel[hidden] { display: none; }
+.run-panel > h3, .run-panel > h4 { font-size: 22px; margin: 0 0 12px; letter-spacing: -.025em; }
+.run-intro { color: var(--muted); line-height: 1.7; max-width: 760px; margin: 0 0 24px; }
+.run-viewer .penalty-card { padding: 24px; border-left: 3px solid var(--accent); }
+.run-viewer .penalty-title { font-size: 17px; }
+.run-viewer .penalty-explanation { font-size: 14px; line-height: 1.7; }
+.run-viewer .penalty-card pre, .run-viewer pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.run-check-group { margin: 12px 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.run-check-group summary { cursor: pointer; font-weight: 600; }
+.run-check-group p { padding: 12px 0; margin: 0; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.6; }
+.run-check-group .fail { color: var(--fail); } .run-check-group .pass { color: var(--pass); } .run-check-group .unknown { color: var(--unknown); }
+.run-facts { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 0 24px; padding: 8px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.run-facts dt, .run-facts dd { margin: 0; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.run-facts dt { color: var(--muted); }
+.run-verification { margin-top: 24px; overflow-wrap: anywhere; }
+.run-coverage { margin-top: 24px; font-size: 14px; line-height: 1.7; }
+@media (max-width: 750px) {
+ .run-viewer-head { padding: 20px; align-items: flex-start; } .run-viewer-head .btn { white-space: nowrap; }
+ .run-metrics { padding: 4px 20px 20px; } .run-metrics > div { min-width: 0; flex: 1; padding: 0 14px; } .run-metrics strong { font-size: 21px; }
+ .run-status { padding: 10px 20px; } .run-layout { display: flex; flex-direction: column; }
+ .run-navigation { padding: 10px; flex-direction: row; overflow: auto; flex-shrink: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+ .run-navigation button { white-space: nowrap; padding: 10px; font-size: 12px; } .run-content { padding: 20px 16px 40px; }
+ .run-viewer .penalty-card { padding: 18px; } .run-facts { grid-template-columns: 1fr; gap: 0; } .run-facts dt { border: 0; padding-bottom: 0; font-size: 12px; }
+}

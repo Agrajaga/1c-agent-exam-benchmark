@@ -75,20 +75,20 @@ function revisionHistory(r) {
 
 function violations(r) {
   const box = node('div', null, 'details-grid');
-  const charges = node('div'); charges.append(node('h4', 'Штрафы'));
+  const charges = node('div', null, 'run-errors'); charges.append(node('h4', 'Штрафы'));
   if (r.e.charges?.length) {
     const list = node('ul');
     renderCharges(list, r.e.charges, penaltyMetadata, {methodology: Boolean(local)});
     charges.append(list);
   } else charges.append(node('p', 'Нет', 'why'));
-  const failed = node('div'); failed.append(node('h4', 'Не пройденные требования'));
+  const failed = node('div', null, 'run-failures'); failed.append(node('h4', 'Не пройденные требования'));
   const bad = (r.e.rules || []).filter(x => x.verdict === 'fail');
   if (bad.length) {
     const list = node('ul');
     list.append(...bad.map(x => node('li', x.id + (x.reason ? ' · ' + x.reason : ''))));
     failed.append(list);
   } else failed.append(node('p', 'Нет', 'why'));
-  const notes = node('div'); notes.append(node('h4', 'Покрытие'));
+  const notes = node('div', null, 'run-coverage'); notes.append(node('h4', 'Покрытие'));
   notes.append(node('p', `Проверок пройдено: ${r.e.counts?.pass || 0}, не пройдено: ${r.e.counts?.fail || 0}, `
     + `не определено: ${r.e.counts?.inconclusive || 0}. Пунктов каталога без оценки: ${r.e.not_assessed ?? '—'}.`, 'why'));
   if (stale(r)) notes.append(node('p', 'Требуется пересчёт, место не присваивается. ' + r.regrade.map(x => REGRADE[x.id]?.(x) || x.id).join(' '), 'why'));
@@ -97,7 +97,7 @@ function violations(r) {
   const verification = r.ownerVerification;
   if (verification) {
     const grader = verification.grader, server = verification.server, hw = server.hardware || {};
-    const review = node('div'); review.append(node('h4', 'Проверено владельцем репозитория'));
+    const review = node('div', null, 'run-verification'); review.append(node('h4', 'Проверено владельцем репозитория'));
     review.append(node('p', `@${verification.operator.github} · ${new Date(verification.completed_at).toLocaleString('ru-RU')}`));
     review.append(node('p', `Грейдер: ${grader.profile} · коммит ${grader.commit || 'не указан'}${grader.working_tree_dirty ? ' (с локальными изменениями)' : ''}`));
     review.append(node('p', 'SHA-256 грейдера: ' + grader.sha256, 'why'));
@@ -139,6 +139,86 @@ async function showLog(r) {
   } catch (error) { body.textContent = error.message || 'Лог недоступен'; }
 }
 
+function openRun(r) {
+  const dialog = node('dialog', null, 'run-viewer');
+  dialog.setAttribute('aria-label', 'Разбор решения 1С');
+  const header = node('header', null, 'run-viewer-head');
+  const heading = node('div');
+  heading.append(node('p', 'РАЗБОР РЕШЕНИЯ', 'run-eyebrow'), node('h2', r.model || 'Экзамен 1С'));
+  heading.append(node('p', [harnessName(r.harness), r.author.name || r.author.github,
+    r.date && new Date(r.date).toLocaleDateString('ru-RU')].filter(Boolean).join(' · '), 'why'));
+  const close = node('button', 'Закрыть ×', 'btn'); close.autofocus = true;
+  close.addEventListener('click', () => dialog.close());
+  header.append(heading, close);
+  const metrics = node('div', null, 'run-metrics');
+  const score = exact(r) ? `${number(r.e.score)} / 5` : `≤ ${number(Math.max(0, r.e.score_upper_bound ?? 0))} / 5`;
+  for (const [value, label] of [[score, exact(r) ? 'оценка' : 'верхняя граница оценки'],
+    [r.e.charges?.length || 0, 'начисленных штрафов'], [r.e.counts?.pass || 0, 'проверок пройдено']]) {
+    const metric = node('div'); metric.append(node('strong', value), node('span', label)); metrics.append(metric);
+  }
+  const status = node('p', stale(r) ? 'Оценка ожидает пересчёта обновлённым грейдером.'
+    : r.e.infrastructure_errors ? 'Часть сценариев не завершилась. Результат проверки неполный.'
+    : r.ownerVerification ? 'Перепроверено владельцем репозитория.'
+    : 'Оценка предоставлена участником.', 'run-status');
+  const layout = node('div', null, 'run-layout');
+  const nav = node('nav', null, 'run-navigation'); nav.setAttribute('aria-label', 'Разделы разбора');
+  const content = node('div', null, 'run-content');
+  const details = violations(r);
+  const errors = details.querySelector('.run-errors');
+  errors.querySelector('h4').textContent = 'Ошибки в решении';
+  const intro = node('p', 'Каждая карточка объясняет нарушение и основание штрафа. Исходная диагностика и известные места в исходниках раскрываются внутри карточки.', 'run-intro');
+  errors.insertBefore(intro, errors.children[1] || null);
+  if (!r.e.charges?.length) errors.append(node('p', 'Штрафов не начислено. Это не подтверждает выполнение непроверенных требований.', 'why'));
+  const checks = node('section'); checks.append(node('h3', 'Проверки билета'));
+  const verdicts = {fail: ['Не пройдены', 'fail'], inconclusive: ['Недостаточно данных', 'unknown'], pass: ['Пройдены', 'pass']};
+  for (const [verdict, [label, cls]] of Object.entries(verdicts)) {
+    const items = (r.e.rules || []).filter(x => x.verdict === verdict);
+    const group = node('details', null, 'run-check-group'); group.open = verdict === 'fail';
+    group.append(node('summary', `${label} · ${items.length}`, cls));
+    for (const item of items) {
+      const line = node('p'); line.append(node('b', item.id), document.createTextNode(' · ' + (item.reason || penaltyMetadata.requirements?.[item.id]?.title || 'Подробности в протоколе проверки'))); group.append(line);
+    }
+    checks.append(group);
+  }
+  checks.append(node('p', `Пунктов каталога без оценки: ${r.e.not_assessed ?? '—'}. Непроверенные пункты не считаются выполненными.`, 'run-coverage'));
+  if (r.e.binding_compatibility) checks.append(node('p', 'Для проверки потребовалась адаптация привязок объектов.', 'why'));
+  const conditions = node('section'); conditions.append(node('h3', 'Как агент решал задачу'));
+  const env = r.env || {}, hw = env.hardware || {};
+  const list = node('dl', null, 'run-facts');
+  for (const [label, value] of [['Модель', r.model], ['Агент', [agents[r.agent] || r.agent, r.agentVersion].filter(Boolean).join(' ')],
+    ['Харнес', harnessName(r.harness)], ['Лимит решения', r.limit ? Math.round(r.limit / 60) + ' мин' : '—'],
+    ['Время решения', minutes(r.e.solve_seconds)], ['Автор', r.author.name || r.author.github],
+    ['Платформа исходного замера', env.platform_version && '1С ' + env.platform_version],
+    ['Компьютер', [systems[env.os?.system] || env.os?.system, hw.cpu, hw.ram_bytes && Math.round(hw.ram_bytes / 1073741824) + ' ГБ RAM'].filter(Boolean).join(' · ')],
+    ['Токены', `вход ${tokens(r.tokens.fresh_input)}, кеш ${tokens(r.tokens.cached_input)}, выход ${tokens(r.tokens.output)}`]]) {
+    list.append(node('dt', label), node('dd', value || '—'));
+  }
+  conditions.append(list);
+  if (r.ownerVerification) conditions.append(node('p', `Перепроверка: @${r.ownerVerification.operator.github} · ${r.ownerVerification.server.name} · 1С ${r.ownerVerification.platform_version}.`, 'run-status'));
+  const technical = node('section'); technical.append(node('h3', 'История и технические данные'), node('p', 'Архивы, контрольные суммы и происхождение оценки нужны для независимой проверки.', 'why'));
+  if (r.download) { const a = node('a', 'Скачать решение XML / DT и оценку', 'btn'); a.href = r.download; a.download = ''; technical.append(a); }
+  technical.append(node('p', 'Исходный прогон: ' + (r.runId || r.id), 'why'));
+  if (r.sha) technical.append(node('pre', 'SHA-256 архива: ' + r.sha, 'review'));
+  if (r.regrade?.length) technical.append(node('p', r.regrade.map(x => REGRADE[x.id]?.(x) || x.id).join(' '), 'why'));
+  const verification = details.querySelector('.run-verification'); if (verification) technical.append(verification);
+  if (r.history?.length) technical.append(revisionHistory(r));
+  if (r.local) { const log = node('button', 'Лог агента', 'btn'); log.addEventListener('click', () => showLog(r)); technical.append(log); }
+  const tabs = [['Ошибки в решении', errors], ['Проверки билета', checks], ['Условия замера', conditions], ['История и данные', technical]];
+  const controls = [];
+  function select(index) {
+    tabs.forEach(([, panel], i) => { panel.hidden = i !== index; controls[i].setAttribute('aria-pressed', String(i === index)); });
+    content.scrollTop = 0;
+  }
+  tabs.forEach(([label, panel], i) => {
+    const button = node('button', label); button.addEventListener('click', () => select(i));
+    controls.push(button); nav.append(button); panel.classList.add('run-panel'); content.append(panel);
+  });
+  select(0); layout.append(nav, content); dialog.append(header, metrics, status, layout);
+  const previousOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
+  dialog.addEventListener('close', () => { document.body.style.overflow = previousOverflow; dialog.remove(); }, {once: true});
+  document.body.append(dialog); dialog.showModal();
+}
+
 function render() {
   const visible = rows.filter(filtersMatch).sort((a, b) => sort.dir * (keys[sort.key](a) - keys[sort.key](b)) || a.e.solve_seconds - b.e.solve_seconds);
   // Places count only accepted results with an exact score, in score order.
@@ -151,7 +231,7 @@ function render() {
     const score = node('td');
     score.append(node('b', exact(r) ? `${number(r.e.score)} из 5` : `не выше ${number(Math.max(0, r.e.score_upper_bound))} из 5`, 'score-value'));
     sub(score, grades[r.e.grade]);
-    if (stale(r)) { const b = node('span', 'требуется пересчёт', 'badge warn'); b.title = r.regrade.map(x => REGRADE[x.id]?.(x) || x.id).join(' '); score.append(b); }
+    if (stale(r)) { const b = node('span', 'требуется пересчёт', 'badge warn'); b.title = 'Оценка выполнена прежним грейдером; подробности внутри прогона.'; score.append(b); }
     const total = Object.values(r.e.counts || {}).reduce((a, b) => a + b, 0);
     sub(score, `проверок ${r.e.counts?.pass || 0} из ${total}`);
     const who = node('td'); who.append(node('b', r.model));
@@ -173,17 +253,11 @@ function render() {
     cellActions.append(act);
     if (r.local && submit) { const box = node('div', null, 'actions'); submit(box, r.item, local.community, local.githubReady, load); act.append(box); }
     else if (r.download) { const a = node('a', 'Скачать', 'btn small'); a.href = r.download; a.download = ''; a.title = 'Решение XML и DT, оценка, параметры · SHA-256 ' + r.sha; act.append(a); }
-    const more = node('button', 'Подробнее', 'btn small row-more');
-    act.append(more);
+    const more = node('button', 'Открыть прогон', 'btn small row-more');
+    more.addEventListener('click', () => openRun(r)); act.append(more);
     tr.append(place, score, who, time, tok, pc, author, cellActions);
-    const detail = node('tr', null, 'row-detail' + (r.local ? ' mine' : '')); detail.hidden = true;
-    const cell = node('td'); cell.colSpan = 8; cell.append(violations(r)); detail.append(cell);
-    if (r.history?.length) {
-      sub(score, `оценок: ${r.history.length + 1}`);
-      cell.append(node('p', 'Исходный прогон: ' + r.runId, 'why'), revisionHistory(r));
-    }
-    more.addEventListener('click', () => { detail.hidden = !detail.hidden; more.textContent = detail.hidden ? 'Подробнее' : 'Скрыть'; });
-    return [tr, detail];
+    if (r.history?.length) sub(score, `оценок: ${r.history.length + 1}`);
+    return [tr];
   }));
   const mine = visible.filter(r => r.local).length;
   $('summary').textContent = `${visible.length} из ${rows.length}` + (mine ? ` · ваших неотправленных: ${mine}` : '');
