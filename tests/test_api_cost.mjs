@@ -5,6 +5,8 @@ const {estimateApiCost} = await import('data:text/javascript;base64,' + Buffer.f
 
 const usage = {input: 20691000, fresh_input: 291000, cached_input: 20400000, output: 151000};
 assert.ok(Math.abs(estimateApiCost('gpt-6.1-sol', usage) - 4.132) < 1e-9);
+assert.ok(Math.abs(estimateApiCost('claude-opus-5-5', usage) - 8.264) < 1e-9);
+assert.ok(Math.abs(estimateApiCost('grok-4.7-high', usage) - 11.688) < 1e-9);
 assert.equal(estimateApiCost('unknown-model', usage), null);
 assert.equal(estimateApiCost('gpt-6.1-sol', {...usage, cached_input: null}), null);
 assert.equal(estimateApiCost('gpt-6.1-sol', {...usage, input: 1}), null);
