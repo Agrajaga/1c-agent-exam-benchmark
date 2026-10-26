@@ -1,0 +1,184 @@
+{
+  "created_at": "2026-10-26T22:32:37.840527+00:00",
+  "method": "saved_platform_observations",
+  "reason": "OU periodicity",
+  "previous_grader_revision": "e8fd8ce",
+  "results": [
+    {
+      "submission_id": "demo-20261024T041533Z-ddc64e",
+      "outcome": "not_reassessed_incomplete",
+      "scenario_errors": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ]
+    },
+    {
+      "submission_id": "demo-20261024T230428Z-a2980e",
+      "outcome": "complete",
+      "score_upper_bound": "-5.25",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261024T230428Z-a2980e/owner-2026-10-26T223243956826-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T063054Z-b9676e",
+      "outcome": "incomplete",
+      "score_upper_bound": "-4.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ],
+      "receipt": "community/rechecks/demo-20261025T063054Z-b9676e/owner-2026-10-26T223250308491-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T110836Z-adapter",
+      "outcome": "complete",
+      "score_upper_bound": "-3.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T110836Z-adapter/owner-2026-10-26T223255070325-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T112228Z-adapter",
+      "outcome": "complete",
+      "score_upper_bound": "-6.0",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T112228Z-adapter/owner-2026-10-26T223300888985-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T112622Z-adapter",
+      "outcome": "complete",
+      "score_upper_bound": "-0.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T112622Z-adapter/owner-2026-10-26T223305964533-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T113017Z-40b49c",
+      "outcome": "complete",
+      "score_upper_bound": "-4.0",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T113017Z-40b49c/owner-2026-10-26T223312210970-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T113419Z-de9981",
+      "outcome": "complete",
+      "score_upper_bound": "4.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T113419Z-de9981/owner-2026-10-26T223317840149-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T113819Z-9d209c",
+      "outcome": "complete",
+      "score_upper_bound": "-5.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T113819Z-9d209c/owner-2026-10-26T223322513267-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T114214Z-de8c5f",
+      "outcome": "not_reassessed_incomplete",
+      "scenario_errors": [
+        "ou_assembly",
+        "ou_assembly_split",
+        "ou_history"
+      ]
+    },
+    {
+      "submission_id": "demo-20261025T145428Z-209efd",
+      "outcome": "complete",
+      "score_upper_bound": "-4.25",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T145428Z-209efd/owner-2026-10-26T223328100393-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T153915Z-adapter",
+      "outcome": "complete",
+      "score_upper_bound": "-2.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T153915Z-adapter/owner-2026-10-26T223334471280-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T154959Z-adapter",
+      "outcome": "complete",
+      "score_upper_bound": "0.0",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T154959Z-adapter/owner-2026-10-26T223340235303-0000.json"
+    },
+    {
+      "submission_id": "demo-20261025T192940Z-5ea870",
+      "outcome": "complete",
+      "score_upper_bound": "2.0",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261025T192940Z-5ea870/owner-2026-10-26T223346603771-0000.json"
+    },
+    {
+      "submission_id": "demo-20261026T070850Z-84a3a7",
+      "outcome": "complete",
+      "score_upper_bound": "-3.25",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261026T070850Z-84a3a7/owner-2026-10-26T223352692405-0000.json"
+    },
+    {
+      "submission_id": "demo-20261026T113637Z-010c79",
+      "outcome": "complete",
+      "score_upper_bound": "0.5",
+      "changed_rules": [
+        "OU03",
+        "OU08"
+      ],
+      "scenario_errors": [],
+      "receipt": "community/rechecks/demo-20261026T113637Z-010c79/owner-2026-10-26T223359597004-0000.json"
+    }
+  ]
+}

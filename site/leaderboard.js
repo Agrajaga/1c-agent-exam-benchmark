@@ -10,6 +10,9 @@ const number = v => String(v).replace('.', ',');
 const grades = {unsatisfactory: 'Неудовлетворительно', satisfactory: 'Удовлетворительно', good: 'Хорошо', excellent: 'Отлично'};
 const agents = {codex: 'Codex', claude: 'Claude Code'};
 const tokens = n => n == null ? '—' : n >= 1e6 ? number((n / 1e6).toFixed(1)) + ' млн' : n >= 1e3 ? Math.round(n / 1e3) + ' тыс.' : String(n);
+const periodNames = {Year: 'год', Quarter: 'квартал', Month: 'месяц', Day: 'день', Second: 'секунда', Nonperiodical: 'непериодический', RecorderPosition: 'позиция регистратора'};
+const readableReason = text => String(text).replace(/периодичность регистра (policies|specification) — (\w+), ожидается (\w+)/g,
+  (_, role, actual, expected) => `периодичность регистра ${role === 'policies' ? 'учётной политики' : 'состава'} — ${periodNames[actual] || actual}, ожидается ${periodNames[expected] || expected}`);
 const minutes = s => s == null ? '—' : `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 const harnessName = h => !h || h === 'none' ? 'Без харнеса' : h;
 const systems = {Darwin: 'macOS', Windows: 'Windows', Linux: 'Linux'};
@@ -182,7 +185,7 @@ function openRun(r) {
     const group = node('details', null, 'run-check-group'); group.open = verdict === 'fail';
     group.append(node('summary', `${label} · ${items.length}`, cls));
     for (const item of items) {
-      const line = node('p'); line.append(node('b', item.id), document.createTextNode(' · ' + (item.reason || penaltyMetadata.requirements?.[item.id]?.title || 'Подробности в протоколе проверки'))); group.append(line);
+      const line = node('p'); line.append(node('b', item.id), document.createTextNode(' · ' + readableReason(item.reason || penaltyMetadata.requirements?.[item.id]?.title || 'Подробности в протоколе проверки'))); group.append(line);
     }
     checks.append(group);
   }
